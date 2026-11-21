@@ -4,7 +4,7 @@ The typed Python client for the [Hermoso API](https://hermoso.ai/docs/api/): gen
 schedule posts to your own channels, read your analytics, and call any of Hermoso's tools from your own backend.
 
 ```bash
-pip install hermoso
+pip install "git+https://github.com/hermoso-ai/hermoso-sdks#subdirectory=python"
 ```
 
 Python 3.11+. Create an API key at [app.hermoso.ai](https://app.hermoso.ai) on the **API, MCP & CLI** tab, under
