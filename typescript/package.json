@@ -1,0 +1,53 @@
+{
+  "name": "@hermoso/sdk",
+  "version": "0.1.0",
+  "description": "Typed TypeScript client for the Hermoso API: generate ads, publish and schedule posts, read analytics, and call every Hermoso tool from your own backend.",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "sideEffects": false,
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "prepublishOnly": "npm run build"
+  },
+  "devDependencies": {
+    "typescript": "5.9.3"
+  },
+  "keywords": [
+    "hermoso",
+    "api",
+    "sdk",
+    "openapi",
+    "ads",
+    "ad generation",
+    "social media",
+    "scheduling",
+    "marketing",
+    "typescript"
+  ],
+  "homepage": "https://hermoso.ai/docs/sdks/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hermoso-ai/hermoso-sdks.git",
+    "directory": "typescript"
+  },
+  "bugs": {
+    "url": "https://github.com/hermoso-ai/hermoso-sdks/issues"
+  },
+  "author": "Hermoso <hello@hermoso.ai> (https://hermoso.ai)",
+  "license": "MIT"
+}

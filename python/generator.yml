@@ -1,0 +1,7 @@
+# openapi-python-client configuration. Run through tools/sdk-generate.mjs (which pins the generator), never by hand.
+project_name_override: hermoso
+package_name_override: hermoso
+literal_enums: false
+post_hooks:
+  - "ruff check . --fix-only --quiet"
+  - "ruff format . --quiet"
