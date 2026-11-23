@@ -91,8 +91,8 @@ def sync_detailed(
     """Retrieve the credit balance
 
      This workspace’s Hermoso credit balance and plan. Publishing and scheduling cost no credits;
-    generation does. The Free plan publishes up to 5 posts a month on 3 channels (a post counts once,
-    however many channels it goes to); every paid plan posts without a limit.
+    generation does. The Free plan publishes up to 10 posts on 3 channels (a post counts once, however
+    many channels it goes to); every paid plan posts without a limit.
 
     Args:
         brand (str | Unset):
@@ -127,8 +127,8 @@ def sync(
     """Retrieve the credit balance
 
      This workspace’s Hermoso credit balance and plan. Publishing and scheduling cost no credits;
-    generation does. The Free plan publishes up to 5 posts a month on 3 channels (a post counts once,
-    however many channels it goes to); every paid plan posts without a limit.
+    generation does. The Free plan publishes up to 10 posts on 3 channels (a post counts once, however
+    many channels it goes to); every paid plan posts without a limit.
 
     Args:
         brand (str | Unset):
@@ -158,8 +158,8 @@ async def asyncio_detailed(
     """Retrieve the credit balance
 
      This workspace’s Hermoso credit balance and plan. Publishing and scheduling cost no credits;
-    generation does. The Free plan publishes up to 5 posts a month on 3 channels (a post counts once,
-    however many channels it goes to); every paid plan posts without a limit.
+    generation does. The Free plan publishes up to 10 posts on 3 channels (a post counts once, however
+    many channels it goes to); every paid plan posts without a limit.
 
     Args:
         brand (str | Unset):
@@ -192,8 +192,8 @@ async def asyncio(
     """Retrieve the credit balance
 
      This workspace’s Hermoso credit balance and plan. Publishing and scheduling cost no credits;
-    generation does. The Free plan publishes up to 5 posts a month on 3 channels (a post counts once,
-    however many channels it goes to); every paid plan posts without a limit.
+    generation does. The Free plan publishes up to 10 posts on 3 channels (a post counts once, however
+    many channels it goes to); every paid plan posts without a limit.
 
     Args:
         brand (str | Unset):

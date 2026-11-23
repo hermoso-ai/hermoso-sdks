@@ -135,10 +135,10 @@ def sync_detailed(
     ASYNC. A real call answers `202` with the job inside and a `Location` to poll (`GET /v1/jobs/{id}`),
     usually a few minutes. Or name a `callback_url` and the finished job is POSTed to you.
 
-    PEOPLE AND LIKENESS. A photo of a real person needs a paid plan, and sending one is your
-    confirmation that you have that person's permission (it is recorded). An AI person from `describe`,
-    or a preset creator, works on every plan. A request that would be refused is refused before anything
-    is charged, with a stable `error.code` and a plain sentence: `real_face_needs_paid`,
+    PEOPLE AND LIKENESS. A photo of a real person needs a paid plan or a credit pack, and sending one is
+    your confirmation that you have that person's permission (it is recorded). An AI person from
+    `describe`, or a preset creator, works on every plan. A request that would be refused is refused
+    before anything is charged, with a stable `error.code` and a plain sentence: `real_face_needs_paid`,
     `face_review_blocked`, `ref_unreadable`, `insufficient_credits`.
 
     Args:
@@ -195,10 +195,10 @@ def sync(
     ASYNC. A real call answers `202` with the job inside and a `Location` to poll (`GET /v1/jobs/{id}`),
     usually a few minutes. Or name a `callback_url` and the finished job is POSTed to you.
 
-    PEOPLE AND LIKENESS. A photo of a real person needs a paid plan, and sending one is your
-    confirmation that you have that person's permission (it is recorded). An AI person from `describe`,
-    or a preset creator, works on every plan. A request that would be refused is refused before anything
-    is charged, with a stable `error.code` and a plain sentence: `real_face_needs_paid`,
+    PEOPLE AND LIKENESS. A photo of a real person needs a paid plan or a credit pack, and sending one is
+    your confirmation that you have that person's permission (it is recorded). An AI person from
+    `describe`, or a preset creator, works on every plan. A request that would be refused is refused
+    before anything is charged, with a stable `error.code` and a plain sentence: `real_face_needs_paid`,
     `face_review_blocked`, `ref_unreadable`, `insufficient_credits`.
 
     Args:
@@ -250,10 +250,10 @@ async def asyncio_detailed(
     ASYNC. A real call answers `202` with the job inside and a `Location` to poll (`GET /v1/jobs/{id}`),
     usually a few minutes. Or name a `callback_url` and the finished job is POSTed to you.
 
-    PEOPLE AND LIKENESS. A photo of a real person needs a paid plan, and sending one is your
-    confirmation that you have that person's permission (it is recorded). An AI person from `describe`,
-    or a preset creator, works on every plan. A request that would be refused is refused before anything
-    is charged, with a stable `error.code` and a plain sentence: `real_face_needs_paid`,
+    PEOPLE AND LIKENESS. A photo of a real person needs a paid plan or a credit pack, and sending one is
+    your confirmation that you have that person's permission (it is recorded). An AI person from
+    `describe`, or a preset creator, works on every plan. A request that would be refused is refused
+    before anything is charged, with a stable `error.code` and a plain sentence: `real_face_needs_paid`,
     `face_review_blocked`, `ref_unreadable`, `insufficient_credits`.
 
     Args:
@@ -308,10 +308,10 @@ async def asyncio(
     ASYNC. A real call answers `202` with the job inside and a `Location` to poll (`GET /v1/jobs/{id}`),
     usually a few minutes. Or name a `callback_url` and the finished job is POSTed to you.
 
-    PEOPLE AND LIKENESS. A photo of a real person needs a paid plan, and sending one is your
-    confirmation that you have that person's permission (it is recorded). An AI person from `describe`,
-    or a preset creator, works on every plan. A request that would be refused is refused before anything
-    is charged, with a stable `error.code` and a plain sentence: `real_face_needs_paid`,
+    PEOPLE AND LIKENESS. A photo of a real person needs a paid plan or a credit pack, and sending one is
+    your confirmation that you have that person's permission (it is recorded). An AI person from
+    `describe`, or a preset creator, works on every plan. A request that would be refused is refused
+    before anything is charged, with a stable `error.code` and a plain sentence: `real_face_needs_paid`,
     `face_review_blocked`, `ref_unreadable`, `insufficient_credits`.
 
     Args:

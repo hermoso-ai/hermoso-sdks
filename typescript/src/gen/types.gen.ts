@@ -1043,11 +1043,11 @@ export type RecastCreate = {
  */
 export type RecastPerson = {
     /**
-     * A saved creator's id or exact name, or a preset AI creator's id (the `list_creators` tool lists both). A saved photo of a real person needs a paid plan.
+     * A saved creator's id or exact name, or a preset AI creator's id (the `list_creators` tool lists both). A saved photo of a real person needs a paid plan or a credit pack.
      */
     creator_id?: string;
     /**
-     * A clear photo of the person (https or a Hermoso file URL). A photo of a real person needs a paid plan, and sending it confirms you have their permission; the confirmation is recorded. A portrait Hermoso made from words for this account counts as an AI person on every plan.
+     * A clear photo of the person (https or a Hermoso file URL). A photo of a real person needs a paid plan or a credit pack, and sending it confirms you have their permission; the confirmation is recorded. A portrait Hermoso made from words for this account counts as an AI person on every plan.
      */
     image_url?: string;
     /**
@@ -2782,7 +2782,7 @@ export type CreateRecastErrors = {
      */
     401: Error;
     /**
-     * `insufficient_credits`: the balance does not cover `credits_needed` (nothing was started). `real_face_needs_paid`: a photo of a real person needs a paid plan (`upgrade_url`), or use `person.describe`.
+     * `insufficient_credits`: the balance does not cover `credits_needed` (nothing was started). `real_face_needs_paid`: a photo of a real person needs a paid plan or a credit pack (`upgrade_url`), or use `person.describe`.
      */
     402: Error;
     /**

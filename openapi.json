@@ -1841,11 +1841,11 @@
         "properties": {
           "creator_id": {
             "type": "string",
-            "description": "A saved creator's id or exact name, or a preset AI creator's id (the `list_creators` tool lists both). A saved photo of a real person needs a paid plan."
+            "description": "A saved creator's id or exact name, or a preset AI creator's id (the `list_creators` tool lists both). A saved photo of a real person needs a paid plan or a credit pack."
           },
           "image_url": {
             "type": "string",
-            "description": "A clear photo of the person (https or a Hermoso file URL). A photo of a real person needs a paid plan, and sending it confirms you have their permission; the confirmation is recorded. A portrait Hermoso made from words for this account counts as an AI person on every plan."
+            "description": "A clear photo of the person (https or a Hermoso file URL). A photo of a real person needs a paid plan or a credit pack, and sending it confirms you have their permission; the confirmation is recorded. A portrait Hermoso made from words for this account counts as an AI person on every plan."
           },
           "describe": {
             "type": "string",
@@ -4182,7 +4182,7 @@
       "get": {
         "operationId": "getCredits",
         "summary": "Retrieve the credit balance",
-        "description": "This workspace’s Hermoso credit balance and plan. Publishing and scheduling cost no credits; generation does. The Free plan publishes up to 5 posts a month on 3 channels (a post counts once, however many channels it goes to); every paid plan posts without a limit.",
+        "description": "This workspace’s Hermoso credit balance and plan. Publishing and scheduling cost no credits; generation does. The Free plan publishes up to 10 posts on 3 channels (a post counts once, however many channels it goes to); every paid plan posts without a limit.",
         "tags": [
           "credits"
         ],
@@ -5391,7 +5391,7 @@
       "post": {
         "operationId": "createRecast",
         "summary": "Put a person into a video (motion transfer)",
-        "description": "Replace the person in a video with someone else: a saved or preset creator, a photo, or an AI person made from a description. The new person performs every move, expression and mouth shape of the original, on the same beats and cuts, in the same set and light, and the original sound is kept. Optionally give them a new voice, or have them speak another language with the mouth lip-synced.\n\nPRICED UP FRONT. Send `\"dry_run\": true` and the response is the exact price: the credits the job reserves when it starts, from the job's own pricing. It is an estimate: the real call reserves the same figure and is charged its actual cost, usually within a few percent of it. Nothing runs and nothing is charged on a dry run, except that reading a social post link uses its one lookup.\n\nASYNC. A real call answers `202` with the job inside and a `Location` to poll (`GET /v1/jobs/{id}`), usually a few minutes. Or name a `callback_url` and the finished job is POSTed to you.\n\nPEOPLE AND LIKENESS. A photo of a real person needs a paid plan, and sending one is your confirmation that you have that person's permission (it is recorded). An AI person from `describe`, or a preset creator, works on every plan. A request that would be refused is refused before anything is charged, with a stable `error.code` and a plain sentence: `real_face_needs_paid`, `face_review_blocked`, `ref_unreadable`, `insufficient_credits`.",
+        "description": "Replace the person in a video with someone else: a saved or preset creator, a photo, or an AI person made from a description. The new person performs every move, expression and mouth shape of the original, on the same beats and cuts, in the same set and light, and the original sound is kept. Optionally give them a new voice, or have them speak another language with the mouth lip-synced.\n\nPRICED UP FRONT. Send `\"dry_run\": true` and the response is the exact price: the credits the job reserves when it starts, from the job's own pricing. It is an estimate: the real call reserves the same figure and is charged its actual cost, usually within a few percent of it. Nothing runs and nothing is charged on a dry run, except that reading a social post link uses its one lookup.\n\nASYNC. A real call answers `202` with the job inside and a `Location` to poll (`GET /v1/jobs/{id}`), usually a few minutes. Or name a `callback_url` and the finished job is POSTed to you.\n\nPEOPLE AND LIKENESS. A photo of a real person needs a paid plan or a credit pack, and sending one is your confirmation that you have that person's permission (it is recorded). An AI person from `describe`, or a preset creator, works on every plan. A request that would be refused is refused before anything is charged, with a stable `error.code` and a plain sentence: `real_face_needs_paid`, `face_review_blocked`, `ref_unreadable`, `insufficient_credits`.",
         "tags": [
           "recasts"
         ],
@@ -5486,7 +5486,7 @@
             }
           },
           "402": {
-            "description": "`insufficient_credits`: the balance does not cover `credits_needed` (nothing was started). `real_face_needs_paid`: a photo of a real person needs a paid plan (`upgrade_url`), or use `person.describe`.",
+            "description": "`insufficient_credits`: the balance does not cover `credits_needed` (nothing was started). `real_face_needs_paid`: a photo of a real person needs a paid plan or a credit pack (`upgrade_url`), or use `person.describe`.",
             "content": {
               "application/json": {
                 "schema": {

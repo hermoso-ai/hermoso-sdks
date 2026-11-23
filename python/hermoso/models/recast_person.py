@@ -18,10 +18,10 @@ class RecastPerson:
 
     Attributes:
         creator_id (str | Unset): A saved creator's id or exact name, or a preset AI creator's id (the `list_creators`
-            tool lists both). A saved photo of a real person needs a paid plan.
+            tool lists both). A saved photo of a real person needs a paid plan or a credit pack.
         image_url (str | Unset): A clear photo of the person (https or a Hermoso file URL). A photo of a real person
-            needs a paid plan, and sending it confirms you have their permission; the confirmation is recorded. A portrait
-            Hermoso made from words for this account counts as an AI person on every plan.
+            needs a paid plan or a credit pack, and sending it confirms you have their permission; the confirmation is
+            recorded. A portrait Hermoso made from words for this account counts as an AI person on every plan.
         describe (str | Unset): An AI person made from your words, on every plan: age, hair, style, vibe ("a man in his
             40s, short grey hair, navy sweater"). Never a real or famous person by name. The person is made first (priced as
             its own step) and lands in your Library.

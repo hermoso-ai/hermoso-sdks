@@ -111,7 +111,7 @@ export const createMedia = <ThrowOnError extends boolean = false>(options?: Opti
 /**
  * Retrieve the credit balance
  *
- * This workspace’s Hermoso credit balance and plan. Publishing and scheduling cost no credits; generation does. The Free plan publishes up to 5 posts a month on 3 channels (a post counts once, however many channels it goes to); every paid plan posts without a limit.
+ * This workspace’s Hermoso credit balance and plan. Publishing and scheduling cost no credits; generation does. The Free plan publishes up to 10 posts on 3 channels (a post counts once, however many channels it goes to); every paid plan posts without a limit.
  */
 export const getCredits = <ThrowOnError extends boolean = false>(options?: Options<GetCreditsData, ThrowOnError>): RequestResult<GetCreditsResponses, GetCreditsErrors, ThrowOnError> => (options?.client ?? client).get<GetCreditsResponses, GetCreditsErrors, ThrowOnError>({
     security: [{ scheme: 'bearer', type: 'http' }],
@@ -277,7 +277,7 @@ export const createGeneration = <ThrowOnError extends boolean = false>(options: 
  *
  * ASYNC. A real call answers `202` with the job inside and a `Location` to poll (`GET /v1/jobs/{id}`), usually a few minutes. Or name a `callback_url` and the finished job is POSTed to you.
  *
- * PEOPLE AND LIKENESS. A photo of a real person needs a paid plan, and sending one is your confirmation that you have that person's permission (it is recorded). An AI person from `describe`, or a preset creator, works on every plan. A request that would be refused is refused before anything is charged, with a stable `error.code` and a plain sentence: `real_face_needs_paid`, `face_review_blocked`, `ref_unreadable`, `insufficient_credits`.
+ * PEOPLE AND LIKENESS. A photo of a real person needs a paid plan or a credit pack, and sending one is your confirmation that you have that person's permission (it is recorded). An AI person from `describe`, or a preset creator, works on every plan. A request that would be refused is refused before anything is charged, with a stable `error.code` and a plain sentence: `real_face_needs_paid`, `face_review_blocked`, `ref_unreadable`, `insufficient_credits`.
  */
 export const createRecast = <ThrowOnError extends boolean = false>(options: Options<CreateRecastData, ThrowOnError>): RequestResult<CreateRecastResponses, CreateRecastErrors, ThrowOnError> => (options.client ?? client).post<CreateRecastResponses, CreateRecastErrors, ThrowOnError>({
     security: [{ scheme: 'bearer', type: 'http' }],
