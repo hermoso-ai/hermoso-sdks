@@ -1,4 +1,5 @@
-# Publishes the Java SDK (ai.hermoso:hermoso-sdk on Maven Central) when a version tag is pushed. Maven Central has no
+# Publishes the Java SDK (ai.hermoso:hermoso-sdk on Maven Central) when a version tag is pushed, or by hand for an existing
+# tag (Run workflow, tag v0.1.4). Maven Central has no
 # OIDC publishing, so this uses a Central Portal user token plus a GPG key, all as environment secrets:
 #   MAVEN_CENTRAL_USERNAME / MAVEN_CENTRAL_PASSWORD   the token pair from central.sonatype.com ▸ View Account ▸ Generate User Token
 #   MAVEN_GPG_PRIVATE_KEY / MAVEN_GPG_PASSPHRASE       an armored signing key whose public half is on keys.openpgp.org
@@ -7,6 +8,11 @@ name: Publish Java SDK
 on:
   push:
     tags: ['v*']
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'An existing version tag to publish, e.g. v0.1.4'
+        required: true
 jobs:
   maven-central:
     if: vars.PUBLISH_MAVEN == 'true'
@@ -14,11 +20,15 @@ jobs:
     environment: maven-central
     permissions:
       contents: read
+    env:
+      TAG: ${{ inputs.tag || github.ref_name }}
     defaults:
       run:
         working-directory: java
     steps:
       - uses: actions/checkout@v6
+        with:
+          ref: ${{ inputs.tag || github.ref }}
       - uses: actions/setup-java@v6
         with:
           distribution: temurin
@@ -31,7 +41,7 @@ jobs:
       - name: The tag names the version in pom.xml
         run: |
           v=$(sed -n 's:.*<version>\(.*\)</version><!-- hermoso-sdk-version -->.*:\1:p' pom.xml)
-          test "v$v" = "$GITHUB_REF_NAME" || { echo "tag $GITHUB_REF_NAME but pom.xml says $v"; exit 1; }
+          test "v$v" = "$TAG" || { echo "tag $TAG but pom.xml says $v"; exit 1; }
       - run: mvn -B -P release deploy
         env:
           MAVEN_CENTRAL_USERNAME: ${{ secrets.MAVEN_CENTRAL_USERNAME }}

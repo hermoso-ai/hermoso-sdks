@@ -1,10 +1,15 @@
-# Publishes the Ruby SDK (gem `hermoso` on RubyGems) when a version tag is pushed. RubyGems Trusted Publishing (OIDC):
-# no API key is stored anywhere. Skipped (not failed) until the repository variable PUBLISH_RUBYGEMS is "true", which is
-# set once the gem's trusted publisher exists on rubygems.org.
+# Publishes the Ruby SDK (gem `hermoso` on RubyGems) when a version tag is pushed, or by hand for an existing tag
+# (Actions ▸ Publish Ruby SDK ▸ Run workflow, tag v0.1.4). RubyGems Trusted Publishing (OIDC): no API key is stored
+# anywhere. Skipped (not failed) until the repository variable PUBLISH_RUBYGEMS is "true".
 name: Publish Ruby SDK
 on:
   push:
     tags: ['v*']
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'An existing version tag to publish, e.g. v0.1.4'
+        required: true
 jobs:
   rubygems:
     if: vars.PUBLISH_RUBYGEMS == 'true'
@@ -13,22 +18,30 @@ jobs:
     permissions:
       id-token: write
       contents: read
+    env:
+      TAG: ${{ inputs.tag || github.ref_name }}
     defaults:
       run:
         working-directory: ruby
     steps:
       - uses: actions/checkout@v6
+        with:
+          ref: ${{ inputs.tag || github.ref }}
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.3'
       - name: The tag names the version in lib/hermoso/version.rb
         run: |
           v=$(ruby -e 'require "./lib/hermoso/version"; print Hermoso::VERSION')
-          test "v$v" = "$GITHUB_REF_NAME" || { echo "tag $GITHUB_REF_NAME but version.rb says $v"; exit 1; }
+          test "v$v" = "$TAG" || { echo "tag $TAG but version.rb says $v"; exit 1; }
       - run: gem build hermoso.gemspec
       - name: Smoke test the gem
         run: |
           gem install ./hermoso-*.gem
           ruby -e 'require "hermoso"; puts Hermoso::VERSION, Hermoso::CONTRACT_VERSION, Hermoso::PostsApi'
-      - uses: rubygems/configure-rubygems-credentials@v2
+      # v2.2.0 is the first release with `owner`, which the FIRST push through a pending trusted publisher must name:
+      # 256719 is the immutable id of the rubygems.org account HermosoAI (admin@hermoso.ai). There is no moving v2 tag.
+      - uses: rubygems/configure-rubygems-credentials@v2.2.0
+        with:
+          owner: '256719'
       - run: gem push hermoso-*.gem

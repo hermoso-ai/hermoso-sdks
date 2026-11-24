@@ -1,10 +1,16 @@
-# Publishes the .NET SDK (Hermoso.Sdk on NuGet) when a version tag is pushed. NuGet Trusted Publishing (OIDC): the job
-# trades its GitHub token for a short-lived NuGet key, so no key is stored. Skipped (not failed) until the repository
-# variable PUBLISH_NUGET is "true" and NUGET_USER names the nuget.org account that owns the trusted publishing policy.
+# Publishes the .NET SDK (Hermoso.Sdk on NuGet) when a version tag is pushed, or by hand for an existing tag (Run
+# workflow, tag v0.1.4). NuGet Trusted Publishing (OIDC): the job trades its GitHub token for a short-lived NuGet key,
+# so no key is stored. Skipped (not failed) until the repository variable PUBLISH_NUGET is "true" and NUGET_USER names
+# the nuget.org account that owns the trusted publishing policy.
 name: Publish .NET SDK
 on:
   push:
     tags: ['v*']
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'An existing version tag to publish, e.g. v0.1.4'
+        required: true
 jobs:
   nuget:
     if: vars.PUBLISH_NUGET == 'true'
@@ -13,21 +19,25 @@ jobs:
     permissions:
       id-token: write
       contents: read
+    env:
+      TAG: ${{ inputs.tag || github.ref_name }}
     defaults:
       run:
         working-directory: dotnet
     steps:
       - uses: actions/checkout@v6
+        with:
+          ref: ${{ inputs.tag || github.ref }}
       - uses: actions/setup-dotnet@v6
         with:
           dotnet-version: '8.0.x'
       - name: The tag names the version in Hermoso.Sdk.csproj
         run: |
           v=$(sed -n 's:.*<Version>\(.*\)</Version>.*:\1:p' Hermoso.Sdk.csproj)
-          test "v$v" = "$GITHUB_REF_NAME" || { echo "tag $GITHUB_REF_NAME but the csproj says $v"; exit 1; }
+          test "v$v" = "$TAG" || { echo "tag $TAG but the csproj says $v"; exit 1; }
       - run: dotnet pack -c Release -o out
       - uses: NuGet/login@v1
         id: login
         with:
           user: ${{ vars.NUGET_USER }}
-      - run: dotnet nuget push "out/*.nupkg" --api-key "${{ steps.login.outputs.NUGET_API_KEY }}" --source https://api.nuget.org/v3/index.json
+      - run: dotnet nuget push "out/*.nupkg" --api-key "${{ steps.login.outputs.NUGET_API_KEY }}" --source https://api.nuget.org/v3/index.json --skip-duplicate
