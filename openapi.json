@@ -23,6 +23,12 @@
         "scheme": "bearer",
         "bearerFormat": "hmk_...",
         "description": "A Hermoso API key, or an access token from the OAuth authorization-code flow (which is the same thing)."
+      },
+      "apiKeyHeader": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "X-Api-Key",
+        "description": "A Hermoso API key (hmk_...) in X-Api-Key. Accepted only when Authorization is absent or carries an MPP `Payment` credential: the machine-payment retry needs Authorization for the payment."
       }
     },
     "schemas": {
