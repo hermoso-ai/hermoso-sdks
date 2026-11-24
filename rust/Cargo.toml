@@ -3,7 +3,7 @@
 # every Hermoso SDK shares one version.
 [package]
 name = "hermoso"
-version = "0.1.4"
+version = "0.1.5"
 edition = "2021"
 rust-version = "1.85"
 description = "Typed Rust client for the Hermoso API: generate ads, publish and schedule posts, read analytics, and call every Hermoso tool from your own backend."

@@ -7,7 +7,7 @@
 
   <groupId>ai.hermoso</groupId>
   <artifactId>hermoso-sdk</artifactId>
-  <version>0.1.4</version><!-- hermoso-sdk-version -->
+  <version>0.1.5</version><!-- hermoso-sdk-version -->
   <packaging>jar</packaging>
 
   <name>Hermoso SDK</name>

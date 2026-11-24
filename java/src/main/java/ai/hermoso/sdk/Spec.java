@@ -5,9 +5,9 @@ package ai.hermoso.sdk;
 public final class Spec {
   private Spec() {}
   /** sha256 of the OpenAPI document this client was generated from (sdks/openapi.json). */
-  public static final String SPEC_SHA256 = "83bc8541970ad66298f799aec8fd23af4527ae09a91a0e334685f1d2ab3d4c6d";
+  public static final String SPEC_SHA256 = "53a614e8cab8ad69f0759274ebda6a2e3af617d377cae7df249df759485f03c1";
   /** The dated /v1 contract version that document describes. */
   public static final String CONTRACT_VERSION = "2026-08-26";
   /** This SDK's release. */
-  public static final String VERSION = "0.1.4";
+  public static final String VERSION = "0.1.5";
 }
