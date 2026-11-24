@@ -82,6 +82,6 @@ for await (const post of paginate(listPosts, { client: hermoso, query: { status:
 
 Docs: [hermoso.ai/docs/sdks](https://hermoso.ai/docs/sdks/) · API reference:
 [hermoso.ai/docs/api](https://hermoso.ai/docs/api/) · OpenAPI:
-[app.hermoso.ai/openapi.json](https://app.hermoso.ai/openapi.json) · Python: [`hermoso`](https://github.com/hermoso-ai/hermoso-sdks/tree/main/python)
+[app.hermoso.ai/openapi.json](https://app.hermoso.ai/openapi.json) · Python: [`hermoso`](https://pypi.org/project/hermoso/)
 
 MIT licensed. Generated with [@hey-api/openapi-ts](https://heyapi.dev).

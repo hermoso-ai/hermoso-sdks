@@ -6,7 +6,7 @@ posts to your own channels, read your analytics, and call any of Hermoso's tools
 | Language | Package | Install |
 |---|---|---|
 | TypeScript / Node 18+ | [`@hermoso/sdk`](https://www.npmjs.com/package/@hermoso/sdk) | `npm install @hermoso/sdk` |
-| Python 3.11+ | [`hermoso`](python/) | `pip install "git+https://github.com/hermoso-ai/hermoso-sdks#subdirectory=python"` |
+| Python 3.11+ | [`hermoso`](https://pypi.org/project/hermoso/) | `pip install hermoso` |
 
 Both are generated from the API's OpenAPI document ([`openapi.json`](openapi.json), live copy at
 [app.hermoso.ai/openapi.json](https://app.hermoso.ai/openapi.json)), with a small hand-written layer for the API key,

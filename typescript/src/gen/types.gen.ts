@@ -3015,7 +3015,7 @@ export type ClaimSignupData = {
     body: SignupClaim;
     path: {
         /**
-         * The `id` from POST /v1/signup (a Stripe Checkout session id).
+         * The `id` from POST /v1/signup (a Stripe Checkout session id), or from POST /api/signup/machine-payment (a PaymentIntent id, `pi_…`, claimed with the claim_token you sent there).
          */
         id: string;
     };

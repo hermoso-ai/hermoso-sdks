@@ -337,6 +337,8 @@ export const getMediaContent = <ThrowOnError extends boolean = false>(options?: 
  *
  * Create a Hermoso account programmatically, with no human at a browser and no existing credential — the one call in this API that needs no key, because the key is what it creates. Returns a Stripe Checkout URL and a one-time `claim_token`.
  *
+ * AN AGENT THAT HOLDS ITS OWN PAYMENT CREDENTIAL (a Shared Payment Token from a Link agent wallet, or any MPP credential) can skip the checkout page entirely: `POST /api/signup/machine-payment` answers HTTP 402, and the paid retry returns the API key in the same response.
+ *
  * AGENTIC SIGNUP REQUIRES A PAID PLAN. Nothing is created here: no account, no credits, no row. An account exists only once Stripe reports the payment completed, at which point `POST /v1/signup/{id}/claim` provisions it and returns your API key. The free plan is not available on this path — it is available to a person signing up at https://app.hermoso.ai.
  *
  * A card is entered on Stripe’s own hosted page, never here, so the checkout step itself needs a browser: hand `checkout_url` to whoever is paying. `claim_token` is returned exactly once and is the only proof this signup is yours — a checkout session id alone is not enough, because session ids travel in URLs.
