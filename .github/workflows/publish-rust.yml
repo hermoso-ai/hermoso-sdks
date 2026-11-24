@@ -1,0 +1,31 @@
+# Publishes the Rust SDK (crate `hermoso` on crates.io) when a version tag is pushed. crates.io Trusted Publishing
+# (OIDC): no token is stored. crates.io only accepts a trusted publisher for a crate that already exists, so the FIRST
+# version is published by hand with a token (see the release notes); this job is skipped (not failed) until the
+# repository variable PUBLISH_CRATES is "true".
+name: Publish Rust SDK
+on:
+  push:
+    tags: ['v*']
+jobs:
+  crates-io:
+    if: vars.PUBLISH_CRATES == 'true'
+    runs-on: ubuntu-latest
+    environment: crates-io
+    permissions:
+      id-token: write
+      contents: read
+    defaults:
+      run:
+        working-directory: rust
+    steps:
+      - uses: actions/checkout@v6
+      - name: The tag names the version in Cargo.toml
+        run: |
+          v=$(sed -n 's/^version = "\(.*\)"$/\1/p' Cargo.toml | head -1)
+          test "v$v" = "$GITHUB_REF_NAME" || { echo "tag $GITHUB_REF_NAME but Cargo.toml says $v"; exit 1; }
+      - run: cargo build
+      - uses: rust-lang/crates-io-auth-action@v1
+        id: auth
+      - run: cargo publish --allow-dirty
+        env:
+          CARGO_REGISTRY_TOKEN: ${{ steps.auth.outputs.token }}

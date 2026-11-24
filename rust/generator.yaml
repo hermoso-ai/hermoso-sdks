@@ -1,0 +1,10 @@
+# openapi-generator `rust` configuration. Run through tools/sdk-generate.mjs (which pins the generator), never by hand.
+# Only src/ is kept; Cargo.toml and src/lib.rs + src/helpers.rs (from overlay/) are hand-written.
+packageName: hermoso
+library: reqwest-trait
+topLevelApiClient: true
+useSingleRequestParameter: true
+useBonBuilder: true
+avoidBoxedModels: true
+enumUnknownDefaultCase: true
+hideGenerationTimestamp: true

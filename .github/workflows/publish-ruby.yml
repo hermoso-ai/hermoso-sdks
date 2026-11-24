@@ -1,0 +1,34 @@
+# Publishes the Ruby SDK (gem `hermoso` on RubyGems) when a version tag is pushed. RubyGems Trusted Publishing (OIDC):
+# no API key is stored anywhere. Skipped (not failed) until the repository variable PUBLISH_RUBYGEMS is "true", which is
+# set once the gem's trusted publisher exists on rubygems.org.
+name: Publish Ruby SDK
+on:
+  push:
+    tags: ['v*']
+jobs:
+  rubygems:
+    if: vars.PUBLISH_RUBYGEMS == 'true'
+    runs-on: ubuntu-latest
+    environment: rubygems
+    permissions:
+      id-token: write
+      contents: read
+    defaults:
+      run:
+        working-directory: ruby
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3'
+      - name: The tag names the version in lib/hermoso/version.rb
+        run: |
+          v=$(ruby -e 'require "./lib/hermoso/version"; print Hermoso::VERSION')
+          test "v$v" = "$GITHUB_REF_NAME" || { echo "tag $GITHUB_REF_NAME but version.rb says $v"; exit 1; }
+      - run: gem build hermoso.gemspec
+      - name: Smoke test the gem
+        run: |
+          gem install ./hermoso-*.gem
+          ruby -e 'require "hermoso"; puts Hermoso::VERSION, Hermoso::CONTRACT_VERSION, Hermoso::PostsApi'
+      - uses: rubygems/configure-rubygems-credentials@v2
+      - run: gem push hermoso-*.gem

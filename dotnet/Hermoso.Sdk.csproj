@@ -1,0 +1,36 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Hand-written. Generated/ is produced by tools/sdk-generate.mjs (Kiota); HermosoClient.cs is the hand-written
+       layer. The Version line is rewritten by that script: every Hermoso SDK shares one version. -->
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <LangVersion>latest</LangVersion>
+    <RootNamespace>Hermoso.Sdk</RootNamespace>
+    <AssemblyName>Hermoso.Sdk</AssemblyName>
+    <!-- Kiota emits a #nullable-variant of every member; its own warnings are not ours to fix. -->
+    <NoWarn>$(NoWarn);CS1591;CS0618</NoWarn>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+
+    <PackageId>Hermoso.Sdk</PackageId>
+    <Version>0.1.4</Version>
+    <Authors>Hermoso</Authors>
+    <Company>Hermoso</Company>
+    <Description>Typed .NET client for the Hermoso API: generate ads, publish and schedule posts, read analytics, and call every Hermoso tool from your own backend.</Description>
+    <PackageTags>hermoso;api;sdk;openapi;ads;ad-generation;social-media;scheduling;marketing</PackageTags>
+    <PackageProjectUrl>https://hermoso.ai/docs/sdks/</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/hermoso-ai/hermoso-sdks</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Kiota.Bundle" Version="2.1.6" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="/" />
+    <None Include="LICENSE" Pack="true" PackagePath="/" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,12 @@
+# openapi-generator `java` configuration. Run through tools/sdk-generate.mjs (which pins the generator), never by hand.
+# Only src/main/java is kept; pom.xml beside it is hand-written.
+library: native
+invokerPackage: ai.hermoso.sdk
+apiPackage: ai.hermoso.sdk.api
+modelPackage: ai.hermoso.sdk.model
+groupId: ai.hermoso
+artifactId: hermoso-sdk
+openApiNullable: false
+enumUnknownDefaultCase: true
+useSingleRequestParameter: true
+hideGenerationTimestamp: true

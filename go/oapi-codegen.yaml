@@ -1,0 +1,8 @@
+# oapi-codegen configuration. Run through tools/sdk-generate.mjs (which pins oapi-codegen), never by hand.
+package: hermoso
+output: /w/hermoso.gen.go
+generate:
+  models: true
+  client: true
+output-options:
+  skip-prune: true

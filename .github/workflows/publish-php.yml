@@ -1,0 +1,25 @@
+# The PHP SDK (hermoso/sdk) is published by Packagist itself: once the package is submitted on packagist.org with the
+# GitHub integration, every tag of this repository becomes a version (Packagist reads the root composer.json). This
+# job only proves a tagged composer.json validates and the client loads, so a broken tag is visible here first.
+name: Verify PHP SDK
+on:
+  push:
+    tags: ['v*']
+jobs:
+  packagist:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v6
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: curl, json, mbstring
+      - run: composer validate --strict
+      - run: composer install --no-dev --no-interaction --prefer-dist
+      - run: php -r 'require "vendor/autoload.php"; echo Hermoso\Spec::VERSION, " ", get_class(Hermoso\HermosoClient::create("hmk_test")), PHP_EOL;'
+      - name: The tag names the version in php/lib/Spec.php
+        run: |
+          v=$(php -r 'require "vendor/autoload.php"; echo Hermoso\Spec::VERSION;')
+          test "v$v" = "$GITHUB_REF_NAME" || { echo "tag $GITHUB_REF_NAME but Spec.php says $v"; exit 1; }

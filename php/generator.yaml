@@ -1,0 +1,6 @@
+# openapi-generator `php` configuration. Run through tools/sdk-generate.mjs (which pins the generator), never by hand.
+# Only lib/ is kept; the package manifest is ../composer.json (Packagist reads it from the repository root).
+invokerPackage: Hermoso
+composerPackageName: hermoso/sdk
+enumUnknownDefaultCase: true
+hideGenerationTimestamp: true

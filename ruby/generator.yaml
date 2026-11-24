@@ -1,0 +1,7 @@
+# openapi-generator `ruby` configuration. Run through tools/sdk-generate.mjs (which pins the generator and passes
+# gemVersion), never by hand. Only lib/ is kept; hermoso.gemspec beside it is hand-written.
+gemName: hermoso
+moduleName: Hermoso
+library: faraday
+enumUnknownDefaultCase: true
+hideGenerationTimestamp: true

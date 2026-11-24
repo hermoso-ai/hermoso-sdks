@@ -1,6 +1,6 @@
 [project]
 name = "hermoso"
-version = "0.1.3"
+version = "0.1.4"
 description = "Typed Python client for the Hermoso API: generate ads, publish and schedule posts, read analytics, and call every Hermoso tool from your own backend."
 readme = "README.md"
 license = "MIT"

@@ -1,0 +1,28 @@
+# The Go SDK needs no registry: a module in a subdirectory is released by a tag named after that directory, so
+# tools/sdk-release.mjs pushes go/v<version> beside v<version>. This job proves the tagged module builds and asks the
+# public module proxy to fetch it, which also lists it on pkg.go.dev. No secrets.
+name: Publish Go SDK
+on:
+  push:
+    tags: ['go/v*']
+jobs:
+  go-proxy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    defaults:
+      run:
+        working-directory: go
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-go@v7
+        with:
+          go-version-file: go/go.mod
+      - name: The tag names the version in spec.gen.go
+        run: |
+          v=$(sed -n 's/^const Version = "\(.*\)"$/\1/p' spec.gen.go)
+          test "go/v$v" = "$GITHUB_REF_NAME" || { echo "tag $GITHUB_REF_NAME but spec.gen.go says $v"; exit 1; }
+      - run: go vet ./... && go build ./...
+      - name: Ask proxy.golang.org for the tagged module
+        working-directory: ${{ runner.temp }}
+        run: GOPROXY=https://proxy.golang.org GOFLAGS=-mod=mod go list -m "github.com/hermoso-ai/hermoso-sdks/go@${GITHUB_REF_NAME#go/}"

@@ -1,0 +1,33 @@
+# Publishes the .NET SDK (Hermoso.Sdk on NuGet) when a version tag is pushed. NuGet Trusted Publishing (OIDC): the job
+# trades its GitHub token for a short-lived NuGet key, so no key is stored. Skipped (not failed) until the repository
+# variable PUBLISH_NUGET is "true" and NUGET_USER names the nuget.org account that owns the trusted publishing policy.
+name: Publish .NET SDK
+on:
+  push:
+    tags: ['v*']
+jobs:
+  nuget:
+    if: vars.PUBLISH_NUGET == 'true'
+    runs-on: ubuntu-latest
+    environment: nuget
+    permissions:
+      id-token: write
+      contents: read
+    defaults:
+      run:
+        working-directory: dotnet
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: '8.0.x'
+      - name: The tag names the version in Hermoso.Sdk.csproj
+        run: |
+          v=$(sed -n 's:.*<Version>\(.*\)</Version>.*:\1:p' Hermoso.Sdk.csproj)
+          test "v$v" = "$GITHUB_REF_NAME" || { echo "tag $GITHUB_REF_NAME but the csproj says $v"; exit 1; }
+      - run: dotnet pack -c Release -o out
+      - uses: NuGet/login@v1
+        id: login
+        with:
+          user: ${{ vars.NUGET_USER }}
+      - run: dotnet nuget push "out/*.nupkg" --api-key "${{ steps.login.outputs.NUGET_API_KEY }}" --source https://api.nuget.org/v3/index.json
