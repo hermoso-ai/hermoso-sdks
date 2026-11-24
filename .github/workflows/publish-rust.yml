@@ -1,8 +1,10 @@
 # Publishes the Rust SDK (crate `hermoso` on crates.io) when a version tag is pushed, or by hand for an existing tag
-# (Run workflow, tag v0.1.4). crates.io Trusted Publishing (OIDC) needs no stored token, but crates.io only accepts a
-# trusted publisher for a crate that already exists, so the FIRST version uses a one-time scoped token in the
-# crates-io environment secret CARGO_REGISTRY_TOKEN; once the trusted publisher is added, delete that secret and the
-# job uses OIDC. Skipped (not failed) until the repository variable PUBLISH_CRATES is "true".
+# (Run workflow, tag v0.1.4). crates.io Trusted Publishing (OIDC): hermoso-ai/hermoso-sdks, this file, environment
+# crates-io; the crate requires it for every new version, so no token is stored anywhere. (The first version went out
+# with a one-time scoped token, since crates.io accepts a trusted publisher only for a crate that already exists; that
+# token is revoked. If a CARGO_REGISTRY_TOKEN secret is ever present again it is used instead of OIDC.)
+# `dry_run` checks the trusted-publishing exchange and packages the crate without uploading: the way to prove the
+# OIDC path works between releases. Skipped (not failed) until the repository variable PUBLISH_CRATES is "true".
 name: Publish Rust SDK
 on:
   push:
@@ -12,6 +14,10 @@ on:
       tag:
         description: 'An existing version tag to publish, e.g. v0.1.4'
         required: true
+      dry_run:
+        description: 'Exchange the OIDC token and package, but do not upload'
+        type: boolean
+        default: false
 jobs:
   crates-io:
     if: vars.PUBLISH_CRATES == 'true'
@@ -23,6 +29,7 @@ jobs:
     env:
       TAG: ${{ inputs.tag || github.ref_name }}
       HAS_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN != '' }}
+      DRY_RUN: ${{ inputs.dry_run == true }}
     defaults:
       run:
         working-directory: rust
@@ -37,7 +44,7 @@ jobs:
       - run: cargo build
       - uses: rust-lang/crates-io-auth-action@v1
         id: auth
-        if: env.HAS_TOKEN != 'true'
-      - run: cargo publish --allow-dirty
+        if: env.HAS_TOKEN != 'true' || env.DRY_RUN == 'true'
+      - run: cargo publish --allow-dirty ${{ env.DRY_RUN == 'true' && '--dry-run' || '' }}
         env:
           CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN || steps.auth.outputs.token }}
