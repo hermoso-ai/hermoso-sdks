@@ -12,10 +12,9 @@ posts to your own channels, read your analytics, and call any of Hermoso's tools
 | PHP 8.1+ | [`hermoso/sdk`](https://packagist.org/packages/hermoso/sdk) | `composer require hermoso/sdk` |
 | Java 11+ | [`ai.hermoso:hermoso-sdk`](java/) | from source: `mvn install` in [`java/`](java/) |
 | .NET 8+ | [`Hermoso.Sdk`](https://www.nuget.org/packages/Hermoso.Sdk) | `dotnet add package Hermoso.Sdk` |
-| Rust 1.85+ | [`hermoso`](rust/) | from source: `hermoso = { git = "https://github.com/hermoso-ai/hermoso-sdks" }` |
+| Rust 1.85+ | [`hermoso`](https://crates.io/crates/hermoso) | `cargo add hermoso` |
 
-Java and Rust install from this repository until their registry packages (Maven Central, crates.io) are published;
-the code is the same.
+Java installs from this repository until its Maven Central package is published; the code is the same.
 
 Every SDK is generated from the API's OpenAPI document ([`openapi.json`](openapi.json), live copy at
 [app.hermoso.ai/openapi.json](https://app.hermoso.ai/openapi.json)), with a small hand-written layer for the same four

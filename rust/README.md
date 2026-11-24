@@ -3,12 +3,9 @@
 The typed Rust client for the [Hermoso API](https://hermoso.ai/docs/api/): generate image and video ads, publish and
 schedule posts to your own channels, read your analytics, and call any of Hermoso's tools from your own backend.
 
-Not on crates.io yet. Install from source:
-
-```toml
-[dependencies]
-hermoso = { git = "https://github.com/hermoso-ai/hermoso-sdks" }
-tokio = { version = "1", features = ["macros", "rt-multi-thread"] }
+```bash
+cargo add hermoso
+cargo add tokio --features macros,rt-multi-thread
 ```
 
 Rust 1.85+, async (reqwest + rustls; `default-features = false, features = ["native-tls", "bon"]` for the platform
