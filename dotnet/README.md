@@ -3,11 +3,8 @@
 The typed .NET client for the [Hermoso API](https://hermoso.ai/docs/api/): generate image and video ads, publish and
 schedule posts to your own channels, read your analytics, and call any of Hermoso's tools from your own backend.
 
-Not on NuGet yet. Install from source:
-
 ```bash
-git clone https://github.com/hermoso-ai/hermoso-sdks
-dotnet add reference hermoso-sdks/dotnet/Hermoso.Sdk.csproj
+dotnet add package Hermoso.Sdk
 ```
 
 .NET 8+. Create an API key at [app.hermoso.ai](https://app.hermoso.ai) on the **API, MCP & CLI** tab, under

@@ -8,14 +8,14 @@ posts to your own channels, read your analytics, and call any of Hermoso's tools
 | TypeScript / Node 18+ | [`@hermoso/sdk`](https://www.npmjs.com/package/@hermoso/sdk) | `npm install @hermoso/sdk` |
 | Python 3.11+ | [`hermoso`](https://pypi.org/project/hermoso/) | `pip install hermoso` |
 | Go 1.24+ | [`github.com/hermoso-ai/hermoso-sdks/go`](go/) | `go get github.com/hermoso-ai/hermoso-sdks/go` |
-| Ruby 3.1+ | [`hermoso`](ruby/) | from source: `gem 'hermoso', git: 'https://github.com/hermoso-ai/hermoso-sdks', glob: 'ruby/*.gemspec'` |
-| PHP 8.1+ | [`hermoso/sdk`](php/) | from source: `composer config repositories.hermoso vcs https://github.com/hermoso-ai/hermoso-sdks && composer require hermoso/sdk:dev-main` |
+| Ruby 3.1+ | [`hermoso`](https://rubygems.org/gems/hermoso) | `gem install hermoso` |
+| PHP 8.1+ | [`hermoso/sdk`](https://packagist.org/packages/hermoso/sdk) | `composer require hermoso/sdk` |
 | Java 11+ | [`ai.hermoso:hermoso-sdk`](java/) | from source: `mvn install` in [`java/`](java/) |
-| .NET 8+ | [`Hermoso.Sdk`](dotnet/) | from source: `dotnet add reference dotnet/Hermoso.Sdk.csproj` |
+| .NET 8+ | [`Hermoso.Sdk`](https://www.nuget.org/packages/Hermoso.Sdk) | `dotnet add package Hermoso.Sdk` |
 | Rust 1.85+ | [`hermoso`](rust/) | from source: `hermoso = { git = "https://github.com/hermoso-ai/hermoso-sdks" }` |
 
-Ruby, PHP, Java, .NET and Rust install from this repository until their registry packages (RubyGems, Packagist, Maven
-Central, NuGet, crates.io) are published; the code is the same.
+Java and Rust install from this repository until their registry packages (Maven Central, crates.io) are published;
+the code is the same.
 
 Every SDK is generated from the API's OpenAPI document ([`openapi.json`](openapi.json), live copy at
 [app.hermoso.ai/openapi.json](https://app.hermoso.ai/openapi.json)), with a small hand-written layer for the same four

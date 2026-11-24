@@ -3,12 +3,11 @@
 The typed Ruby client for the [Hermoso API](https://hermoso.ai/docs/api/): generate image and video ads, publish and
 schedule posts to your own channels, read your analytics, and call any of Hermoso's tools from your own backend.
 
-Not on RubyGems yet. Install from source:
-
-```ruby
-# Gemfile
-gem 'hermoso', git: 'https://github.com/hermoso-ai/hermoso-sdks', glob: 'ruby/*.gemspec'
+```bash
+gem install hermoso
 ```
+
+or `gem 'hermoso'` in your Gemfile.
 
 Ruby 3.1+. Create an API key at [app.hermoso.ai](https://app.hermoso.ai) on the **API, MCP & CLI** tab, under
 **Terminal & API keys**, and set it as `HERMOSO_API_KEY`. New accounts start free with no card.

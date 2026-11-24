@@ -3,11 +3,8 @@
 The typed PHP client for the [Hermoso API](https://hermoso.ai/docs/api/): generate image and video ads, publish and
 schedule posts to your own channels, read your analytics, and call any of Hermoso's tools from your own backend.
 
-Not on Packagist yet. Install from source with Composer:
-
 ```bash
-composer config repositories.hermoso vcs https://github.com/hermoso-ai/hermoso-sdks
-composer require hermoso/sdk:dev-main
+composer require hermoso/sdk
 ```
 
 PHP 8.1+ with `curl`, `json` and `mbstring`. Create an API key at [app.hermoso.ai](https://app.hermoso.ai) on the
