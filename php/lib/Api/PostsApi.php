@@ -1213,6 +1213,11 @@ class PostsApi
      * @param  string|null $starting_after A post id from a previous page; returns the page after it. An unknown cursor is an error, never a silent restart. (optional)
      * @param  string|null $status Filter: scheduled, processing, published, partially_published, failed, indeterminate. &#x60;indeterminate&#x60; means a restart interrupted the send and we cannot say whether it published. (optional)
      * @param  string|null $channel Filter to posts that include this channel. (optional)
+     * @param  string|null $search Filter to posts whose caption, title, labels or external_id contain this text (case-insensitive). (optional)
+     * @param  string|null $label Filter to posts carrying ALL of these labels (comma-separated). (optional)
+     * @param  string|null $external_id Filter to the post(s) with this external_id. (optional)
+     * @param  string|null $from Only posts scheduled or published at or after this ISO date/time. (optional)
+     * @param  string|null $to Only posts scheduled or published at or before this ISO date/time. (optional)
      * @param  string|null $x_hermoso_user Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result. (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['listPosts'] to see the possible values for this operation
      *
@@ -1220,9 +1225,9 @@ class PostsApi
      * @throws \InvalidArgumentException
      * @return \Hermoso\Model\PostList|\Hermoso\Model\Error|\Hermoso\Model\Error|\Hermoso\Model\Error|\Hermoso\Model\Error
      */
-    public function listPosts($limit = null, $starting_after = null, $status = null, $channel = null, $x_hermoso_user = null, string $contentType = self::contentTypes['listPosts'][0])
+    public function listPosts($limit = null, $starting_after = null, $status = null, $channel = null, $search = null, $label = null, $external_id = null, $from = null, $to = null, $x_hermoso_user = null, string $contentType = self::contentTypes['listPosts'][0])
     {
-        list($response) = $this->listPostsWithHttpInfo($limit, $starting_after, $status, $channel, $x_hermoso_user, $contentType);
+        list($response) = $this->listPostsWithHttpInfo($limit, $starting_after, $status, $channel, $search, $label, $external_id, $from, $to, $x_hermoso_user, $contentType);
         return $response;
     }
 
@@ -1235,6 +1240,11 @@ class PostsApi
      * @param  string|null $starting_after A post id from a previous page; returns the page after it. An unknown cursor is an error, never a silent restart. (optional)
      * @param  string|null $status Filter: scheduled, processing, published, partially_published, failed, indeterminate. &#x60;indeterminate&#x60; means a restart interrupted the send and we cannot say whether it published. (optional)
      * @param  string|null $channel Filter to posts that include this channel. (optional)
+     * @param  string|null $search Filter to posts whose caption, title, labels or external_id contain this text (case-insensitive). (optional)
+     * @param  string|null $label Filter to posts carrying ALL of these labels (comma-separated). (optional)
+     * @param  string|null $external_id Filter to the post(s) with this external_id. (optional)
+     * @param  string|null $from Only posts scheduled or published at or after this ISO date/time. (optional)
+     * @param  string|null $to Only posts scheduled or published at or before this ISO date/time. (optional)
      * @param  string|null $x_hermoso_user Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result. (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['listPosts'] to see the possible values for this operation
      *
@@ -1242,9 +1252,9 @@ class PostsApi
      * @throws \InvalidArgumentException
      * @return array of \Hermoso\Model\PostList|\Hermoso\Model\Error|\Hermoso\Model\Error|\Hermoso\Model\Error|\Hermoso\Model\Error, HTTP status code, HTTP response headers (array of strings)
      */
-    public function listPostsWithHttpInfo($limit = null, $starting_after = null, $status = null, $channel = null, $x_hermoso_user = null, string $contentType = self::contentTypes['listPosts'][0])
+    public function listPostsWithHttpInfo($limit = null, $starting_after = null, $status = null, $channel = null, $search = null, $label = null, $external_id = null, $from = null, $to = null, $x_hermoso_user = null, string $contentType = self::contentTypes['listPosts'][0])
     {
-        $request = $this->listPostsRequest($limit, $starting_after, $status, $channel, $x_hermoso_user, $contentType);
+        $request = $this->listPostsRequest($limit, $starting_after, $status, $channel, $search, $label, $external_id, $from, $to, $x_hermoso_user, $contentType);
 
         try {
             $options = $this->createHttpClientOption();
@@ -1381,15 +1391,20 @@ class PostsApi
      * @param  string|null $starting_after A post id from a previous page; returns the page after it. An unknown cursor is an error, never a silent restart. (optional)
      * @param  string|null $status Filter: scheduled, processing, published, partially_published, failed, indeterminate. &#x60;indeterminate&#x60; means a restart interrupted the send and we cannot say whether it published. (optional)
      * @param  string|null $channel Filter to posts that include this channel. (optional)
+     * @param  string|null $search Filter to posts whose caption, title, labels or external_id contain this text (case-insensitive). (optional)
+     * @param  string|null $label Filter to posts carrying ALL of these labels (comma-separated). (optional)
+     * @param  string|null $external_id Filter to the post(s) with this external_id. (optional)
+     * @param  string|null $from Only posts scheduled or published at or after this ISO date/time. (optional)
+     * @param  string|null $to Only posts scheduled or published at or before this ISO date/time. (optional)
      * @param  string|null $x_hermoso_user Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result. (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['listPosts'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function listPostsAsync($limit = null, $starting_after = null, $status = null, $channel = null, $x_hermoso_user = null, string $contentType = self::contentTypes['listPosts'][0])
+    public function listPostsAsync($limit = null, $starting_after = null, $status = null, $channel = null, $search = null, $label = null, $external_id = null, $from = null, $to = null, $x_hermoso_user = null, string $contentType = self::contentTypes['listPosts'][0])
     {
-        return $this->listPostsAsyncWithHttpInfo($limit, $starting_after, $status, $channel, $x_hermoso_user, $contentType)
+        return $this->listPostsAsyncWithHttpInfo($limit, $starting_after, $status, $channel, $search, $label, $external_id, $from, $to, $x_hermoso_user, $contentType)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -1406,16 +1421,21 @@ class PostsApi
      * @param  string|null $starting_after A post id from a previous page; returns the page after it. An unknown cursor is an error, never a silent restart. (optional)
      * @param  string|null $status Filter: scheduled, processing, published, partially_published, failed, indeterminate. &#x60;indeterminate&#x60; means a restart interrupted the send and we cannot say whether it published. (optional)
      * @param  string|null $channel Filter to posts that include this channel. (optional)
+     * @param  string|null $search Filter to posts whose caption, title, labels or external_id contain this text (case-insensitive). (optional)
+     * @param  string|null $label Filter to posts carrying ALL of these labels (comma-separated). (optional)
+     * @param  string|null $external_id Filter to the post(s) with this external_id. (optional)
+     * @param  string|null $from Only posts scheduled or published at or after this ISO date/time. (optional)
+     * @param  string|null $to Only posts scheduled or published at or before this ISO date/time. (optional)
      * @param  string|null $x_hermoso_user Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result. (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['listPosts'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function listPostsAsyncWithHttpInfo($limit = null, $starting_after = null, $status = null, $channel = null, $x_hermoso_user = null, string $contentType = self::contentTypes['listPosts'][0])
+    public function listPostsAsyncWithHttpInfo($limit = null, $starting_after = null, $status = null, $channel = null, $search = null, $label = null, $external_id = null, $from = null, $to = null, $x_hermoso_user = null, string $contentType = self::contentTypes['listPosts'][0])
     {
         $returnType = '\Hermoso\Model\PostList';
-        $request = $this->listPostsRequest($limit, $starting_after, $status, $channel, $x_hermoso_user, $contentType);
+        $request = $this->listPostsRequest($limit, $starting_after, $status, $channel, $search, $label, $external_id, $from, $to, $x_hermoso_user, $contentType);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -1468,14 +1488,24 @@ class PostsApi
      * @param  string|null $starting_after A post id from a previous page; returns the page after it. An unknown cursor is an error, never a silent restart. (optional)
      * @param  string|null $status Filter: scheduled, processing, published, partially_published, failed, indeterminate. &#x60;indeterminate&#x60; means a restart interrupted the send and we cannot say whether it published. (optional)
      * @param  string|null $channel Filter to posts that include this channel. (optional)
+     * @param  string|null $search Filter to posts whose caption, title, labels or external_id contain this text (case-insensitive). (optional)
+     * @param  string|null $label Filter to posts carrying ALL of these labels (comma-separated). (optional)
+     * @param  string|null $external_id Filter to the post(s) with this external_id. (optional)
+     * @param  string|null $from Only posts scheduled or published at or after this ISO date/time. (optional)
+     * @param  string|null $to Only posts scheduled or published at or before this ISO date/time. (optional)
      * @param  string|null $x_hermoso_user Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result. (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['listPosts'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    public function listPostsRequest($limit = null, $starting_after = null, $status = null, $channel = null, $x_hermoso_user = null, string $contentType = self::contentTypes['listPosts'][0])
+    public function listPostsRequest($limit = null, $starting_after = null, $status = null, $channel = null, $search = null, $label = null, $external_id = null, $from = null, $to = null, $x_hermoso_user = null, string $contentType = self::contentTypes['listPosts'][0])
     {
+
+
+
+
+
 
 
 
@@ -1521,6 +1551,51 @@ class PostsApi
         $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
             $channel,
             'channel', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $search,
+            'search', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $label,
+            'label', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $external_id,
+            'external_id', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $from,
+            'from', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $to,
+            'to', // param base name
             'string', // openApiType
             'form', // style
             true, // explode

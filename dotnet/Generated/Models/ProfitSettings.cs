@@ -26,6 +26,14 @@ namespace Hermoso.Sdk.Generated.Models
         public double? CostPerOrder { get; set; }
         /// <summary>The margin_percent property</summary>
         public double? MarginPercent { get; set; }
+        /// <summary>The metrics property</summary>
+#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
+#nullable enable
+        public global::Hermoso.Sdk.Generated.Models.ProfitSettings_metrics? Metrics { get; set; }
+#nullable restore
+#else
+        public global::Hermoso.Sdk.Generated.Models.ProfitSettings_metrics Metrics { get; set; }
+#endif
         /// <summary>The note property</summary>
 #if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
 #nullable enable
@@ -36,6 +44,14 @@ namespace Hermoso.Sdk.Generated.Models
 #endif
         /// <summary>The object property</summary>
         public global::Hermoso.Sdk.Generated.Models.ProfitSettings_object? Object { get; set; }
+        /// <summary>The result_events property</summary>
+#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
+#nullable enable
+        public List<string>? ResultEvents { get; set; }
+#nullable restore
+#else
+        public List<string> ResultEvents { get; set; }
+#endif
         /// <summary>
         /// Instantiates a new <see cref="global::Hermoso.Sdk.Generated.Models.ProfitSettings"/> and sets the default values.
         /// </summary>
@@ -64,8 +80,10 @@ namespace Hermoso.Sdk.Generated.Models
                 { "campaign_margins", n => { CampaignMargins = n.GetObjectValue<global::Hermoso.Sdk.Generated.Models.ProfitSettings_campaign_margins>(global::Hermoso.Sdk.Generated.Models.ProfitSettings_campaign_margins.CreateFromDiscriminatorValue); } },
                 { "cost_per_order", n => { CostPerOrder = n.GetDoubleValue(); } },
                 { "margin_percent", n => { MarginPercent = n.GetDoubleValue(); } },
+                { "metrics", n => { Metrics = n.GetObjectValue<global::Hermoso.Sdk.Generated.Models.ProfitSettings_metrics>(global::Hermoso.Sdk.Generated.Models.ProfitSettings_metrics.CreateFromDiscriminatorValue); } },
                 { "note", n => { Note = n.GetStringValue(); } },
                 { "object", n => { Object = n.GetEnumValue<global::Hermoso.Sdk.Generated.Models.ProfitSettings_object>(); } },
+                { "result_events", n => { ResultEvents = n.GetCollectionOfPrimitiveValues<string>()?.AsList(); } },
             };
         }
         /// <summary>
@@ -78,8 +96,10 @@ namespace Hermoso.Sdk.Generated.Models
             writer.WriteObjectValue<global::Hermoso.Sdk.Generated.Models.ProfitSettings_campaign_margins>("campaign_margins", CampaignMargins);
             writer.WriteDoubleValue("cost_per_order", CostPerOrder);
             writer.WriteDoubleValue("margin_percent", MarginPercent);
+            writer.WriteObjectValue<global::Hermoso.Sdk.Generated.Models.ProfitSettings_metrics>("metrics", Metrics);
             writer.WriteStringValue("note", Note);
             writer.WriteEnumValue<global::Hermoso.Sdk.Generated.Models.ProfitSettings_object>("object", Object);
+            writer.WriteCollectionOfPrimitiveValues<string>("result_events", ResultEvents);
             writer.WriteAdditionalData(AdditionalData);
         }
     }

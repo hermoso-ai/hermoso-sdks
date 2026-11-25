@@ -2,9 +2,12 @@
 #pragma warning disable CS0618
 using Hermoso.Sdk.Generated.V1.Analytics.BestTime;
 using Hermoso.Sdk.Generated.V1.Analytics.ContentDecay;
+using Hermoso.Sdk.Generated.V1.Analytics.Dashboard;
+using Hermoso.Sdk.Generated.V1.Analytics.Delta;
 using Hermoso.Sdk.Generated.V1.Analytics.FollowerHistory;
 using Hermoso.Sdk.Generated.V1.Analytics.Inbox;
 using Hermoso.Sdk.Generated.V1.Analytics.PostingFrequency;
+using Hermoso.Sdk.Generated.V1.Analytics.Tracking;
 using Microsoft.Kiota.Abstractions.Extensions;
 using Microsoft.Kiota.Abstractions;
 using System.Collections.Generic;
@@ -29,6 +32,16 @@ namespace Hermoso.Sdk.Generated.V1.Analytics
         {
             get => new global::Hermoso.Sdk.Generated.V1.Analytics.ContentDecay.ContentDecayRequestBuilder(PathParameters, RequestAdapter);
         }
+        /// <summary>The dashboard property</summary>
+        public global::Hermoso.Sdk.Generated.V1.Analytics.Dashboard.DashboardRequestBuilder Dashboard
+        {
+            get => new global::Hermoso.Sdk.Generated.V1.Analytics.Dashboard.DashboardRequestBuilder(PathParameters, RequestAdapter);
+        }
+        /// <summary>The delta property</summary>
+        public global::Hermoso.Sdk.Generated.V1.Analytics.Delta.DeltaRequestBuilder Delta
+        {
+            get => new global::Hermoso.Sdk.Generated.V1.Analytics.Delta.DeltaRequestBuilder(PathParameters, RequestAdapter);
+        }
         /// <summary>The followerHistory property</summary>
         public global::Hermoso.Sdk.Generated.V1.Analytics.FollowerHistory.FollowerHistoryRequestBuilder FollowerHistory
         {
@@ -43,6 +56,11 @@ namespace Hermoso.Sdk.Generated.V1.Analytics
         public global::Hermoso.Sdk.Generated.V1.Analytics.PostingFrequency.PostingFrequencyRequestBuilder PostingFrequency
         {
             get => new global::Hermoso.Sdk.Generated.V1.Analytics.PostingFrequency.PostingFrequencyRequestBuilder(PathParameters, RequestAdapter);
+        }
+        /// <summary>The tracking property</summary>
+        public global::Hermoso.Sdk.Generated.V1.Analytics.Tracking.TrackingRequestBuilder Tracking
+        {
+            get => new global::Hermoso.Sdk.Generated.V1.Analytics.Tracking.TrackingRequestBuilder(PathParameters, RequestAdapter);
         }
         /// <summary>
         /// Instantiates a new <see cref="global::Hermoso.Sdk.Generated.V1.Analytics.AnalyticsRequestBuilder"/> and sets the default values.

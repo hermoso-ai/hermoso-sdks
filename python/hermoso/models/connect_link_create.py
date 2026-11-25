@@ -24,12 +24,18 @@ class ConnectLinkCreate:
         state (str | Unset): Your own value, up to 500 characters, returned on the redirect and in the webhook so you
             can match the connection to your customer.
         expires_in_minutes (int | Unset): Default 60, at most 2880 (48 hours).
+        external_id (str | Unset): Your own id for this customer (letters, digits, - _ . : @, up to 128). It is mapped
+            to this brand and returned on the link.
+        welcome (bool | Unset): true shows your saved welcome screen on this link, false shows the plain page; omitted
+            follows the screen’s showByDefault.
     """
 
     provider: str
     redirect_url: str | Unset = UNSET
     state: str | Unset = UNSET
     expires_in_minutes: int | Unset = UNSET
+    external_id: str | Unset = UNSET
+    welcome: bool | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -40,6 +46,10 @@ class ConnectLinkCreate:
         state = self.state
 
         expires_in_minutes = self.expires_in_minutes
+
+        external_id = self.external_id
+
+        welcome = self.welcome
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
@@ -54,6 +64,10 @@ class ConnectLinkCreate:
             field_dict["state"] = state
         if expires_in_minutes is not UNSET:
             field_dict["expires_in_minutes"] = expires_in_minutes
+        if external_id is not UNSET:
+            field_dict["external_id"] = external_id
+        if welcome is not UNSET:
+            field_dict["welcome"] = welcome
 
         return field_dict
 
@@ -68,11 +82,17 @@ class ConnectLinkCreate:
 
         expires_in_minutes = d.pop("expires_in_minutes", UNSET)
 
+        external_id = d.pop("external_id", UNSET)
+
+        welcome = d.pop("welcome", UNSET)
+
         connect_link_create = cls(
             provider=provider,
             redirect_url=redirect_url,
             state=state,
             expires_in_minutes=expires_in_minutes,
+            external_id=external_id,
+            welcome=welcome,
         )
 
         connect_link_create.additional_properties = d

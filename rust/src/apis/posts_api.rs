@@ -98,6 +98,16 @@ pub struct ListPostsParams {
     pub status: Option<String>,
     /// Filter to posts that include this channel.
     pub channel: Option<String>,
+    /// Filter to posts whose caption, title, labels or external_id contain this text (case-insensitive).
+    pub search: Option<String>,
+    /// Filter to posts carrying ALL of these labels (comma-separated).
+    pub label: Option<String>,
+    /// Filter to the post(s) with this external_id.
+    pub external_id: Option<String>,
+    /// Only posts scheduled or published at or after this ISO date/time.
+    pub from: Option<String>,
+    /// Only posts scheduled or published at or before this ISO date/time.
+    pub to: Option<String>,
     /// Which profile to act on, when the account holds more than one: an `id` from `GET /v1/brands`. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 `brand_not_found`, never an empty result.
     pub x_hermoso_user: Option<String>
 }
@@ -281,6 +291,11 @@ impl PostsApi for PostsApiClient {
             starting_after,
             status,
             channel,
+            search,
+            label,
+            external_id,
+            from,
+            to,
             x_hermoso_user,
         } = params;
         
@@ -303,6 +318,21 @@ impl PostsApi for PostsApiClient {
         }
         if let Some(ref param_value) = channel {
             local_var_req_builder = local_var_req_builder.query(&[("channel", &param_value.to_string())]);
+        }
+        if let Some(ref param_value) = search {
+            local_var_req_builder = local_var_req_builder.query(&[("search", &param_value.to_string())]);
+        }
+        if let Some(ref param_value) = label {
+            local_var_req_builder = local_var_req_builder.query(&[("label", &param_value.to_string())]);
+        }
+        if let Some(ref param_value) = external_id {
+            local_var_req_builder = local_var_req_builder.query(&[("external_id", &param_value.to_string())]);
+        }
+        if let Some(ref param_value) = from {
+            local_var_req_builder = local_var_req_builder.query(&[("from", &param_value.to_string())]);
+        }
+        if let Some(ref param_value) = to {
+            local_var_req_builder = local_var_req_builder.query(&[("to", &param_value.to_string())]);
         }
         if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
             local_var_req_builder = local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());

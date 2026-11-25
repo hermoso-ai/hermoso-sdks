@@ -18,6 +18,11 @@ def _get_kwargs(
     starting_after: str | Unset = UNSET,
     status: str | Unset = UNSET,
     channel: str | Unset = UNSET,
+    search: str | Unset = UNSET,
+    label: str | Unset = UNSET,
+    external_id: str | Unset = UNSET,
+    from_: str | Unset = UNSET,
+    to: str | Unset = UNSET,
     x_hermoso_user: str | Unset = UNSET,
 ) -> dict[str, Any]:
     headers: dict[str, Any] = {}
@@ -33,6 +38,16 @@ def _get_kwargs(
     params["status"] = status
 
     params["channel"] = channel
+
+    params["search"] = search
+
+    params["label"] = label
+
+    params["external_id"] = external_id
+
+    params["from"] = from_
+
+    params["to"] = to
 
     params = {k: v for k, v in params.items() if v is not UNSET and v is not None}
 
@@ -98,6 +113,11 @@ def sync_detailed(
     starting_after: str | Unset = UNSET,
     status: str | Unset = UNSET,
     channel: str | Unset = UNSET,
+    search: str | Unset = UNSET,
+    label: str | Unset = UNSET,
+    external_id: str | Unset = UNSET,
+    from_: str | Unset = UNSET,
+    to: str | Unset = UNSET,
     x_hermoso_user: str | Unset = UNSET,
 ) -> Response[Error | PostList]:
     """List posts
@@ -109,6 +129,11 @@ def sync_detailed(
         starting_after (str | Unset):
         status (str | Unset):
         channel (str | Unset):
+        search (str | Unset):
+        label (str | Unset):
+        external_id (str | Unset):
+        from_ (str | Unset):
+        to (str | Unset):
         x_hermoso_user (str | Unset):
 
     Raises:
@@ -124,6 +149,11 @@ def sync_detailed(
         starting_after=starting_after,
         status=status,
         channel=channel,
+        search=search,
+        label=label,
+        external_id=external_id,
+        from_=from_,
+        to=to,
         x_hermoso_user=x_hermoso_user,
     )
 
@@ -141,6 +171,11 @@ def sync(
     starting_after: str | Unset = UNSET,
     status: str | Unset = UNSET,
     channel: str | Unset = UNSET,
+    search: str | Unset = UNSET,
+    label: str | Unset = UNSET,
+    external_id: str | Unset = UNSET,
+    from_: str | Unset = UNSET,
+    to: str | Unset = UNSET,
     x_hermoso_user: str | Unset = UNSET,
 ) -> Error | PostList | None:
     """List posts
@@ -152,6 +187,11 @@ def sync(
         starting_after (str | Unset):
         status (str | Unset):
         channel (str | Unset):
+        search (str | Unset):
+        label (str | Unset):
+        external_id (str | Unset):
+        from_ (str | Unset):
+        to (str | Unset):
         x_hermoso_user (str | Unset):
 
     Raises:
@@ -168,6 +208,11 @@ def sync(
         starting_after=starting_after,
         status=status,
         channel=channel,
+        search=search,
+        label=label,
+        external_id=external_id,
+        from_=from_,
+        to=to,
         x_hermoso_user=x_hermoso_user,
     ).parsed
 
@@ -179,6 +224,11 @@ async def asyncio_detailed(
     starting_after: str | Unset = UNSET,
     status: str | Unset = UNSET,
     channel: str | Unset = UNSET,
+    search: str | Unset = UNSET,
+    label: str | Unset = UNSET,
+    external_id: str | Unset = UNSET,
+    from_: str | Unset = UNSET,
+    to: str | Unset = UNSET,
     x_hermoso_user: str | Unset = UNSET,
 ) -> Response[Error | PostList]:
     """List posts
@@ -190,6 +240,11 @@ async def asyncio_detailed(
         starting_after (str | Unset):
         status (str | Unset):
         channel (str | Unset):
+        search (str | Unset):
+        label (str | Unset):
+        external_id (str | Unset):
+        from_ (str | Unset):
+        to (str | Unset):
         x_hermoso_user (str | Unset):
 
     Raises:
@@ -205,6 +260,11 @@ async def asyncio_detailed(
         starting_after=starting_after,
         status=status,
         channel=channel,
+        search=search,
+        label=label,
+        external_id=external_id,
+        from_=from_,
+        to=to,
         x_hermoso_user=x_hermoso_user,
     )
 
@@ -220,6 +280,11 @@ async def asyncio(
     starting_after: str | Unset = UNSET,
     status: str | Unset = UNSET,
     channel: str | Unset = UNSET,
+    search: str | Unset = UNSET,
+    label: str | Unset = UNSET,
+    external_id: str | Unset = UNSET,
+    from_: str | Unset = UNSET,
+    to: str | Unset = UNSET,
     x_hermoso_user: str | Unset = UNSET,
 ) -> Error | PostList | None:
     """List posts
@@ -231,6 +296,11 @@ async def asyncio(
         starting_after (str | Unset):
         status (str | Unset):
         channel (str | Unset):
+        search (str | Unset):
+        label (str | Unset):
+        external_id (str | Unset):
+        from_ (str | Unset):
+        to (str | Unset):
         x_hermoso_user (str | Unset):
 
     Raises:
@@ -248,6 +318,11 @@ async def asyncio(
             starting_after=starting_after,
             status=status,
             channel=channel,
+            search=search,
+            label=label,
+            external_id=external_id,
+            from_=from_,
+            to=to,
             x_hermoso_user=x_hermoso_user,
         )
     ).parsed

@@ -70,6 +70,7 @@ class ConnectLink implements ModelInterface, ArrayAccess, \JsonSerializable
         'expires_at' => '\DateTime',
         'connected_at' => '\DateTime',
         'account' => '\Hermoso\Model\ConnectLinkAccount',
+        'external_id' => 'string',
         'account_selection_required' => 'bool',
         'error' => '\Hermoso\Model\ConnectLinkError'
     ];
@@ -94,6 +95,7 @@ class ConnectLink implements ModelInterface, ArrayAccess, \JsonSerializable
         'expires_at' => 'date-time',
         'connected_at' => 'date-time',
         'account' => null,
+        'external_id' => null,
         'account_selection_required' => null,
         'error' => null
     ];
@@ -116,6 +118,7 @@ class ConnectLink implements ModelInterface, ArrayAccess, \JsonSerializable
         'expires_at' => false,
         'connected_at' => false,
         'account' => false,
+        'external_id' => false,
         'account_selection_required' => false,
         'error' => false
     ];
@@ -218,6 +221,7 @@ class ConnectLink implements ModelInterface, ArrayAccess, \JsonSerializable
         'expires_at' => 'expires_at',
         'connected_at' => 'connected_at',
         'account' => 'account',
+        'external_id' => 'external_id',
         'account_selection_required' => 'account_selection_required',
         'error' => 'error'
     ];
@@ -240,6 +244,7 @@ class ConnectLink implements ModelInterface, ArrayAccess, \JsonSerializable
         'expires_at' => 'setExpiresAt',
         'connected_at' => 'setConnectedAt',
         'account' => 'setAccount',
+        'external_id' => 'setExternalId',
         'account_selection_required' => 'setAccountSelectionRequired',
         'error' => 'setError'
     ];
@@ -262,6 +267,7 @@ class ConnectLink implements ModelInterface, ArrayAccess, \JsonSerializable
         'expires_at' => 'getExpiresAt',
         'connected_at' => 'getConnectedAt',
         'account' => 'getAccount',
+        'external_id' => 'getExternalId',
         'account_selection_required' => 'getAccountSelectionRequired',
         'error' => 'getError'
     ];
@@ -377,6 +383,7 @@ class ConnectLink implements ModelInterface, ArrayAccess, \JsonSerializable
         $this->setIfExists('expires_at', $data ?? [], null);
         $this->setIfExists('connected_at', $data ?? [], null);
         $this->setIfExists('account', $data ?? [], null);
+        $this->setIfExists('external_id', $data ?? [], null);
         $this->setIfExists('account_selection_required', $data ?? [], null);
         $this->setIfExists('error', $data ?? [], null);
     }
@@ -769,6 +776,33 @@ class ConnectLink implements ModelInterface, ArrayAccess, \JsonSerializable
             throw new \InvalidArgumentException('non-nullable account cannot be null');
         }
         $this->container['account'] = $account;
+
+        return $this;
+    }
+
+    /**
+     * Gets external_id
+     *
+     * @return string|null
+     */
+    public function getExternalId()
+    {
+        return $this->container['external_id'];
+    }
+
+    /**
+     * Sets external_id
+     *
+     * @param string|null $external_id Your own customer id, when the link was created with one.
+     *
+     * @return self
+     */
+    public function setExternalId($external_id)
+    {
+        if (is_null($external_id)) {
+            throw new \InvalidArgumentException('non-nullable external_id cannot be null');
+        }
+        $this->container['external_id'] = $external_id;
 
         return $this;
     }

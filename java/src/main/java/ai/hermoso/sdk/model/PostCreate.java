@@ -52,6 +52,10 @@ import ai.hermoso.sdk.ApiClient;
   PostCreate.JSON_PROPERTY_CAPTIONS_BY_CHANNEL,
   PostCreate.JSON_PROPERTY_TARGETS,
   PostCreate.JSON_PROPERTY_OPTIONS,
+  PostCreate.JSON_PROPERTY_LABELS,
+  PostCreate.JSON_PROPERTY_EXTERNAL_ID,
+  PostCreate.JSON_PROPERTY_METADATA,
+  PostCreate.JSON_PROPERTY_DRY_RUN,
   PostCreate.JSON_PROPERTY_FIRST_COMMENT
 })
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.27.0")
@@ -107,6 +111,22 @@ public class PostCreate {
   public static final String JSON_PROPERTY_OPTIONS = "options";
   @javax.annotation.Nullable
   private Map<String, Object> options = new HashMap<>();
+
+  public static final String JSON_PROPERTY_LABELS = "labels";
+  @javax.annotation.Nullable
+  private List<String> labels = new ArrayList<>();
+
+  public static final String JSON_PROPERTY_EXTERNAL_ID = "external_id";
+  @javax.annotation.Nullable
+  private String externalId;
+
+  public static final String JSON_PROPERTY_METADATA = "metadata";
+  @javax.annotation.Nullable
+  private Map<String, Object> metadata = new HashMap<>();
+
+  public static final String JSON_PROPERTY_DRY_RUN = "dry_run";
+  @javax.annotation.Nullable
+  private Boolean dryRun;
 
   public static final String JSON_PROPERTY_FIRST_COMMENT = "first_comment";
   @javax.annotation.Nullable
@@ -475,6 +495,118 @@ public class PostCreate {
   }
 
 
+  public PostCreate labels(@javax.annotation.Nullable List<String> labels) {
+    this.labels = labels;
+    return this;
+  }
+
+  public PostCreate addLabelsItem(String labelsItem) {
+    if (this.labels == null) {
+      this.labels = new ArrayList<>();
+    }
+    this.labels.add(labelsItem);
+    return this;
+  }
+
+  /**
+   * Your own labels for finding the post again (up to 10, 40 characters each). Never published. GET /v1/posts?label&#x3D; filters on them.
+   * @return labels
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_LABELS, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public List<String> getLabels() {
+    return labels;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_LABELS, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setLabels(@javax.annotation.Nullable List<String> labels) {
+    this.labels = labels;
+  }
+
+
+  public PostCreate externalId(@javax.annotation.Nullable String externalId) {
+    this.externalId = externalId;
+    return this;
+  }
+
+  /**
+   * Your own id for the post (up to 128 characters), e.g. a CRM or sheet row id. GET /v1/posts?external_id&#x3D; finds it, also after it publishes.
+   * @return externalId
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_EXTERNAL_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public String getExternalId() {
+    return externalId;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_EXTERNAL_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setExternalId(@javax.annotation.Nullable String externalId) {
+    this.externalId = externalId;
+  }
+
+
+  public PostCreate metadata(@javax.annotation.Nullable Map<String, Object> metadata) {
+    this.metadata = metadata;
+    return this;
+  }
+
+  public PostCreate putMetadataItem(String key, Object metadataItem) {
+    if (this.metadata == null) {
+      this.metadata = new HashMap<>();
+    }
+    this.metadata.put(key, metadataItem);
+    return this;
+  }
+
+  /**
+   * Your own key/value notes stored with the post: strings, numbers, booleans or null, up to 20 keys and 4 KB. Refused, never trimmed, when over.
+   * @return metadata
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_METADATA, required = false)
+  @JsonInclude(content = JsonInclude.Include.ALWAYS, value = JsonInclude.Include.USE_DEFAULTS)
+  public Map<String, Object> getMetadata() {
+    return metadata;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_METADATA, required = false)
+  @JsonInclude(content = JsonInclude.Include.ALWAYS, value = JsonInclude.Include.USE_DEFAULTS)
+  public void setMetadata(@javax.annotation.Nullable Map<String, Object> metadata) {
+    this.metadata = metadata;
+  }
+
+
+  public PostCreate dryRun(@javax.annotation.Nullable Boolean dryRun) {
+    this.dryRun = dryRun;
+    return this;
+  }
+
+  /**
+   * Run every check a create runs and store nothing. Answers 200 with {ok, channels, media, pipeline, note}: lengths per channel (with X’s weighted count), each media URL identified and measured from its bytes, and the exact refusal a create would get.
+   * @return dryRun
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_DRY_RUN, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public Boolean getDryRun() {
+    return dryRun;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_DRY_RUN, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setDryRun(@javax.annotation.Nullable Boolean dryRun) {
+    this.dryRun = dryRun;
+  }
+
+
   public PostCreate firstComment(@javax.annotation.Nullable String firstComment) {
     this.firstComment = firstComment;
     return this;
@@ -524,12 +656,16 @@ public class PostCreate {
         Objects.equals(this.captionsByChannel, postCreate.captionsByChannel) &&
         Objects.equals(this.targets, postCreate.targets) &&
         Objects.equals(this.options, postCreate.options) &&
+        Objects.equals(this.labels, postCreate.labels) &&
+        Objects.equals(this.externalId, postCreate.externalId) &&
+        Objects.equals(this.metadata, postCreate.metadata) &&
+        Objects.equals(this.dryRun, postCreate.dryRun) &&
         Objects.equals(this.firstComment, postCreate.firstComment);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(channels, caption, title, link, media, scheduledAt, useQueue, timezone, visibility, visibilityByChannel, captionsByChannel, targets, options, firstComment);
+    return Objects.hash(channels, caption, title, link, media, scheduledAt, useQueue, timezone, visibility, visibilityByChannel, captionsByChannel, targets, options, labels, externalId, metadata, dryRun, firstComment);
   }
 
   @Override
@@ -549,6 +685,10 @@ public class PostCreate {
     sb.append("    captionsByChannel: ").append(toIndentedString(captionsByChannel)).append("\n");
     sb.append("    targets: ").append(toIndentedString(targets)).append("\n");
     sb.append("    options: ").append(toIndentedString(options)).append("\n");
+    sb.append("    labels: ").append(toIndentedString(labels)).append("\n");
+    sb.append("    externalId: ").append(toIndentedString(externalId)).append("\n");
+    sb.append("    metadata: ").append(toIndentedString(metadata)).append("\n");
+    sb.append("    dryRun: ").append(toIndentedString(dryRun)).append("\n");
     sb.append("    firstComment: ").append(toIndentedString(firstComment)).append("\n");
     sb.append("}");
     return sb.toString();
@@ -682,6 +822,34 @@ public class PostCreate {
             "".equals(suffix) ? "" : String.format(java.util.Locale.ROOT, "%s%d%s", containerPrefix, _key, containerSuffix),
             getOptions().get(_key), ApiClient.urlEncode(ApiClient.valueToString(getOptions().get(_key)))));
       }
+    }
+
+    // add `labels` to the URL query string
+    if (getLabels() != null) {
+      for (int i = 0; i < getLabels().size(); i++) {
+        joiner.add(String.format(java.util.Locale.ROOT, "%slabels%s%s=%s", prefix, suffix,
+            "".equals(suffix) ? "" : String.format(java.util.Locale.ROOT, "%s%d%s", containerPrefix, i, containerSuffix),
+            ApiClient.urlEncode(ApiClient.valueToString(getLabels().get(i)))));
+      }
+    }
+
+    // add `external_id` to the URL query string
+    if (getExternalId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sexternal_id%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getExternalId()))));
+    }
+
+    // add `metadata` to the URL query string
+    if (getMetadata() != null) {
+      for (String _key : getMetadata().keySet()) {
+        joiner.add(String.format(java.util.Locale.ROOT, "%smetadata%s%s=%s", prefix, suffix,
+            "".equals(suffix) ? "" : String.format(java.util.Locale.ROOT, "%s%d%s", containerPrefix, _key, containerSuffix),
+            getMetadata().get(_key), ApiClient.urlEncode(ApiClient.valueToString(getMetadata().get(_key)))));
+      }
+    }
+
+    // add `dry_run` to the URL query string
+    if (getDryRun() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sdry_run%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getDryRun()))));
     }
 
     // add `first_comment` to the URL query string

@@ -3,10 +3,10 @@
 package hermoso
 
 // SpecSHA256 is the sha256 of the OpenAPI document this client was generated from (sdks/openapi.json).
-const SpecSHA256 = "53a614e8cab8ad69f0759274ebda6a2e3af617d377cae7df249df759485f03c1"
+const SpecSHA256 = "0a6cd2b803262db6727df557b82269b79103ccbd116d93be3dfcfa91a10a96c8"
 
 // ContractVersion is the dated /v1 contract version that document describes.
 const ContractVersion = "2026-08-26"
 
-// Version is this SDK's release (the Go module tag is go/v0.1.5).
-const Version = "0.1.5"
+// Version is this SDK's release (the Go module tag is go/v0.1.6).
+const Version = "0.1.6"

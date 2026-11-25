@@ -13,6 +13,7 @@ from typing import cast
 
 if TYPE_CHECKING:
     from ..models.profit_settings_campaign_margins import ProfitSettingsCampaignMargins
+    from ..models.profit_settings_metrics import ProfitSettingsMetrics
 
 
 T = TypeVar("T", bound="ProfitSettings")
@@ -26,6 +27,8 @@ class ProfitSettings:
         margin_percent (float | None | Unset):
         cost_per_order (float | None | Unset):
         campaign_margins (ProfitSettingsCampaignMargins | Unset):
+        result_events (list[str] | Unset):
+        metrics (ProfitSettingsMetrics | Unset):
         note (str | Unset):
     """
 
@@ -33,6 +36,8 @@ class ProfitSettings:
     margin_percent: float | None | Unset = UNSET
     cost_per_order: float | None | Unset = UNSET
     campaign_margins: ProfitSettingsCampaignMargins | Unset = UNSET
+    result_events: list[str] | Unset = UNSET
+    metrics: ProfitSettingsMetrics | Unset = UNSET
     note: str | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
@@ -57,6 +62,14 @@ class ProfitSettings:
         if not isinstance(self.campaign_margins, Unset):
             campaign_margins = self.campaign_margins.to_dict()
 
+        result_events: list[str] | Unset = UNSET
+        if not isinstance(self.result_events, Unset):
+            result_events = self.result_events
+
+        metrics: dict[str, Any] | Unset = UNSET
+        if not isinstance(self.metrics, Unset):
+            metrics = self.metrics.to_dict()
+
         note = self.note
 
         field_dict: dict[str, Any] = {}
@@ -70,6 +83,10 @@ class ProfitSettings:
             field_dict["cost_per_order"] = cost_per_order
         if campaign_margins is not UNSET:
             field_dict["campaign_margins"] = campaign_margins
+        if result_events is not UNSET:
+            field_dict["result_events"] = result_events
+        if metrics is not UNSET:
+            field_dict["metrics"] = metrics
         if note is not UNSET:
             field_dict["note"] = note
 
@@ -80,6 +97,7 @@ class ProfitSettings:
         from ..models.profit_settings_campaign_margins import (
             ProfitSettingsCampaignMargins,
         )  # noqa: PLC0415
+        from ..models.profit_settings_metrics import ProfitSettingsMetrics  # noqa: PLC0415
 
         d = dict(src_dict)
         _object_ = d.pop("object", UNSET)
@@ -116,6 +134,15 @@ class ProfitSettings:
                 _campaign_margins
             )
 
+        result_events = cast(list[str], d.pop("result_events", UNSET))
+
+        _metrics = d.pop("metrics", UNSET)
+        metrics: ProfitSettingsMetrics | Unset
+        if isinstance(_metrics, Unset):
+            metrics = UNSET
+        else:
+            metrics = ProfitSettingsMetrics.from_dict(_metrics)
+
         note = d.pop("note", UNSET)
 
         profit_settings = cls(
@@ -123,6 +150,8 @@ class ProfitSettings:
             margin_percent=margin_percent,
             cost_per_order=cost_per_order,
             campaign_margins=campaign_margins,
+            result_events=result_events,
+            metrics=metrics,
             note=note,
         )
 

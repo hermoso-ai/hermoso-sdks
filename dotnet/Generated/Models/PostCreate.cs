@@ -38,6 +38,16 @@ namespace Hermoso.Sdk.Generated.Models
 #else
         public List<string> Channels { get; set; }
 #endif
+        /// <summary>Run every check a create runs and store nothing. Answers 200 with {ok, channels, media, pipeline, note}: lengths per channel (with X’s weighted count), each media URL identified and measured from its bytes, and the exact refusal a create would get.</summary>
+        public bool? DryRun { get; set; }
+        /// <summary>Your own id for the post (up to 128 characters), e.g. a CRM or sheet row id. GET /v1/posts?external_id= finds it, also after it publishes.</summary>
+#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
+#nullable enable
+        public string? ExternalId { get; set; }
+#nullable restore
+#else
+        public string ExternalId { get; set; }
+#endif
         /// <summary>A comment the account posts on its own post right after it publishes: Facebook Pages, Instagram, and LinkedIn company Pages (LinkedIn needs its comments authorization, provider linkedin_community). Up to 2,000 characters, refused (never cut) when longer. Other channels publish the post without it and say so on their result. A comment that fails never undoes the post; its outcome is reported on the channel’s result.</summary>
 #if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
 #nullable enable
@@ -45,6 +55,14 @@ namespace Hermoso.Sdk.Generated.Models
 #nullable restore
 #else
         public string FirstComment { get; set; }
+#endif
+        /// <summary>Your own labels for finding the post again (up to 10, 40 characters each). Never published. GET /v1/posts?label= filters on them.</summary>
+#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
+#nullable enable
+        public List<string>? Labels { get; set; }
+#nullable restore
+#else
+        public List<string> Labels { get; set; }
 #endif
         /// <summary>The link property</summary>
 #if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
@@ -61,6 +79,14 @@ namespace Hermoso.Sdk.Generated.Models
 #nullable restore
 #else
         public List<string> Media { get; set; }
+#endif
+        /// <summary>Your own key/value notes stored with the post: strings, numbers, booleans or null, up to 20 keys and 4 KB. Refused, never trimmed, when over.</summary>
+#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
+#nullable enable
+        public global::Hermoso.Sdk.Generated.Models.PostCreate_metadata? Metadata { get; set; }
+#nullable restore
+#else
+        public global::Hermoso.Sdk.Generated.Models.PostCreate_metadata Metadata { get; set; }
 #endif
         /// <summary>Per-channel publish metadata (YouTube description, tags, categoryId, madeForKids, notifySubscribers, paidProductPlacement, brandPartner and a captionTrack {url|text, language, name} uploaded right after the video; X thread parts, Instagram alt text, and so on).</summary>
 #if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
@@ -142,9 +168,13 @@ namespace Hermoso.Sdk.Generated.Models
                 { "caption", n => { Caption = n.GetStringValue(); } },
                 { "captions_by_channel", n => { CaptionsByChannel = n.GetObjectValue<global::Hermoso.Sdk.Generated.Models.PostCreate_captions_by_channel>(global::Hermoso.Sdk.Generated.Models.PostCreate_captions_by_channel.CreateFromDiscriminatorValue); } },
                 { "channels", n => { Channels = n.GetCollectionOfPrimitiveValues<string>()?.AsList(); } },
+                { "dry_run", n => { DryRun = n.GetBoolValue(); } },
+                { "external_id", n => { ExternalId = n.GetStringValue(); } },
                 { "first_comment", n => { FirstComment = n.GetStringValue(); } },
+                { "labels", n => { Labels = n.GetCollectionOfPrimitiveValues<string>()?.AsList(); } },
                 { "link", n => { Link = n.GetStringValue(); } },
                 { "media", n => { Media = n.GetCollectionOfPrimitiveValues<string>()?.AsList(); } },
+                { "metadata", n => { Metadata = n.GetObjectValue<global::Hermoso.Sdk.Generated.Models.PostCreate_metadata>(global::Hermoso.Sdk.Generated.Models.PostCreate_metadata.CreateFromDiscriminatorValue); } },
                 { "options", n => { Options = n.GetObjectValue<global::Hermoso.Sdk.Generated.Models.PostCreate_options>(global::Hermoso.Sdk.Generated.Models.PostCreate_options.CreateFromDiscriminatorValue); } },
                 { "scheduled_at", n => { ScheduledAt = n.GetDateTimeOffsetValue(); } },
                 { "targets", n => { Targets = n.GetObjectValue<global::Hermoso.Sdk.Generated.Models.PostCreate_targets>(global::Hermoso.Sdk.Generated.Models.PostCreate_targets.CreateFromDiscriminatorValue); } },
@@ -165,9 +195,13 @@ namespace Hermoso.Sdk.Generated.Models
             writer.WriteStringValue("caption", Caption);
             writer.WriteObjectValue<global::Hermoso.Sdk.Generated.Models.PostCreate_captions_by_channel>("captions_by_channel", CaptionsByChannel);
             writer.WriteCollectionOfPrimitiveValues<string>("channels", Channels);
+            writer.WriteBoolValue("dry_run", DryRun);
+            writer.WriteStringValue("external_id", ExternalId);
             writer.WriteStringValue("first_comment", FirstComment);
+            writer.WriteCollectionOfPrimitiveValues<string>("labels", Labels);
             writer.WriteStringValue("link", Link);
             writer.WriteCollectionOfPrimitiveValues<string>("media", Media);
+            writer.WriteObjectValue<global::Hermoso.Sdk.Generated.Models.PostCreate_metadata>("metadata", Metadata);
             writer.WriteObjectValue<global::Hermoso.Sdk.Generated.Models.PostCreate_options>("options", Options);
             writer.WriteDateTimeOffsetValue("scheduled_at", ScheduledAt);
             writer.WriteObjectValue<global::Hermoso.Sdk.Generated.Models.PostCreate_targets>("targets", Targets);

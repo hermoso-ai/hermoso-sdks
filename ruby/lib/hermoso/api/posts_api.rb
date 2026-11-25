@@ -232,6 +232,11 @@ module Hermoso
     # @option opts [String] :starting_after A post id from a previous page; returns the page after it. An unknown cursor is an error, never a silent restart.
     # @option opts [String] :status Filter: scheduled, processing, published, partially_published, failed, indeterminate. &#x60;indeterminate&#x60; means a restart interrupted the send and we cannot say whether it published.
     # @option opts [String] :channel Filter to posts that include this channel.
+    # @option opts [String] :search Filter to posts whose caption, title, labels or external_id contain this text (case-insensitive).
+    # @option opts [String] :label Filter to posts carrying ALL of these labels (comma-separated).
+    # @option opts [String] :external_id Filter to the post(s) with this external_id.
+    # @option opts [String] :from Only posts scheduled or published at or after this ISO date/time.
+    # @option opts [String] :to Only posts scheduled or published at or before this ISO date/time.
     # @option opts [String] :x_hermoso_user Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result.
     # @return [PostList]
     def list_posts(opts = {})
@@ -246,6 +251,11 @@ module Hermoso
     # @option opts [String] :starting_after A post id from a previous page; returns the page after it. An unknown cursor is an error, never a silent restart.
     # @option opts [String] :status Filter: scheduled, processing, published, partially_published, failed, indeterminate. &#x60;indeterminate&#x60; means a restart interrupted the send and we cannot say whether it published.
     # @option opts [String] :channel Filter to posts that include this channel.
+    # @option opts [String] :search Filter to posts whose caption, title, labels or external_id contain this text (case-insensitive).
+    # @option opts [String] :label Filter to posts carrying ALL of these labels (comma-separated).
+    # @option opts [String] :external_id Filter to the post(s) with this external_id.
+    # @option opts [String] :from Only posts scheduled or published at or after this ISO date/time.
+    # @option opts [String] :to Only posts scheduled or published at or before this ISO date/time.
     # @option opts [String] :x_hermoso_user Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result.
     # @return [Array<(PostList, Integer, Hash)>] PostList data, response status code and response headers
     def list_posts_with_http_info(opts = {})
@@ -261,6 +271,11 @@ module Hermoso
       query_params[:'starting_after'] = opts[:'starting_after'] if !opts[:'starting_after'].nil?
       query_params[:'status'] = opts[:'status'] if !opts[:'status'].nil?
       query_params[:'channel'] = opts[:'channel'] if !opts[:'channel'].nil?
+      query_params[:'search'] = opts[:'search'] if !opts[:'search'].nil?
+      query_params[:'label'] = opts[:'label'] if !opts[:'label'].nil?
+      query_params[:'external_id'] = opts[:'external_id'] if !opts[:'external_id'].nil?
+      query_params[:'from'] = opts[:'from'] if !opts[:'from'].nil?
+      query_params[:'to'] = opts[:'to'] if !opts[:'to'].nil?
 
       # header parameters
       header_params = opts[:header_params] || {}

@@ -71,6 +71,10 @@ class PostCreate implements ModelInterface, ArrayAccess, \JsonSerializable
         'captions_by_channel' => 'array<string,string>',
         'targets' => 'array<string,mixed>',
         'options' => 'array<string,mixed>',
+        'labels' => 'string[]',
+        'external_id' => 'string',
+        'metadata' => 'array<string,mixed>',
+        'dry_run' => 'bool',
         'first_comment' => 'string'
     ];
 
@@ -95,6 +99,10 @@ class PostCreate implements ModelInterface, ArrayAccess, \JsonSerializable
         'captions_by_channel' => null,
         'targets' => null,
         'options' => null,
+        'labels' => null,
+        'external_id' => null,
+        'metadata' => null,
+        'dry_run' => null,
         'first_comment' => null
     ];
 
@@ -117,6 +125,10 @@ class PostCreate implements ModelInterface, ArrayAccess, \JsonSerializable
         'captions_by_channel' => false,
         'targets' => false,
         'options' => false,
+        'labels' => false,
+        'external_id' => false,
+        'metadata' => false,
+        'dry_run' => false,
         'first_comment' => false
     ];
 
@@ -219,6 +231,10 @@ class PostCreate implements ModelInterface, ArrayAccess, \JsonSerializable
         'captions_by_channel' => 'captions_by_channel',
         'targets' => 'targets',
         'options' => 'options',
+        'labels' => 'labels',
+        'external_id' => 'external_id',
+        'metadata' => 'metadata',
+        'dry_run' => 'dry_run',
         'first_comment' => 'first_comment'
     ];
 
@@ -241,6 +257,10 @@ class PostCreate implements ModelInterface, ArrayAccess, \JsonSerializable
         'captions_by_channel' => 'setCaptionsByChannel',
         'targets' => 'setTargets',
         'options' => 'setOptions',
+        'labels' => 'setLabels',
+        'external_id' => 'setExternalId',
+        'metadata' => 'setMetadata',
+        'dry_run' => 'setDryRun',
         'first_comment' => 'setFirstComment'
     ];
 
@@ -263,6 +283,10 @@ class PostCreate implements ModelInterface, ArrayAccess, \JsonSerializable
         'captions_by_channel' => 'getCaptionsByChannel',
         'targets' => 'getTargets',
         'options' => 'getOptions',
+        'labels' => 'getLabels',
+        'external_id' => 'getExternalId',
+        'metadata' => 'getMetadata',
+        'dry_run' => 'getDryRun',
         'first_comment' => 'getFirstComment'
     ];
 
@@ -336,6 +360,10 @@ class PostCreate implements ModelInterface, ArrayAccess, \JsonSerializable
         $this->setIfExists('captions_by_channel', $data ?? [], null);
         $this->setIfExists('targets', $data ?? [], null);
         $this->setIfExists('options', $data ?? [], null);
+        $this->setIfExists('labels', $data ?? [], null);
+        $this->setIfExists('external_id', $data ?? [], null);
+        $this->setIfExists('metadata', $data ?? [], null);
+        $this->setIfExists('dry_run', $data ?? [], null);
         $this->setIfExists('first_comment', $data ?? [], null);
     }
 
@@ -731,6 +759,114 @@ class PostCreate implements ModelInterface, ArrayAccess, \JsonSerializable
             throw new \InvalidArgumentException('non-nullable options cannot be null');
         }
         $this->container['options'] = $options;
+
+        return $this;
+    }
+
+    /**
+     * Gets labels
+     *
+     * @return string[]|null
+     */
+    public function getLabels()
+    {
+        return $this->container['labels'];
+    }
+
+    /**
+     * Sets labels
+     *
+     * @param string[]|null $labels Your own labels for finding the post again (up to 10, 40 characters each). Never published. GET /v1/posts?label= filters on them.
+     *
+     * @return self
+     */
+    public function setLabels($labels)
+    {
+        if (is_null($labels)) {
+            throw new \InvalidArgumentException('non-nullable labels cannot be null');
+        }
+        $this->container['labels'] = $labels;
+
+        return $this;
+    }
+
+    /**
+     * Gets external_id
+     *
+     * @return string|null
+     */
+    public function getExternalId()
+    {
+        return $this->container['external_id'];
+    }
+
+    /**
+     * Sets external_id
+     *
+     * @param string|null $external_id Your own id for the post (up to 128 characters), e.g. a CRM or sheet row id. GET /v1/posts?external_id= finds it, also after it publishes.
+     *
+     * @return self
+     */
+    public function setExternalId($external_id)
+    {
+        if (is_null($external_id)) {
+            throw new \InvalidArgumentException('non-nullable external_id cannot be null');
+        }
+        $this->container['external_id'] = $external_id;
+
+        return $this;
+    }
+
+    /**
+     * Gets metadata
+     *
+     * @return array<string,mixed>|null
+     */
+    public function getMetadata()
+    {
+        return $this->container['metadata'];
+    }
+
+    /**
+     * Sets metadata
+     *
+     * @param array<string,mixed>|null $metadata Your own key/value notes stored with the post: strings, numbers, booleans or null, up to 20 keys and 4 KB. Refused, never trimmed, when over.
+     *
+     * @return self
+     */
+    public function setMetadata($metadata)
+    {
+        if (is_null($metadata)) {
+            throw new \InvalidArgumentException('non-nullable metadata cannot be null');
+        }
+        $this->container['metadata'] = $metadata;
+
+        return $this;
+    }
+
+    /**
+     * Gets dry_run
+     *
+     * @return bool|null
+     */
+    public function getDryRun()
+    {
+        return $this->container['dry_run'];
+    }
+
+    /**
+     * Sets dry_run
+     *
+     * @param bool|null $dry_run Run every check a create runs and store nothing. Answers 200 with {ok, channels, media, pipeline, note}: lengths per channel (with X’s weighted count), each media URL identified and measured from its bytes, and the exact refusal a create would get.
+     *
+     * @return self
+     */
+    public function setDryRun($dry_run)
+    {
+        if (is_null($dry_run)) {
+            throw new \InvalidArgumentException('non-nullable dry_run cannot be null');
+        }
+        $this->container['dry_run'] = $dry_run;
 
         return $this;
     }

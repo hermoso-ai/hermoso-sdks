@@ -25,6 +25,12 @@ pub struct ConnectLinkCreate {
     /// Default 60, at most 2880 (48 hours).
     #[serde(rename = "expires_in_minutes", skip_serializing_if = "Option::is_none")]
     pub expires_in_minutes: Option<i32>,
+    /// Your own id for this customer (letters, digits, - _ . : @, up to 128). It is mapped to this brand and returned on the link.
+    #[serde(rename = "external_id", skip_serializing_if = "Option::is_none")]
+    pub external_id: Option<String>,
+    /// true shows your saved welcome screen on this link, false shows the plain page; omitted follows the screen’s showByDefault.
+    #[serde(rename = "welcome", skip_serializing_if = "Option::is_none")]
+    pub welcome: Option<bool>,
 }
 
 impl ConnectLinkCreate {
@@ -34,6 +40,8 @@ impl ConnectLinkCreate {
             redirect_url: None,
             state: None,
             expires_in_minutes: None,
+            external_id: None,
+            welcome: None,
         }
     }
 }

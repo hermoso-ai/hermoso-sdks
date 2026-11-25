@@ -1,6 +1,6 @@
 {
   "name": "@hermoso/sdk",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "Typed TypeScript client for the Hermoso API: generate ads, publish and schedule posts, read analytics, and call every Hermoso tool from your own backend.",
   "type": "module",
   "main": "./dist/index.js",

@@ -5,9 +5,9 @@ namespace Hermoso.Sdk;
 public static class Spec
 {
     /// <summary>sha256 of the OpenAPI document this client was generated from (sdks/openapi.json).</summary>
-    public const string SPEC_SHA256 = "53a614e8cab8ad69f0759274ebda6a2e3af617d377cae7df249df759485f03c1";
+    public const string SPEC_SHA256 = "0a6cd2b803262db6727df557b82269b79103ccbd116d93be3dfcfa91a10a96c8";
     /// <summary>The dated /v1 contract version that document describes.</summary>
     public const string CONTRACT_VERSION = "2026-08-26";
     /// <summary>This SDK's release.</summary>
-    public const string VERSION = "0.1.5";
+    public const string VERSION = "0.1.6";
 }

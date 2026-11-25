@@ -13,7 +13,7 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
 
     <PackageId>Hermoso.Sdk</PackageId>
-    <Version>0.1.5</Version>
+    <Version>0.1.6</Version>
     <Authors>Hermoso</Authors>
     <Company>Hermoso</Company>
     <Description>Typed .NET client for the Hermoso API: generate ads, publish and schedule posts, read analytics, and call every Hermoso tool from your own backend.</Description>

@@ -38,6 +38,7 @@ class ConnectLink:
         expires_at (datetime.datetime | Unset):
         connected_at (datetime.datetime | None | Unset):
         account (ConnectLinkAccountType0 | None | Unset):
+        external_id (None | str | Unset): Your own customer id, when the link was created with one.
         account_selection_required (bool | None | Unset): True for Facebook/Instagram (meta) and LinkedIn: choose which
             Pages the brand may use with list_connector_accounts + set_connector_accounts before posting.
         error (ConnectLinkErrorType0 | None | Unset):
@@ -55,6 +56,7 @@ class ConnectLink:
     expires_at: datetime.datetime | Unset = UNSET
     connected_at: datetime.datetime | None | Unset = UNSET
     account: ConnectLinkAccountType0 | None | Unset = UNSET
+    external_id: None | str | Unset = UNSET
     account_selection_required: bool | None | Unset = UNSET
     error: ConnectLinkErrorType0 | None | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
@@ -115,6 +117,12 @@ class ConnectLink:
         else:
             account = self.account
 
+        external_id: None | str | Unset
+        if isinstance(self.external_id, Unset):
+            external_id = UNSET
+        else:
+            external_id = self.external_id
+
         account_selection_required: bool | None | Unset
         if isinstance(self.account_selection_required, Unset):
             account_selection_required = UNSET
@@ -156,6 +164,8 @@ class ConnectLink:
             field_dict["connected_at"] = connected_at
         if account is not UNSET:
             field_dict["account"] = account
+        if external_id is not UNSET:
+            field_dict["external_id"] = external_id
         if account_selection_required is not UNSET:
             field_dict["account_selection_required"] = account_selection_required
         if error is not UNSET:
@@ -257,6 +267,15 @@ class ConnectLink:
 
         account = _parse_account(d.pop("account", UNSET))
 
+        def _parse_external_id(data: object) -> None | str | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            return cast(None | str | Unset, data)
+
+        external_id = _parse_external_id(d.pop("external_id", UNSET))
+
         def _parse_account_selection_required(data: object) -> bool | None | Unset:
             if data is None:
                 return data
@@ -298,6 +317,7 @@ class ConnectLink:
             expires_at=expires_at,
             connected_at=connected_at,
             account=account,
+            external_id=external_id,
             account_selection_required=account_selection_required,
             error=error,
         )

@@ -27,13 +27,21 @@ module Hermoso
     # Default 60, at most 2880 (48 hours).
     attr_accessor :expires_in_minutes
 
+    # Your own id for this customer (letters, digits, - _ . : @, up to 128). It is mapped to this brand and returned on the link.
+    attr_accessor :external_id
+
+    # true shows your saved welcome screen on this link, false shows the plain page; omitted follows the screen’s showByDefault.
+    attr_accessor :welcome
+
     # Attribute mapping from ruby-style variable name to JSON key.
     def self.attribute_map
       {
         :'provider' => :'provider',
         :'redirect_url' => :'redirect_url',
         :'state' => :'state',
-        :'expires_in_minutes' => :'expires_in_minutes'
+        :'expires_in_minutes' => :'expires_in_minutes',
+        :'external_id' => :'external_id',
+        :'welcome' => :'welcome'
       }
     end
 
@@ -53,7 +61,9 @@ module Hermoso
         :'provider' => :'String',
         :'redirect_url' => :'String',
         :'state' => :'String',
-        :'expires_in_minutes' => :'Integer'
+        :'expires_in_minutes' => :'Integer',
+        :'external_id' => :'String',
+        :'welcome' => :'Boolean'
       }
     end
 
@@ -105,6 +115,14 @@ module Hermoso
 
       if attributes.key?(:'expires_in_minutes')
         self.expires_in_minutes = attributes[:'expires_in_minutes']
+      end
+
+      if attributes.key?(:'external_id')
+        self.external_id = attributes[:'external_id']
+      end
+
+      if attributes.key?(:'welcome')
+        self.welcome = attributes[:'welcome']
       end
     end
 
@@ -174,7 +192,9 @@ module Hermoso
           provider == o.provider &&
           redirect_url == o.redirect_url &&
           state == o.state &&
-          expires_in_minutes == o.expires_in_minutes
+          expires_in_minutes == o.expires_in_minutes &&
+          external_id == o.external_id &&
+          welcome == o.welcome
     end
 
     # @see the `==` method
@@ -186,7 +206,7 @@ module Hermoso
     # Calculates hash code according to all attributes.
     # @return [Integer] Hash code
     def hash
-      [provider, redirect_url, state, expires_in_minutes].hash
+      [provider, redirect_url, state, expires_in_minutes, external_id, welcome].hash
     end
 
     # Builds the object from hash

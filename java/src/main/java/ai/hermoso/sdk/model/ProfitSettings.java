@@ -25,8 +25,10 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
@@ -40,6 +42,8 @@ import ai.hermoso.sdk.ApiClient;
   ProfitSettings.JSON_PROPERTY_MARGIN_PERCENT,
   ProfitSettings.JSON_PROPERTY_COST_PER_ORDER,
   ProfitSettings.JSON_PROPERTY_CAMPAIGN_MARGINS,
+  ProfitSettings.JSON_PROPERTY_RESULT_EVENTS,
+  ProfitSettings.JSON_PROPERTY_METRICS,
   ProfitSettings.JSON_PROPERTY_NOTE
 })
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.27.0")
@@ -94,6 +98,14 @@ public class ProfitSettings {
   public static final String JSON_PROPERTY_CAMPAIGN_MARGINS = "campaign_margins";
   @javax.annotation.Nullable
   private Map<String, BigDecimal> campaignMargins = new HashMap<>();
+
+  public static final String JSON_PROPERTY_RESULT_EVENTS = "result_events";
+  @javax.annotation.Nullable
+  private List<String> resultEvents = new ArrayList<>();
+
+  public static final String JSON_PROPERTY_METRICS = "metrics";
+  @javax.annotation.Nullable
+  private Map<String, Map<String, Object>> metrics = new HashMap<>();
 
   public static final String JSON_PROPERTY_NOTE = "note";
   @javax.annotation.Nullable
@@ -206,6 +218,70 @@ public class ProfitSettings {
   }
 
 
+  public ProfitSettings resultEvents(@javax.annotation.Nullable List<String> resultEvents) {
+    this.resultEvents = resultEvents;
+    return this;
+  }
+
+  public ProfitSettings addResultEventsItem(String resultEventsItem) {
+    if (this.resultEvents == null) {
+      this.resultEvents = new ArrayList<>();
+    }
+    this.resultEvents.add(resultEventsItem);
+    return this;
+  }
+
+  /**
+   * Get resultEvents
+   * @return resultEvents
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_RESULT_EVENTS, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public List<String> getResultEvents() {
+    return resultEvents;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_RESULT_EVENTS, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setResultEvents(@javax.annotation.Nullable List<String> resultEvents) {
+    this.resultEvents = resultEvents;
+  }
+
+
+  public ProfitSettings metrics(@javax.annotation.Nullable Map<String, Map<String, Object>> metrics) {
+    this.metrics = metrics;
+    return this;
+  }
+
+  public ProfitSettings putMetricsItem(String key, Map<String, Object> metricsItem) {
+    if (this.metrics == null) {
+      this.metrics = new HashMap<>();
+    }
+    this.metrics.put(key, metricsItem);
+    return this;
+  }
+
+  /**
+   * Get metrics
+   * @return metrics
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_METRICS, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public Map<String, Map<String, Object>> getMetrics() {
+    return metrics;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_METRICS, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setMetrics(@javax.annotation.Nullable Map<String, Map<String, Object>> metrics) {
+    this.metrics = metrics;
+  }
+
+
   public ProfitSettings note(@javax.annotation.Nullable String note) {
     this.note = note;
     return this;
@@ -246,12 +322,14 @@ public class ProfitSettings {
         Objects.equals(this.marginPercent, profitSettings.marginPercent) &&
         Objects.equals(this.costPerOrder, profitSettings.costPerOrder) &&
         Objects.equals(this.campaignMargins, profitSettings.campaignMargins) &&
+        Objects.equals(this.resultEvents, profitSettings.resultEvents) &&
+        Objects.equals(this.metrics, profitSettings.metrics) &&
         Objects.equals(this.note, profitSettings.note);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(_object, marginPercent, costPerOrder, campaignMargins, note);
+    return Objects.hash(_object, marginPercent, costPerOrder, campaignMargins, resultEvents, metrics, note);
   }
 
   @Override
@@ -262,6 +340,8 @@ public class ProfitSettings {
     sb.append("    marginPercent: ").append(toIndentedString(marginPercent)).append("\n");
     sb.append("    costPerOrder: ").append(toIndentedString(costPerOrder)).append("\n");
     sb.append("    campaignMargins: ").append(toIndentedString(campaignMargins)).append("\n");
+    sb.append("    resultEvents: ").append(toIndentedString(resultEvents)).append("\n");
+    sb.append("    metrics: ").append(toIndentedString(metrics)).append("\n");
     sb.append("    note: ").append(toIndentedString(note)).append("\n");
     sb.append("}");
     return sb.toString();
@@ -328,6 +408,24 @@ public class ProfitSettings {
         joiner.add(String.format(java.util.Locale.ROOT, "%scampaign_margins%s%s=%s", prefix, suffix,
             "".equals(suffix) ? "" : String.format(java.util.Locale.ROOT, "%s%d%s", containerPrefix, _key, containerSuffix),
             getCampaignMargins().get(_key), ApiClient.urlEncode(ApiClient.valueToString(getCampaignMargins().get(_key)))));
+      }
+    }
+
+    // add `result_events` to the URL query string
+    if (getResultEvents() != null) {
+      for (int i = 0; i < getResultEvents().size(); i++) {
+        joiner.add(String.format(java.util.Locale.ROOT, "%sresult_events%s%s=%s", prefix, suffix,
+            "".equals(suffix) ? "" : String.format(java.util.Locale.ROOT, "%s%d%s", containerPrefix, i, containerSuffix),
+            ApiClient.urlEncode(ApiClient.valueToString(getResultEvents().get(i)))));
+      }
+    }
+
+    // add `metrics` to the URL query string
+    if (getMetrics() != null) {
+      for (String _key : getMetrics().keySet()) {
+        joiner.add(String.format(java.util.Locale.ROOT, "%smetrics%s%s=%s", prefix, suffix,
+            "".equals(suffix) ? "" : String.format(java.util.Locale.ROOT, "%s%d%s", containerPrefix, _key, containerSuffix),
+            getMetrics().get(_key), ApiClient.urlEncode(ApiClient.valueToString(getMetrics().get(_key)))));
       }
     }
 

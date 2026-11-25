@@ -78,7 +78,13 @@ class CampaignResultsApi
         'getProfitSettings' => [
             'application/json',
         ],
+        'listCampaignResultMetrics' => [
+            'application/json',
+        ],
         'listCampaignResults' => [
+            'application/json',
+        ],
+        'setCampaignResultMetric' => [
             'application/json',
         ],
         'setProfitSettings' => [
@@ -391,6 +397,337 @@ class CampaignResultsApi
 
 
         $resourcePath = '/v1/campaign-results/profit-settings';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+
+
+        // header params
+        if ($x_hermoso_user !== null) {
+            $headerParams['X-Hermoso-User'] = ObjectSerializer::toHeaderValue($x_hermoso_user);
+        }
+
+
+
+        $headers = $this->headerSelector->selectHeaders(
+            ['application/json', ],
+            $contentType,
+            $multipart
+        );
+
+        // for model (json/xml)
+        if (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem
+                        ];
+                    }
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+
+            } elseif (stripos($headers['Content-Type'], 'application/json') !== false) {
+                # if Content-Type contains "application/json", json_encode the form parameters
+                try {
+                    $httpBody = json_encode($formParams, JSON_THROW_ON_ERROR);
+                } catch (\JsonException $e) {
+                    throw new \InvalidArgumentException('json_encode error: ' . $e->getMessage(), 0, $e);
+                }
+            } else {
+                // for HTTP post (form)
+                $httpBody = ObjectSerializer::buildQuery($formParams);
+            }
+        }
+
+        // this endpoint requires Bearer (hmk_...) authentication (access token)
+        if (!empty($this->config->getAccessToken())) {
+            $headers['Authorization'] = 'Bearer ' . $this->config->getAccessToken();
+        }
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $operationHost = $this->config->getHost();
+        $query = ObjectSerializer::buildQuery($queryParams);
+        return new Request(
+            'GET',
+            $operationHost . $resourcePath . ($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Operation listCampaignResultMetrics
+     *
+     * List your result metrics and formulas
+     *
+     * @param  string|null $x_hermoso_user Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result. (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['listCampaignResultMetrics'] to see the possible values for this operation
+     *
+     * @throws \Hermoso\ApiException on non-2xx response or if the response body is not in the expected format
+     * @throws \InvalidArgumentException
+     * @return \Hermoso\Model\CampaignResultMetrics|\Hermoso\Model\Error|\Hermoso\Model\Error|\Hermoso\Model\Error|\Hermoso\Model\Error
+     */
+    public function listCampaignResultMetrics($x_hermoso_user = null, string $contentType = self::contentTypes['listCampaignResultMetrics'][0])
+    {
+        list($response) = $this->listCampaignResultMetricsWithHttpInfo($x_hermoso_user, $contentType);
+        return $response;
+    }
+
+    /**
+     * Operation listCampaignResultMetricsWithHttpInfo
+     *
+     * List your result metrics and formulas
+     *
+     * @param  string|null $x_hermoso_user Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result. (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['listCampaignResultMetrics'] to see the possible values for this operation
+     *
+     * @throws \Hermoso\ApiException on non-2xx response or if the response body is not in the expected format
+     * @throws \InvalidArgumentException
+     * @return array of \Hermoso\Model\CampaignResultMetrics|\Hermoso\Model\Error|\Hermoso\Model\Error|\Hermoso\Model\Error|\Hermoso\Model\Error, HTTP status code, HTTP response headers (array of strings)
+     */
+    public function listCampaignResultMetricsWithHttpInfo($x_hermoso_user = null, string $contentType = self::contentTypes['listCampaignResultMetrics'][0])
+    {
+        $request = $this->listCampaignResultMetricsRequest($x_hermoso_user, $contentType);
+
+        try {
+            $options = $this->createHttpClientOption();
+            try {
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                $eResponse = $this->getExceptionResponse($e);
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $eResponse ? $eResponse->getHeaders() : null,
+                    $eResponse ? (string) $eResponse->getBody() : null
+                );
+            } catch (NetworkExceptionInterface $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    null,
+                    null
+                );
+            }
+
+            $statusCode = $response->getStatusCode();
+
+
+            switch($statusCode) {
+                case 200:
+                    return $this->handleResponseWithDataType(
+                        '\Hermoso\Model\CampaignResultMetrics',
+                        $request,
+                        $response,
+                    );
+                case 400:
+                    return $this->handleResponseWithDataType(
+                        '\Hermoso\Model\Error',
+                        $request,
+                        $response,
+                    );
+                case 401:
+                    return $this->handleResponseWithDataType(
+                        '\Hermoso\Model\Error',
+                        $request,
+                        $response,
+                    );
+                case 404:
+                    return $this->handleResponseWithDataType(
+                        '\Hermoso\Model\Error',
+                        $request,
+                        $response,
+                    );
+                case 429:
+                    return $this->handleResponseWithDataType(
+                        '\Hermoso\Model\Error',
+                        $request,
+                        $response,
+                    );
+            }
+
+            
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
+            }
+
+            return $this->handleResponseWithDataType(
+                '\Hermoso\Model\CampaignResultMetrics',
+                $request,
+                $response,
+            );
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Hermoso\Model\CampaignResultMetrics',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 400:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Hermoso\Model\Error',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 401:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Hermoso\Model\Error',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 404:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Hermoso\Model\Error',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 429:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Hermoso\Model\Error',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+            }
+        
+
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation listCampaignResultMetricsAsync
+     *
+     * List your result metrics and formulas
+     *
+     * @param  string|null $x_hermoso_user Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result. (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['listCampaignResultMetrics'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function listCampaignResultMetricsAsync($x_hermoso_user = null, string $contentType = self::contentTypes['listCampaignResultMetrics'][0])
+    {
+        return $this->listCampaignResultMetricsAsyncWithHttpInfo($x_hermoso_user, $contentType)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            );
+    }
+
+    /**
+     * Operation listCampaignResultMetricsAsyncWithHttpInfo
+     *
+     * List your result metrics and formulas
+     *
+     * @param  string|null $x_hermoso_user Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result. (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['listCampaignResultMetrics'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function listCampaignResultMetricsAsyncWithHttpInfo($x_hermoso_user = null, string $contentType = self::contentTypes['listCampaignResultMetrics'][0])
+    {
+        $returnType = '\Hermoso\Model\CampaignResultMetrics';
+        $request = $this->listCampaignResultMetricsRequest($x_hermoso_user, $contentType);
+
+        return $this->client
+            ->sendAsync($request, $this->createHttpClientOption())
+            ->then(
+                function ($response) use ($returnType) {
+                    if ($returnType === '\SplFileObject') {
+                        $content = $response->getBody(); //stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ($returnType !== 'string') {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, $returnType, []),
+                        $response->getStatusCode(),
+                        $response->getHeaders()
+                    ];
+                },
+                function ($exception) {
+                    $response = $this->getExceptionResponse($exception);
+                    if ($response === null) {
+                        throw new ApiException(
+                            "[{$exception->getCode()}] {$exception->getMessage()}",
+                            (int) $exception->getCode(),
+                            null,
+                            null
+                        );
+                    }
+                    $statusCode = $response->getStatusCode();
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
+                }
+            );
+    }
+
+    /**
+     * Create request for operation 'listCampaignResultMetrics'
+     *
+     * @param  string|null $x_hermoso_user Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result. (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['listCampaignResultMetrics'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Psr7\Request
+     */
+    public function listCampaignResultMetricsRequest($x_hermoso_user = null, string $contentType = self::contentTypes['listCampaignResultMetrics'][0])
+    {
+
+
+
+        $resourcePath = '/v1/campaign-results/metrics';
         $formParams = [];
         $queryParams = [];
         $headerParams = [];
@@ -821,6 +1158,380 @@ class CampaignResultsApi
         $query = ObjectSerializer::buildQuery($queryParams);
         return new Request(
             'GET',
+            $operationHost . $resourcePath . ($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Operation setCampaignResultMetric
+     *
+     * Name a result metric or define a formula
+     *
+     * @param  string $key key (required)
+     * @param  \Hermoso\Model\CampaignResultMetric $campaign_result_metric campaign_result_metric (required)
+     * @param  string|null $x_hermoso_user Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result. (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['setCampaignResultMetric'] to see the possible values for this operation
+     *
+     * @throws \Hermoso\ApiException on non-2xx response or if the response body is not in the expected format
+     * @throws \InvalidArgumentException
+     * @return \Hermoso\Model\CampaignResultMetrics|\Hermoso\Model\Error|\Hermoso\Model\Error|\Hermoso\Model\Error|\Hermoso\Model\Error
+     */
+    public function setCampaignResultMetric($key, $campaign_result_metric, $x_hermoso_user = null, string $contentType = self::contentTypes['setCampaignResultMetric'][0])
+    {
+        list($response) = $this->setCampaignResultMetricWithHttpInfo($key, $campaign_result_metric, $x_hermoso_user, $contentType);
+        return $response;
+    }
+
+    /**
+     * Operation setCampaignResultMetricWithHttpInfo
+     *
+     * Name a result metric or define a formula
+     *
+     * @param  string $key (required)
+     * @param  \Hermoso\Model\CampaignResultMetric $campaign_result_metric (required)
+     * @param  string|null $x_hermoso_user Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result. (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['setCampaignResultMetric'] to see the possible values for this operation
+     *
+     * @throws \Hermoso\ApiException on non-2xx response or if the response body is not in the expected format
+     * @throws \InvalidArgumentException
+     * @return array of \Hermoso\Model\CampaignResultMetrics|\Hermoso\Model\Error|\Hermoso\Model\Error|\Hermoso\Model\Error|\Hermoso\Model\Error, HTTP status code, HTTP response headers (array of strings)
+     */
+    public function setCampaignResultMetricWithHttpInfo($key, $campaign_result_metric, $x_hermoso_user = null, string $contentType = self::contentTypes['setCampaignResultMetric'][0])
+    {
+        $request = $this->setCampaignResultMetricRequest($key, $campaign_result_metric, $x_hermoso_user, $contentType);
+
+        try {
+            $options = $this->createHttpClientOption();
+            try {
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                $eResponse = $this->getExceptionResponse($e);
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $eResponse ? $eResponse->getHeaders() : null,
+                    $eResponse ? (string) $eResponse->getBody() : null
+                );
+            } catch (NetworkExceptionInterface $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    null,
+                    null
+                );
+            }
+
+            $statusCode = $response->getStatusCode();
+
+
+            switch($statusCode) {
+                case 200:
+                    return $this->handleResponseWithDataType(
+                        '\Hermoso\Model\CampaignResultMetrics',
+                        $request,
+                        $response,
+                    );
+                case 400:
+                    return $this->handleResponseWithDataType(
+                        '\Hermoso\Model\Error',
+                        $request,
+                        $response,
+                    );
+                case 401:
+                    return $this->handleResponseWithDataType(
+                        '\Hermoso\Model\Error',
+                        $request,
+                        $response,
+                    );
+                case 404:
+                    return $this->handleResponseWithDataType(
+                        '\Hermoso\Model\Error',
+                        $request,
+                        $response,
+                    );
+                case 429:
+                    return $this->handleResponseWithDataType(
+                        '\Hermoso\Model\Error',
+                        $request,
+                        $response,
+                    );
+            }
+
+            
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
+            }
+
+            return $this->handleResponseWithDataType(
+                '\Hermoso\Model\CampaignResultMetrics',
+                $request,
+                $response,
+            );
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Hermoso\Model\CampaignResultMetrics',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 400:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Hermoso\Model\Error',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 401:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Hermoso\Model\Error',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 404:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Hermoso\Model\Error',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 429:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Hermoso\Model\Error',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+            }
+        
+
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation setCampaignResultMetricAsync
+     *
+     * Name a result metric or define a formula
+     *
+     * @param  string $key (required)
+     * @param  \Hermoso\Model\CampaignResultMetric $campaign_result_metric (required)
+     * @param  string|null $x_hermoso_user Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result. (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['setCampaignResultMetric'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function setCampaignResultMetricAsync($key, $campaign_result_metric, $x_hermoso_user = null, string $contentType = self::contentTypes['setCampaignResultMetric'][0])
+    {
+        return $this->setCampaignResultMetricAsyncWithHttpInfo($key, $campaign_result_metric, $x_hermoso_user, $contentType)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            );
+    }
+
+    /**
+     * Operation setCampaignResultMetricAsyncWithHttpInfo
+     *
+     * Name a result metric or define a formula
+     *
+     * @param  string $key (required)
+     * @param  \Hermoso\Model\CampaignResultMetric $campaign_result_metric (required)
+     * @param  string|null $x_hermoso_user Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result. (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['setCampaignResultMetric'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function setCampaignResultMetricAsyncWithHttpInfo($key, $campaign_result_metric, $x_hermoso_user = null, string $contentType = self::contentTypes['setCampaignResultMetric'][0])
+    {
+        $returnType = '\Hermoso\Model\CampaignResultMetrics';
+        $request = $this->setCampaignResultMetricRequest($key, $campaign_result_metric, $x_hermoso_user, $contentType);
+
+        return $this->client
+            ->sendAsync($request, $this->createHttpClientOption())
+            ->then(
+                function ($response) use ($returnType) {
+                    if ($returnType === '\SplFileObject') {
+                        $content = $response->getBody(); //stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ($returnType !== 'string') {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, $returnType, []),
+                        $response->getStatusCode(),
+                        $response->getHeaders()
+                    ];
+                },
+                function ($exception) {
+                    $response = $this->getExceptionResponse($exception);
+                    if ($response === null) {
+                        throw new ApiException(
+                            "[{$exception->getCode()}] {$exception->getMessage()}",
+                            (int) $exception->getCode(),
+                            null,
+                            null
+                        );
+                    }
+                    $statusCode = $response->getStatusCode();
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
+                }
+            );
+    }
+
+    /**
+     * Create request for operation 'setCampaignResultMetric'
+     *
+     * @param  string $key (required)
+     * @param  \Hermoso\Model\CampaignResultMetric $campaign_result_metric (required)
+     * @param  string|null $x_hermoso_user Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result. (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['setCampaignResultMetric'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Psr7\Request
+     */
+    public function setCampaignResultMetricRequest($key, $campaign_result_metric, $x_hermoso_user = null, string $contentType = self::contentTypes['setCampaignResultMetric'][0])
+    {
+
+        // verify the required parameter 'key' is set
+        if ($key === null || (is_array($key) && count($key) === 0)) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $key when calling setCampaignResultMetric'
+            );
+        }
+
+        // verify the required parameter 'campaign_result_metric' is set
+        if ($campaign_result_metric === null || (is_array($campaign_result_metric) && count($campaign_result_metric) === 0)) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $campaign_result_metric when calling setCampaignResultMetric'
+            );
+        }
+
+
+
+        $resourcePath = '/v1/campaign-results/metrics/{key}';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+
+
+        // header params
+        if ($x_hermoso_user !== null) {
+            $headerParams['X-Hermoso-User'] = ObjectSerializer::toHeaderValue($x_hermoso_user);
+        }
+
+        // path params
+        if ($key !== null) {
+            $resourcePath = str_replace(
+                '{key}',
+                ObjectSerializer::toPathValue($key),
+                $resourcePath
+            );
+        }
+
+
+        $headers = $this->headerSelector->selectHeaders(
+            ['application/json', ],
+            $contentType,
+            $multipart
+        );
+
+        // for model (json/xml)
+        if (isset($campaign_result_metric)) {
+            if (stripos($headers['Content-Type'], 'application/json') !== false) {
+                # if Content-Type contains "application/json", json_encode the body
+                try {
+                    $httpBody = json_encode(ObjectSerializer::sanitizeForSerialization($campaign_result_metric), JSON_THROW_ON_ERROR);
+                } catch (\JsonException $e) {
+                    throw new \InvalidArgumentException('json_encode error: ' . $e->getMessage(), 0, $e);
+                }
+            } else {
+                $httpBody = $campaign_result_metric;
+            }
+        } elseif (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem
+                        ];
+                    }
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+
+            } elseif (stripos($headers['Content-Type'], 'application/json') !== false) {
+                # if Content-Type contains "application/json", json_encode the form parameters
+                try {
+                    $httpBody = json_encode($formParams, JSON_THROW_ON_ERROR);
+                } catch (\JsonException $e) {
+                    throw new \InvalidArgumentException('json_encode error: ' . $e->getMessage(), 0, $e);
+                }
+            } else {
+                // for HTTP post (form)
+                $httpBody = ObjectSerializer::buildQuery($formParams);
+            }
+        }
+
+        // this endpoint requires Bearer (hmk_...) authentication (access token)
+        if (!empty($this->config->getAccessToken())) {
+            $headers['Authorization'] = 'Bearer ' . $this->config->getAccessToken();
+        }
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $operationHost = $this->config->getHost();
+        $query = ObjectSerializer::buildQuery($queryParams);
+        return new Request(
+            'PUT',
             $operationHost . $resourcePath . ($query ? "?{$query}" : ''),
             $headers,
             $httpBody

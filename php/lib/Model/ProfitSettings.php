@@ -62,6 +62,8 @@ class ProfitSettings implements ModelInterface, ArrayAccess, \JsonSerializable
         'margin_percent' => 'float',
         'cost_per_order' => 'float',
         'campaign_margins' => 'array<string,float>',
+        'result_events' => 'string[]',
+        'metrics' => 'array<string,array<string,mixed>>',
         'note' => 'string'
     ];
 
@@ -77,6 +79,8 @@ class ProfitSettings implements ModelInterface, ArrayAccess, \JsonSerializable
         'margin_percent' => null,
         'cost_per_order' => null,
         'campaign_margins' => null,
+        'result_events' => null,
+        'metrics' => null,
         'note' => null
     ];
 
@@ -90,6 +94,8 @@ class ProfitSettings implements ModelInterface, ArrayAccess, \JsonSerializable
         'margin_percent' => false,
         'cost_per_order' => false,
         'campaign_margins' => false,
+        'result_events' => false,
+        'metrics' => false,
         'note' => false
     ];
 
@@ -183,6 +189,8 @@ class ProfitSettings implements ModelInterface, ArrayAccess, \JsonSerializable
         'margin_percent' => 'margin_percent',
         'cost_per_order' => 'cost_per_order',
         'campaign_margins' => 'campaign_margins',
+        'result_events' => 'result_events',
+        'metrics' => 'metrics',
         'note' => 'note'
     ];
 
@@ -196,6 +204,8 @@ class ProfitSettings implements ModelInterface, ArrayAccess, \JsonSerializable
         'margin_percent' => 'setMarginPercent',
         'cost_per_order' => 'setCostPerOrder',
         'campaign_margins' => 'setCampaignMargins',
+        'result_events' => 'setResultEvents',
+        'metrics' => 'setMetrics',
         'note' => 'setNote'
     ];
 
@@ -209,6 +219,8 @@ class ProfitSettings implements ModelInterface, ArrayAccess, \JsonSerializable
         'margin_percent' => 'getMarginPercent',
         'cost_per_order' => 'getCostPerOrder',
         'campaign_margins' => 'getCampaignMargins',
+        'result_events' => 'getResultEvents',
+        'metrics' => 'getMetrics',
         'note' => 'getNote'
     ];
 
@@ -288,6 +300,8 @@ class ProfitSettings implements ModelInterface, ArrayAccess, \JsonSerializable
         $this->setIfExists('margin_percent', $data ?? [], null);
         $this->setIfExists('cost_per_order', $data ?? [], null);
         $this->setIfExists('campaign_margins', $data ?? [], null);
+        $this->setIfExists('result_events', $data ?? [], null);
+        $this->setIfExists('metrics', $data ?? [], null);
         $this->setIfExists('note', $data ?? [], null);
     }
 
@@ -450,6 +464,60 @@ class ProfitSettings implements ModelInterface, ArrayAccess, \JsonSerializable
             throw new \InvalidArgumentException('non-nullable campaign_margins cannot be null');
         }
         $this->container['campaign_margins'] = $campaign_margins;
+
+        return $this;
+    }
+
+    /**
+     * Gets result_events
+     *
+     * @return string[]|null
+     */
+    public function getResultEvents()
+    {
+        return $this->container['result_events'];
+    }
+
+    /**
+     * Sets result_events
+     *
+     * @param string[]|null $result_events result_events
+     *
+     * @return self
+     */
+    public function setResultEvents($result_events)
+    {
+        if (is_null($result_events)) {
+            throw new \InvalidArgumentException('non-nullable result_events cannot be null');
+        }
+        $this->container['result_events'] = $result_events;
+
+        return $this;
+    }
+
+    /**
+     * Gets metrics
+     *
+     * @return array<string,array<string,mixed>>|null
+     */
+    public function getMetrics()
+    {
+        return $this->container['metrics'];
+    }
+
+    /**
+     * Sets metrics
+     *
+     * @param array<string,array<string,mixed>>|null $metrics metrics
+     *
+     * @return self
+     */
+    public function setMetrics($metrics)
+    {
+        if (is_null($metrics)) {
+            throw new \InvalidArgumentException('non-nullable metrics cannot be null');
+        }
+        $this->container['metrics'] = $metrics;
 
         return $this;
     }

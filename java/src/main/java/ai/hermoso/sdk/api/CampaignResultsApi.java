@@ -18,6 +18,8 @@ import ai.hermoso.sdk.ApiResponse;
 import ai.hermoso.sdk.Configuration;
 import ai.hermoso.sdk.Pair;
 
+import ai.hermoso.sdk.model.CampaignResultMetric;
+import ai.hermoso.sdk.model.CampaignResultMetrics;
 import ai.hermoso.sdk.model.CampaignResults;
 import ai.hermoso.sdk.model.CampaignResultsUpload;
 import ai.hermoso.sdk.model.Error;
@@ -360,6 +362,200 @@ public class CampaignResultsApi {
   }
 
   /**
+   * List your result metrics and formulas
+   * Every metric key the brand uploaded (with its label and kind: count, money, percent or ratio), then every formula: the built-in ones (cac_percent, cost_per_sale, cost_per_qualified_lead, lead_to_sale, qualified_rate) and the brand’s own, plus the conversion events that count as campaign results.
+   * @param apiRequest {@link APIListCampaignResultMetricsRequest}
+   * @return CampaignResultMetrics
+   * @throws ApiException if fails to make API call
+   */
+  public CampaignResultMetrics listCampaignResultMetrics(APIListCampaignResultMetricsRequest apiRequest) throws ApiException {
+    return listCampaignResultMetrics(apiRequest, null);
+  }
+
+  /**
+   * List your result metrics and formulas
+   * Every metric key the brand uploaded (with its label and kind: count, money, percent or ratio), then every formula: the built-in ones (cac_percent, cost_per_sale, cost_per_qualified_lead, lead_to_sale, qualified_rate) and the brand’s own, plus the conversion events that count as campaign results.
+   * @param apiRequest {@link APIListCampaignResultMetricsRequest}
+   * @param headers Optional headers to include in the request
+   * @return CampaignResultMetrics
+   * @throws ApiException if fails to make API call
+   */
+  public CampaignResultMetrics listCampaignResultMetrics(APIListCampaignResultMetricsRequest apiRequest, Map<String, String> headers) throws ApiException {
+    @javax.annotation.Nullable
+    String xHermosoUser = apiRequest.xHermosoUser();
+    return listCampaignResultMetrics(xHermosoUser, headers);
+  }
+
+  /**
+   * List your result metrics and formulas
+   * Every metric key the brand uploaded (with its label and kind: count, money, percent or ratio), then every formula: the built-in ones (cac_percent, cost_per_sale, cost_per_qualified_lead, lead_to_sale, qualified_rate) and the brand’s own, plus the conversion events that count as campaign results.
+   * @param apiRequest {@link APIListCampaignResultMetricsRequest}
+   * @return ApiResponse&lt;CampaignResultMetrics&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<CampaignResultMetrics> listCampaignResultMetricsWithHttpInfo(APIListCampaignResultMetricsRequest apiRequest) throws ApiException {
+    return listCampaignResultMetricsWithHttpInfo(apiRequest, null);
+  }
+
+  /**
+   * List your result metrics and formulas
+   * Every metric key the brand uploaded (with its label and kind: count, money, percent or ratio), then every formula: the built-in ones (cac_percent, cost_per_sale, cost_per_qualified_lead, lead_to_sale, qualified_rate) and the brand’s own, plus the conversion events that count as campaign results.
+   * @param apiRequest {@link APIListCampaignResultMetricsRequest}
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;CampaignResultMetrics&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<CampaignResultMetrics> listCampaignResultMetricsWithHttpInfo(APIListCampaignResultMetricsRequest apiRequest, Map<String, String> headers) throws ApiException {
+    String xHermosoUser = apiRequest.xHermosoUser();
+    return listCampaignResultMetricsWithHttpInfo(xHermosoUser, headers);
+  }
+
+  /**
+   * List your result metrics and formulas
+   * Every metric key the brand uploaded (with its label and kind: count, money, percent or ratio), then every formula: the built-in ones (cac_percent, cost_per_sale, cost_per_qualified_lead, lead_to_sale, qualified_rate) and the brand’s own, plus the conversion events that count as campaign results.
+   * @param xHermosoUser Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result. (optional)
+   * @return CampaignResultMetrics
+   * @throws ApiException if fails to make API call
+   */
+  public CampaignResultMetrics listCampaignResultMetrics(@javax.annotation.Nullable String xHermosoUser) throws ApiException {
+    return listCampaignResultMetrics(xHermosoUser, null);
+  }
+
+  /**
+   * List your result metrics and formulas
+   * Every metric key the brand uploaded (with its label and kind: count, money, percent or ratio), then every formula: the built-in ones (cac_percent, cost_per_sale, cost_per_qualified_lead, lead_to_sale, qualified_rate) and the brand’s own, plus the conversion events that count as campaign results.
+   * @param xHermosoUser Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result. (optional)
+   * @param headers Optional headers to include in the request
+   * @return CampaignResultMetrics
+   * @throws ApiException if fails to make API call
+   */
+  public CampaignResultMetrics listCampaignResultMetrics(@javax.annotation.Nullable String xHermosoUser, Map<String, String> headers) throws ApiException {
+    ApiResponse<CampaignResultMetrics> localVarResponse = listCampaignResultMetricsWithHttpInfo(xHermosoUser, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * List your result metrics and formulas
+   * Every metric key the brand uploaded (with its label and kind: count, money, percent or ratio), then every formula: the built-in ones (cac_percent, cost_per_sale, cost_per_qualified_lead, lead_to_sale, qualified_rate) and the brand’s own, plus the conversion events that count as campaign results.
+   * @param xHermosoUser Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result. (optional)
+   * @return ApiResponse&lt;CampaignResultMetrics&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<CampaignResultMetrics> listCampaignResultMetricsWithHttpInfo(@javax.annotation.Nullable String xHermosoUser) throws ApiException {
+    return listCampaignResultMetricsWithHttpInfo(xHermosoUser, null);
+  }
+
+  /**
+   * List your result metrics and formulas
+   * Every metric key the brand uploaded (with its label and kind: count, money, percent or ratio), then every formula: the built-in ones (cac_percent, cost_per_sale, cost_per_qualified_lead, lead_to_sale, qualified_rate) and the brand’s own, plus the conversion events that count as campaign results.
+   * @param xHermosoUser Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result. (optional)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;CampaignResultMetrics&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<CampaignResultMetrics> listCampaignResultMetricsWithHttpInfo(@javax.annotation.Nullable String xHermosoUser, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = listCampaignResultMetricsRequestBuilder(xHermosoUser, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("listCampaignResultMetrics", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<CampaignResultMetrics>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
+        }
+
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        CampaignResultMetrics responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<CampaignResultMetrics>() {});
+        
+
+        return new ApiResponse<CampaignResultMetrics>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder listCampaignResultMetricsRequestBuilder(@javax.annotation.Nullable String xHermosoUser, Map<String, String> headers) throws ApiException {
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/v1/campaign-results/metrics";
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    if (xHermosoUser != null) {
+      localVarRequestBuilder.header("X-Hermoso-User", xHermosoUser.toString());
+    }
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    localVarRequestBuilder.method("GET", HttpRequest.BodyPublishers.noBody());
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+
+  public static final class APIListCampaignResultMetricsRequest {
+    @javax.annotation.Nullable
+    private String xHermosoUser; // Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result. (optional)
+
+    private APIListCampaignResultMetricsRequest(Builder builder) {
+      this.xHermosoUser = builder.xHermosoUser;
+    }
+    @javax.annotation.Nullable
+    public String xHermosoUser() {
+      return xHermosoUser;
+    }
+    public static Builder newBuilder() {
+      return new Builder();
+    }
+
+    public static class Builder {
+      private String xHermosoUser;
+
+      public Builder xHermosoUser(@javax.annotation.Nullable String xHermosoUser) {
+        this.xHermosoUser = xHermosoUser;
+        return this;
+      }
+      public APIListCampaignResultMetricsRequest build() {
+        return new APIListCampaignResultMetricsRequest(this);
+      }
+    }
+  }
+
+  /**
    * List uploaded results
    * 
    * @param apiRequest {@link APIListCampaignResultsRequest}
@@ -604,6 +800,253 @@ public class CampaignResultsApi {
       }
       public APIListCampaignResultsRequest build() {
         return new APIListCampaignResultsRequest(this);
+      }
+    }
+  }
+
+  /**
+   * Name a result metric or define a formula
+   * Sets a metric key’s &#x60;label&#x60; and &#x60;kind&#x60; (count, money with its &#x60;currency&#x60;, percent or ratio), and optionally a &#x60;formula&#x60; with + - * / and parentheses over spend, impressions, clicks, sales, revenue, leads, qualified_leads, profit and any uploaded metric key. &#x60;formula: null&#x60; removes it. A formula is parsed, never run as code; division by zero gives null. Every formula shows per campaign in GET /v1/campaign-profit.
+   * @param apiRequest {@link APISetCampaignResultMetricRequest}
+   * @return CampaignResultMetrics
+   * @throws ApiException if fails to make API call
+   */
+  public CampaignResultMetrics setCampaignResultMetric(APISetCampaignResultMetricRequest apiRequest) throws ApiException {
+    return setCampaignResultMetric(apiRequest, null);
+  }
+
+  /**
+   * Name a result metric or define a formula
+   * Sets a metric key’s &#x60;label&#x60; and &#x60;kind&#x60; (count, money with its &#x60;currency&#x60;, percent or ratio), and optionally a &#x60;formula&#x60; with + - * / and parentheses over spend, impressions, clicks, sales, revenue, leads, qualified_leads, profit and any uploaded metric key. &#x60;formula: null&#x60; removes it. A formula is parsed, never run as code; division by zero gives null. Every formula shows per campaign in GET /v1/campaign-profit.
+   * @param apiRequest {@link APISetCampaignResultMetricRequest}
+   * @param headers Optional headers to include in the request
+   * @return CampaignResultMetrics
+   * @throws ApiException if fails to make API call
+   */
+  public CampaignResultMetrics setCampaignResultMetric(APISetCampaignResultMetricRequest apiRequest, Map<String, String> headers) throws ApiException {
+    @javax.annotation.Nonnull
+    String key = apiRequest.key();
+    @javax.annotation.Nonnull
+    CampaignResultMetric campaignResultMetric = apiRequest.campaignResultMetric();
+    @javax.annotation.Nullable
+    String xHermosoUser = apiRequest.xHermosoUser();
+    return setCampaignResultMetric(key, campaignResultMetric, xHermosoUser, headers);
+  }
+
+  /**
+   * Name a result metric or define a formula
+   * Sets a metric key’s &#x60;label&#x60; and &#x60;kind&#x60; (count, money with its &#x60;currency&#x60;, percent or ratio), and optionally a &#x60;formula&#x60; with + - * / and parentheses over spend, impressions, clicks, sales, revenue, leads, qualified_leads, profit and any uploaded metric key. &#x60;formula: null&#x60; removes it. A formula is parsed, never run as code; division by zero gives null. Every formula shows per campaign in GET /v1/campaign-profit.
+   * @param apiRequest {@link APISetCampaignResultMetricRequest}
+   * @return ApiResponse&lt;CampaignResultMetrics&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<CampaignResultMetrics> setCampaignResultMetricWithHttpInfo(APISetCampaignResultMetricRequest apiRequest) throws ApiException {
+    return setCampaignResultMetricWithHttpInfo(apiRequest, null);
+  }
+
+  /**
+   * Name a result metric or define a formula
+   * Sets a metric key’s &#x60;label&#x60; and &#x60;kind&#x60; (count, money with its &#x60;currency&#x60;, percent or ratio), and optionally a &#x60;formula&#x60; with + - * / and parentheses over spend, impressions, clicks, sales, revenue, leads, qualified_leads, profit and any uploaded metric key. &#x60;formula: null&#x60; removes it. A formula is parsed, never run as code; division by zero gives null. Every formula shows per campaign in GET /v1/campaign-profit.
+   * @param apiRequest {@link APISetCampaignResultMetricRequest}
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;CampaignResultMetrics&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<CampaignResultMetrics> setCampaignResultMetricWithHttpInfo(APISetCampaignResultMetricRequest apiRequest, Map<String, String> headers) throws ApiException {
+    String key = apiRequest.key();
+    CampaignResultMetric campaignResultMetric = apiRequest.campaignResultMetric();
+    String xHermosoUser = apiRequest.xHermosoUser();
+    return setCampaignResultMetricWithHttpInfo(key, campaignResultMetric, xHermosoUser, headers);
+  }
+
+  /**
+   * Name a result metric or define a formula
+   * Sets a metric key’s &#x60;label&#x60; and &#x60;kind&#x60; (count, money with its &#x60;currency&#x60;, percent or ratio), and optionally a &#x60;formula&#x60; with + - * / and parentheses over spend, impressions, clicks, sales, revenue, leads, qualified_leads, profit and any uploaded metric key. &#x60;formula: null&#x60; removes it. A formula is parsed, never run as code; division by zero gives null. Every formula shows per campaign in GET /v1/campaign-profit.
+   * @param key  (required)
+   * @param campaignResultMetric  (required)
+   * @param xHermosoUser Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result. (optional)
+   * @return CampaignResultMetrics
+   * @throws ApiException if fails to make API call
+   */
+  public CampaignResultMetrics setCampaignResultMetric(@javax.annotation.Nonnull String key, @javax.annotation.Nonnull CampaignResultMetric campaignResultMetric, @javax.annotation.Nullable String xHermosoUser) throws ApiException {
+    return setCampaignResultMetric(key, campaignResultMetric, xHermosoUser, null);
+  }
+
+  /**
+   * Name a result metric or define a formula
+   * Sets a metric key’s &#x60;label&#x60; and &#x60;kind&#x60; (count, money with its &#x60;currency&#x60;, percent or ratio), and optionally a &#x60;formula&#x60; with + - * / and parentheses over spend, impressions, clicks, sales, revenue, leads, qualified_leads, profit and any uploaded metric key. &#x60;formula: null&#x60; removes it. A formula is parsed, never run as code; division by zero gives null. Every formula shows per campaign in GET /v1/campaign-profit.
+   * @param key  (required)
+   * @param campaignResultMetric  (required)
+   * @param xHermosoUser Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result. (optional)
+   * @param headers Optional headers to include in the request
+   * @return CampaignResultMetrics
+   * @throws ApiException if fails to make API call
+   */
+  public CampaignResultMetrics setCampaignResultMetric(@javax.annotation.Nonnull String key, @javax.annotation.Nonnull CampaignResultMetric campaignResultMetric, @javax.annotation.Nullable String xHermosoUser, Map<String, String> headers) throws ApiException {
+    ApiResponse<CampaignResultMetrics> localVarResponse = setCampaignResultMetricWithHttpInfo(key, campaignResultMetric, xHermosoUser, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Name a result metric or define a formula
+   * Sets a metric key’s &#x60;label&#x60; and &#x60;kind&#x60; (count, money with its &#x60;currency&#x60;, percent or ratio), and optionally a &#x60;formula&#x60; with + - * / and parentheses over spend, impressions, clicks, sales, revenue, leads, qualified_leads, profit and any uploaded metric key. &#x60;formula: null&#x60; removes it. A formula is parsed, never run as code; division by zero gives null. Every formula shows per campaign in GET /v1/campaign-profit.
+   * @param key  (required)
+   * @param campaignResultMetric  (required)
+   * @param xHermosoUser Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result. (optional)
+   * @return ApiResponse&lt;CampaignResultMetrics&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<CampaignResultMetrics> setCampaignResultMetricWithHttpInfo(@javax.annotation.Nonnull String key, @javax.annotation.Nonnull CampaignResultMetric campaignResultMetric, @javax.annotation.Nullable String xHermosoUser) throws ApiException {
+    return setCampaignResultMetricWithHttpInfo(key, campaignResultMetric, xHermosoUser, null);
+  }
+
+  /**
+   * Name a result metric or define a formula
+   * Sets a metric key’s &#x60;label&#x60; and &#x60;kind&#x60; (count, money with its &#x60;currency&#x60;, percent or ratio), and optionally a &#x60;formula&#x60; with + - * / and parentheses over spend, impressions, clicks, sales, revenue, leads, qualified_leads, profit and any uploaded metric key. &#x60;formula: null&#x60; removes it. A formula is parsed, never run as code; division by zero gives null. Every formula shows per campaign in GET /v1/campaign-profit.
+   * @param key  (required)
+   * @param campaignResultMetric  (required)
+   * @param xHermosoUser Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result. (optional)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;CampaignResultMetrics&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<CampaignResultMetrics> setCampaignResultMetricWithHttpInfo(@javax.annotation.Nonnull String key, @javax.annotation.Nonnull CampaignResultMetric campaignResultMetric, @javax.annotation.Nullable String xHermosoUser, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = setCampaignResultMetricRequestBuilder(key, campaignResultMetric, xHermosoUser, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("setCampaignResultMetric", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<CampaignResultMetrics>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
+        }
+
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        CampaignResultMetrics responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<CampaignResultMetrics>() {});
+        
+
+        return new ApiResponse<CampaignResultMetrics>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder setCampaignResultMetricRequestBuilder(@javax.annotation.Nonnull String key, @javax.annotation.Nonnull CampaignResultMetric campaignResultMetric, @javax.annotation.Nullable String xHermosoUser, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'key' is set
+    if (key == null) {
+      throw new ApiException(400, "Missing the required parameter 'key' when calling setCampaignResultMetric");
+    }
+    // verify the required parameter 'campaignResultMetric' is set
+    if (campaignResultMetric == null) {
+      throw new ApiException(400, "Missing the required parameter 'campaignResultMetric' when calling setCampaignResultMetric");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/v1/campaign-results/metrics/{key}"
+        .replace("{key}", ApiClient.urlEncode(key.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    if (xHermosoUser != null) {
+      localVarRequestBuilder.header("X-Hermoso-User", xHermosoUser.toString());
+    }
+    localVarRequestBuilder.header("Content-Type", "application/json");
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    try {
+      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(campaignResultMetric);
+      localVarRequestBuilder.method("PUT", HttpRequest.BodyPublishers.ofByteArray(localVarPostBody));
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+
+  public static final class APISetCampaignResultMetricRequest {
+    @javax.annotation.Nonnull
+    private String key; //  (required)
+    @javax.annotation.Nonnull
+    private CampaignResultMetric campaignResultMetric; //  (required)
+    @javax.annotation.Nullable
+    private String xHermosoUser; // Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result. (optional)
+
+    private APISetCampaignResultMetricRequest(Builder builder) {
+      this.key = builder.key;
+      this.campaignResultMetric = builder.campaignResultMetric;
+      this.xHermosoUser = builder.xHermosoUser;
+    }
+    @javax.annotation.Nonnull
+    public String key() {
+      return key;
+    }
+    @javax.annotation.Nonnull
+    public CampaignResultMetric campaignResultMetric() {
+      return campaignResultMetric;
+    }
+    @javax.annotation.Nullable
+    public String xHermosoUser() {
+      return xHermosoUser;
+    }
+    public static Builder newBuilder() {
+      return new Builder();
+    }
+
+    public static class Builder {
+      private String key;
+      private CampaignResultMetric campaignResultMetric;
+      private String xHermosoUser;
+
+      public Builder key(@javax.annotation.Nonnull String key) {
+        this.key = key;
+        return this;
+      }
+      public Builder campaignResultMetric(@javax.annotation.Nonnull CampaignResultMetric campaignResultMetric) {
+        this.campaignResultMetric = campaignResultMetric;
+        return this;
+      }
+      public Builder xHermosoUser(@javax.annotation.Nullable String xHermosoUser) {
+        this.xHermosoUser = xHermosoUser;
+        return this;
+      }
+      public APISetCampaignResultMetricRequest build() {
+        return new APISetCampaignResultMetricRequest(this);
       }
     }
   }

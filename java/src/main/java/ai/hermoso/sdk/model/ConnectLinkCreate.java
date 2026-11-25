@@ -36,7 +36,9 @@ import ai.hermoso.sdk.ApiClient;
   ConnectLinkCreate.JSON_PROPERTY_PROVIDER,
   ConnectLinkCreate.JSON_PROPERTY_REDIRECT_URL,
   ConnectLinkCreate.JSON_PROPERTY_STATE,
-  ConnectLinkCreate.JSON_PROPERTY_EXPIRES_IN_MINUTES
+  ConnectLinkCreate.JSON_PROPERTY_EXPIRES_IN_MINUTES,
+  ConnectLinkCreate.JSON_PROPERTY_EXTERNAL_ID,
+  ConnectLinkCreate.JSON_PROPERTY_WELCOME
 })
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.27.0")
 public class ConnectLinkCreate {
@@ -55,6 +57,14 @@ public class ConnectLinkCreate {
   public static final String JSON_PROPERTY_EXPIRES_IN_MINUTES = "expires_in_minutes";
   @javax.annotation.Nullable
   private Integer expiresInMinutes;
+
+  public static final String JSON_PROPERTY_EXTERNAL_ID = "external_id";
+  @javax.annotation.Nullable
+  private String externalId;
+
+  public static final String JSON_PROPERTY_WELCOME = "welcome";
+  @javax.annotation.Nullable
+  private Boolean welcome;
 
   public ConnectLinkCreate() { 
   }
@@ -157,6 +167,54 @@ public class ConnectLinkCreate {
   }
 
 
+  public ConnectLinkCreate externalId(@javax.annotation.Nullable String externalId) {
+    this.externalId = externalId;
+    return this;
+  }
+
+  /**
+   * Your own id for this customer (letters, digits, - _ . : @, up to 128). It is mapped to this brand and returned on the link.
+   * @return externalId
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_EXTERNAL_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public String getExternalId() {
+    return externalId;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_EXTERNAL_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setExternalId(@javax.annotation.Nullable String externalId) {
+    this.externalId = externalId;
+  }
+
+
+  public ConnectLinkCreate welcome(@javax.annotation.Nullable Boolean welcome) {
+    this.welcome = welcome;
+    return this;
+  }
+
+  /**
+   * true shows your saved welcome screen on this link, false shows the plain page; omitted follows the screen’s showByDefault.
+   * @return welcome
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_WELCOME, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public Boolean getWelcome() {
+    return welcome;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_WELCOME, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setWelcome(@javax.annotation.Nullable Boolean welcome) {
+    this.welcome = welcome;
+  }
+
+
   /**
    * Return true if this ConnectLinkCreate object is equal to o.
    */
@@ -172,12 +230,14 @@ public class ConnectLinkCreate {
     return Objects.equals(this.provider, connectLinkCreate.provider) &&
         Objects.equals(this.redirectUrl, connectLinkCreate.redirectUrl) &&
         Objects.equals(this.state, connectLinkCreate.state) &&
-        Objects.equals(this.expiresInMinutes, connectLinkCreate.expiresInMinutes);
+        Objects.equals(this.expiresInMinutes, connectLinkCreate.expiresInMinutes) &&
+        Objects.equals(this.externalId, connectLinkCreate.externalId) &&
+        Objects.equals(this.welcome, connectLinkCreate.welcome);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(provider, redirectUrl, state, expiresInMinutes);
+    return Objects.hash(provider, redirectUrl, state, expiresInMinutes, externalId, welcome);
   }
 
   @Override
@@ -188,6 +248,8 @@ public class ConnectLinkCreate {
     sb.append("    redirectUrl: ").append(toIndentedString(redirectUrl)).append("\n");
     sb.append("    state: ").append(toIndentedString(state)).append("\n");
     sb.append("    expiresInMinutes: ").append(toIndentedString(expiresInMinutes)).append("\n");
+    sb.append("    externalId: ").append(toIndentedString(externalId)).append("\n");
+    sb.append("    welcome: ").append(toIndentedString(welcome)).append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -250,6 +312,16 @@ public class ConnectLinkCreate {
     // add `expires_in_minutes` to the URL query string
     if (getExpiresInMinutes() != null) {
       joiner.add(String.format(java.util.Locale.ROOT, "%sexpires_in_minutes%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getExpiresInMinutes()))));
+    }
+
+    // add `external_id` to the URL query string
+    if (getExternalId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sexternal_id%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getExternalId()))));
+    }
+
+    // add `welcome` to the URL query string
+    if (getWelcome() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%swelcome%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getWelcome()))));
     }
 
     return joiner.toString();

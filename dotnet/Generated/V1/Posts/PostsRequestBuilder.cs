@@ -35,7 +35,7 @@ namespace Hermoso.Sdk.Generated.V1.Posts
         /// </summary>
         /// <param name="pathParameters">Path parameters for the request</param>
         /// <param name="requestAdapter">The request adapter to use to execute the requests.</param>
-        public PostsRequestBuilder(Dictionary<string, object> pathParameters, IRequestAdapter requestAdapter) : base(requestAdapter, "{+baseurl}/v1/posts{?channel*,limit*,starting_after*,status*}", pathParameters)
+        public PostsRequestBuilder(Dictionary<string, object> pathParameters, IRequestAdapter requestAdapter) : base(requestAdapter, "{+baseurl}/v1/posts{?channel*,external_id*,from*,label*,limit*,search*,starting_after*,status*,to*}", pathParameters)
         {
         }
         /// <summary>
@@ -43,7 +43,7 @@ namespace Hermoso.Sdk.Generated.V1.Posts
         /// </summary>
         /// <param name="rawUrl">The raw URL to use for the request builder.</param>
         /// <param name="requestAdapter">The request adapter to use to execute the requests.</param>
-        public PostsRequestBuilder(string rawUrl, IRequestAdapter requestAdapter) : base(requestAdapter, "{+baseurl}/v1/posts{?channel*,limit*,starting_after*,status*}", rawUrl)
+        public PostsRequestBuilder(string rawUrl, IRequestAdapter requestAdapter) : base(requestAdapter, "{+baseurl}/v1/posts{?channel*,external_id*,from*,label*,limit*,search*,starting_after*,status*,to*}", rawUrl)
         {
         }
         /// <summary>
@@ -172,9 +172,49 @@ namespace Hermoso.Sdk.Generated.V1.Posts
             [QueryParameter("channel")]
             public string Channel { get; set; }
 #endif
+            /// <summary>Filter to the post(s) with this external_id.</summary>
+#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
+#nullable enable
+            [QueryParameter("external_id")]
+            public string? ExternalId { get; set; }
+#nullable restore
+#else
+            [QueryParameter("external_id")]
+            public string ExternalId { get; set; }
+#endif
+            /// <summary>Only posts scheduled or published at or after this ISO date/time.</summary>
+#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
+#nullable enable
+            [QueryParameter("from")]
+            public string? From { get; set; }
+#nullable restore
+#else
+            [QueryParameter("from")]
+            public string From { get; set; }
+#endif
+            /// <summary>Filter to posts carrying ALL of these labels (comma-separated).</summary>
+#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
+#nullable enable
+            [QueryParameter("label")]
+            public string? Label { get; set; }
+#nullable restore
+#else
+            [QueryParameter("label")]
+            public string Label { get; set; }
+#endif
             /// <summary>1-100, default 25.</summary>
             [QueryParameter("limit")]
             public int? Limit { get; set; }
+            /// <summary>Filter to posts whose caption, title, labels or external_id contain this text (case-insensitive).</summary>
+#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
+#nullable enable
+            [QueryParameter("search")]
+            public string? Search { get; set; }
+#nullable restore
+#else
+            [QueryParameter("search")]
+            public string Search { get; set; }
+#endif
             /// <summary>A post id from a previous page; returns the page after it. An unknown cursor is an error, never a silent restart.</summary>
 #if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
 #nullable enable
@@ -194,6 +234,16 @@ namespace Hermoso.Sdk.Generated.V1.Posts
 #else
             [QueryParameter("status")]
             public string Status { get; set; }
+#endif
+            /// <summary>Only posts scheduled or published at or before this ISO date/time.</summary>
+#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
+#nullable enable
+            [QueryParameter("to")]
+            public string? To { get; set; }
+#nullable restore
+#else
+            [QueryParameter("to")]
+            public string To { get; set; }
 #endif
         }
     }

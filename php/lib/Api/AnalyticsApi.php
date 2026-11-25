@@ -75,6 +75,15 @@ class AnalyticsApi
 
     /** @var string[] $contentTypes **/
     public const contentTypes = [
+        'cancelTrackingWindow' => [
+            'application/json',
+        ],
+        'getAnalyticsDashboard' => [
+            'application/json',
+        ],
+        'getAnalyticsDelta' => [
+            'application/json',
+        ],
         'getBestTime' => [
             'application/json',
         ],
@@ -88,6 +97,15 @@ class AnalyticsApi
             'application/json',
         ],
         'getPostingFrequency' => [
+            'application/json',
+        ],
+        'getTrackingWindow' => [
+            'application/json',
+        ],
+        'listTrackingWindows' => [
+            'application/json',
+        ],
+        'openTrackingWindow' => [
             'application/json',
         ],
     ];
@@ -136,6 +154,1214 @@ class AnalyticsApi
     public function getConfig()
     {
         return $this->config;
+    }
+
+    /**
+     * Operation cancelTrackingWindow
+     *
+     * Cancel a tracking window
+     *
+     * @param  string $window_id window_id (required)
+     * @param  string|null $x_hermoso_user Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result. (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['cancelTrackingWindow'] to see the possible values for this operation
+     *
+     * @throws \Hermoso\ApiException on non-2xx response or if the response body is not in the expected format
+     * @throws \InvalidArgumentException
+     * @return \Hermoso\Model\TrackingWindow|\Hermoso\Model\Error|\Hermoso\Model\Error|\Hermoso\Model\Error|\Hermoso\Model\Error
+     */
+    public function cancelTrackingWindow($window_id, $x_hermoso_user = null, string $contentType = self::contentTypes['cancelTrackingWindow'][0])
+    {
+        list($response) = $this->cancelTrackingWindowWithHttpInfo($window_id, $x_hermoso_user, $contentType);
+        return $response;
+    }
+
+    /**
+     * Operation cancelTrackingWindowWithHttpInfo
+     *
+     * Cancel a tracking window
+     *
+     * @param  string $window_id (required)
+     * @param  string|null $x_hermoso_user Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result. (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['cancelTrackingWindow'] to see the possible values for this operation
+     *
+     * @throws \Hermoso\ApiException on non-2xx response or if the response body is not in the expected format
+     * @throws \InvalidArgumentException
+     * @return array of \Hermoso\Model\TrackingWindow|\Hermoso\Model\Error|\Hermoso\Model\Error|\Hermoso\Model\Error|\Hermoso\Model\Error, HTTP status code, HTTP response headers (array of strings)
+     */
+    public function cancelTrackingWindowWithHttpInfo($window_id, $x_hermoso_user = null, string $contentType = self::contentTypes['cancelTrackingWindow'][0])
+    {
+        $request = $this->cancelTrackingWindowRequest($window_id, $x_hermoso_user, $contentType);
+
+        try {
+            $options = $this->createHttpClientOption();
+            try {
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                $eResponse = $this->getExceptionResponse($e);
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $eResponse ? $eResponse->getHeaders() : null,
+                    $eResponse ? (string) $eResponse->getBody() : null
+                );
+            } catch (NetworkExceptionInterface $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    null,
+                    null
+                );
+            }
+
+            $statusCode = $response->getStatusCode();
+
+
+            switch($statusCode) {
+                case 200:
+                    return $this->handleResponseWithDataType(
+                        '\Hermoso\Model\TrackingWindow',
+                        $request,
+                        $response,
+                    );
+                case 400:
+                    return $this->handleResponseWithDataType(
+                        '\Hermoso\Model\Error',
+                        $request,
+                        $response,
+                    );
+                case 401:
+                    return $this->handleResponseWithDataType(
+                        '\Hermoso\Model\Error',
+                        $request,
+                        $response,
+                    );
+                case 404:
+                    return $this->handleResponseWithDataType(
+                        '\Hermoso\Model\Error',
+                        $request,
+                        $response,
+                    );
+                case 429:
+                    return $this->handleResponseWithDataType(
+                        '\Hermoso\Model\Error',
+                        $request,
+                        $response,
+                    );
+            }
+
+            
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
+            }
+
+            return $this->handleResponseWithDataType(
+                '\Hermoso\Model\TrackingWindow',
+                $request,
+                $response,
+            );
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Hermoso\Model\TrackingWindow',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 400:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Hermoso\Model\Error',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 401:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Hermoso\Model\Error',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 404:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Hermoso\Model\Error',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 429:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Hermoso\Model\Error',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+            }
+        
+
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation cancelTrackingWindowAsync
+     *
+     * Cancel a tracking window
+     *
+     * @param  string $window_id (required)
+     * @param  string|null $x_hermoso_user Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result. (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['cancelTrackingWindow'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function cancelTrackingWindowAsync($window_id, $x_hermoso_user = null, string $contentType = self::contentTypes['cancelTrackingWindow'][0])
+    {
+        return $this->cancelTrackingWindowAsyncWithHttpInfo($window_id, $x_hermoso_user, $contentType)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            );
+    }
+
+    /**
+     * Operation cancelTrackingWindowAsyncWithHttpInfo
+     *
+     * Cancel a tracking window
+     *
+     * @param  string $window_id (required)
+     * @param  string|null $x_hermoso_user Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result. (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['cancelTrackingWindow'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function cancelTrackingWindowAsyncWithHttpInfo($window_id, $x_hermoso_user = null, string $contentType = self::contentTypes['cancelTrackingWindow'][0])
+    {
+        $returnType = '\Hermoso\Model\TrackingWindow';
+        $request = $this->cancelTrackingWindowRequest($window_id, $x_hermoso_user, $contentType);
+
+        return $this->client
+            ->sendAsync($request, $this->createHttpClientOption())
+            ->then(
+                function ($response) use ($returnType) {
+                    if ($returnType === '\SplFileObject') {
+                        $content = $response->getBody(); //stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ($returnType !== 'string') {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, $returnType, []),
+                        $response->getStatusCode(),
+                        $response->getHeaders()
+                    ];
+                },
+                function ($exception) {
+                    $response = $this->getExceptionResponse($exception);
+                    if ($response === null) {
+                        throw new ApiException(
+                            "[{$exception->getCode()}] {$exception->getMessage()}",
+                            (int) $exception->getCode(),
+                            null,
+                            null
+                        );
+                    }
+                    $statusCode = $response->getStatusCode();
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
+                }
+            );
+    }
+
+    /**
+     * Create request for operation 'cancelTrackingWindow'
+     *
+     * @param  string $window_id (required)
+     * @param  string|null $x_hermoso_user Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result. (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['cancelTrackingWindow'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Psr7\Request
+     */
+    public function cancelTrackingWindowRequest($window_id, $x_hermoso_user = null, string $contentType = self::contentTypes['cancelTrackingWindow'][0])
+    {
+
+        // verify the required parameter 'window_id' is set
+        if ($window_id === null || (is_array($window_id) && count($window_id) === 0)) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $window_id when calling cancelTrackingWindow'
+            );
+        }
+
+
+
+        $resourcePath = '/v1/analytics/tracking/{window_id}';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+
+
+        // header params
+        if ($x_hermoso_user !== null) {
+            $headerParams['X-Hermoso-User'] = ObjectSerializer::toHeaderValue($x_hermoso_user);
+        }
+
+        // path params
+        if ($window_id !== null) {
+            $resourcePath = str_replace(
+                '{window_id}',
+                ObjectSerializer::toPathValue($window_id),
+                $resourcePath
+            );
+        }
+
+
+        $headers = $this->headerSelector->selectHeaders(
+            ['application/json', ],
+            $contentType,
+            $multipart
+        );
+
+        // for model (json/xml)
+        if (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem
+                        ];
+                    }
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+
+            } elseif (stripos($headers['Content-Type'], 'application/json') !== false) {
+                # if Content-Type contains "application/json", json_encode the form parameters
+                try {
+                    $httpBody = json_encode($formParams, JSON_THROW_ON_ERROR);
+                } catch (\JsonException $e) {
+                    throw new \InvalidArgumentException('json_encode error: ' . $e->getMessage(), 0, $e);
+                }
+            } else {
+                // for HTTP post (form)
+                $httpBody = ObjectSerializer::buildQuery($formParams);
+            }
+        }
+
+        // this endpoint requires Bearer (hmk_...) authentication (access token)
+        if (!empty($this->config->getAccessToken())) {
+            $headers['Authorization'] = 'Bearer ' . $this->config->getAccessToken();
+        }
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $operationHost = $this->config->getHost();
+        $query = ObjectSerializer::buildQuery($queryParams);
+        return new Request(
+            'DELETE',
+            $operationHost . $resourcePath . ($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Operation getAnalyticsDashboard
+     *
+     * Analytics dashboard with the previous period
+     *
+     * @param  string|null $period last_7_days (default), last_30_days, last_90_days, this_week or this_month. (optional)
+     * @param  int|null $days Instead of period: the last N days, 1-365. (optional)
+     * @param  string|null $from Instead of period: YYYY-MM-DD, with &#x60;to&#x60;. (optional)
+     * @param  string|null $to YYYY-MM-DD, inclusive. (optional)
+     * @param  string|null $channel One channel. (optional)
+     * @param  string|null $account One account: handle, Page name or id. (optional)
+     * @param  int|null $top_posts Top posts per channel, 0-20. Default 3. (optional)
+     * @param  int|null $recent_posts Most recent posts of the window, 0-50. Default 5. (optional)
+     * @param  string|null $timezone IANA zone for the days. Default: the account’s. (optional)
+     * @param  string|null $x_hermoso_user Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result. (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getAnalyticsDashboard'] to see the possible values for this operation
+     *
+     * @throws \Hermoso\ApiException on non-2xx response or if the response body is not in the expected format
+     * @throws \InvalidArgumentException
+     * @return \Hermoso\Model\AnalyticsDashboard|\Hermoso\Model\Error|\Hermoso\Model\Error|\Hermoso\Model\Error|\Hermoso\Model\Error
+     */
+    public function getAnalyticsDashboard($period = null, $days = null, $from = null, $to = null, $channel = null, $account = null, $top_posts = null, $recent_posts = null, $timezone = null, $x_hermoso_user = null, string $contentType = self::contentTypes['getAnalyticsDashboard'][0])
+    {
+        list($response) = $this->getAnalyticsDashboardWithHttpInfo($period, $days, $from, $to, $channel, $account, $top_posts, $recent_posts, $timezone, $x_hermoso_user, $contentType);
+        return $response;
+    }
+
+    /**
+     * Operation getAnalyticsDashboardWithHttpInfo
+     *
+     * Analytics dashboard with the previous period
+     *
+     * @param  string|null $period last_7_days (default), last_30_days, last_90_days, this_week or this_month. (optional)
+     * @param  int|null $days Instead of period: the last N days, 1-365. (optional)
+     * @param  string|null $from Instead of period: YYYY-MM-DD, with &#x60;to&#x60;. (optional)
+     * @param  string|null $to YYYY-MM-DD, inclusive. (optional)
+     * @param  string|null $channel One channel. (optional)
+     * @param  string|null $account One account: handle, Page name or id. (optional)
+     * @param  int|null $top_posts Top posts per channel, 0-20. Default 3. (optional)
+     * @param  int|null $recent_posts Most recent posts of the window, 0-50. Default 5. (optional)
+     * @param  string|null $timezone IANA zone for the days. Default: the account’s. (optional)
+     * @param  string|null $x_hermoso_user Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result. (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getAnalyticsDashboard'] to see the possible values for this operation
+     *
+     * @throws \Hermoso\ApiException on non-2xx response or if the response body is not in the expected format
+     * @throws \InvalidArgumentException
+     * @return array of \Hermoso\Model\AnalyticsDashboard|\Hermoso\Model\Error|\Hermoso\Model\Error|\Hermoso\Model\Error|\Hermoso\Model\Error, HTTP status code, HTTP response headers (array of strings)
+     */
+    public function getAnalyticsDashboardWithHttpInfo($period = null, $days = null, $from = null, $to = null, $channel = null, $account = null, $top_posts = null, $recent_posts = null, $timezone = null, $x_hermoso_user = null, string $contentType = self::contentTypes['getAnalyticsDashboard'][0])
+    {
+        $request = $this->getAnalyticsDashboardRequest($period, $days, $from, $to, $channel, $account, $top_posts, $recent_posts, $timezone, $x_hermoso_user, $contentType);
+
+        try {
+            $options = $this->createHttpClientOption();
+            try {
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                $eResponse = $this->getExceptionResponse($e);
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $eResponse ? $eResponse->getHeaders() : null,
+                    $eResponse ? (string) $eResponse->getBody() : null
+                );
+            } catch (NetworkExceptionInterface $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    null,
+                    null
+                );
+            }
+
+            $statusCode = $response->getStatusCode();
+
+
+            switch($statusCode) {
+                case 200:
+                    return $this->handleResponseWithDataType(
+                        '\Hermoso\Model\AnalyticsDashboard',
+                        $request,
+                        $response,
+                    );
+                case 400:
+                    return $this->handleResponseWithDataType(
+                        '\Hermoso\Model\Error',
+                        $request,
+                        $response,
+                    );
+                case 401:
+                    return $this->handleResponseWithDataType(
+                        '\Hermoso\Model\Error',
+                        $request,
+                        $response,
+                    );
+                case 404:
+                    return $this->handleResponseWithDataType(
+                        '\Hermoso\Model\Error',
+                        $request,
+                        $response,
+                    );
+                case 429:
+                    return $this->handleResponseWithDataType(
+                        '\Hermoso\Model\Error',
+                        $request,
+                        $response,
+                    );
+            }
+
+            
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
+            }
+
+            return $this->handleResponseWithDataType(
+                '\Hermoso\Model\AnalyticsDashboard',
+                $request,
+                $response,
+            );
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Hermoso\Model\AnalyticsDashboard',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 400:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Hermoso\Model\Error',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 401:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Hermoso\Model\Error',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 404:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Hermoso\Model\Error',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 429:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Hermoso\Model\Error',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+            }
+        
+
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation getAnalyticsDashboardAsync
+     *
+     * Analytics dashboard with the previous period
+     *
+     * @param  string|null $period last_7_days (default), last_30_days, last_90_days, this_week or this_month. (optional)
+     * @param  int|null $days Instead of period: the last N days, 1-365. (optional)
+     * @param  string|null $from Instead of period: YYYY-MM-DD, with &#x60;to&#x60;. (optional)
+     * @param  string|null $to YYYY-MM-DD, inclusive. (optional)
+     * @param  string|null $channel One channel. (optional)
+     * @param  string|null $account One account: handle, Page name or id. (optional)
+     * @param  int|null $top_posts Top posts per channel, 0-20. Default 3. (optional)
+     * @param  int|null $recent_posts Most recent posts of the window, 0-50. Default 5. (optional)
+     * @param  string|null $timezone IANA zone for the days. Default: the account’s. (optional)
+     * @param  string|null $x_hermoso_user Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result. (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getAnalyticsDashboard'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function getAnalyticsDashboardAsync($period = null, $days = null, $from = null, $to = null, $channel = null, $account = null, $top_posts = null, $recent_posts = null, $timezone = null, $x_hermoso_user = null, string $contentType = self::contentTypes['getAnalyticsDashboard'][0])
+    {
+        return $this->getAnalyticsDashboardAsyncWithHttpInfo($period, $days, $from, $to, $channel, $account, $top_posts, $recent_posts, $timezone, $x_hermoso_user, $contentType)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            );
+    }
+
+    /**
+     * Operation getAnalyticsDashboardAsyncWithHttpInfo
+     *
+     * Analytics dashboard with the previous period
+     *
+     * @param  string|null $period last_7_days (default), last_30_days, last_90_days, this_week or this_month. (optional)
+     * @param  int|null $days Instead of period: the last N days, 1-365. (optional)
+     * @param  string|null $from Instead of period: YYYY-MM-DD, with &#x60;to&#x60;. (optional)
+     * @param  string|null $to YYYY-MM-DD, inclusive. (optional)
+     * @param  string|null $channel One channel. (optional)
+     * @param  string|null $account One account: handle, Page name or id. (optional)
+     * @param  int|null $top_posts Top posts per channel, 0-20. Default 3. (optional)
+     * @param  int|null $recent_posts Most recent posts of the window, 0-50. Default 5. (optional)
+     * @param  string|null $timezone IANA zone for the days. Default: the account’s. (optional)
+     * @param  string|null $x_hermoso_user Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result. (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getAnalyticsDashboard'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function getAnalyticsDashboardAsyncWithHttpInfo($period = null, $days = null, $from = null, $to = null, $channel = null, $account = null, $top_posts = null, $recent_posts = null, $timezone = null, $x_hermoso_user = null, string $contentType = self::contentTypes['getAnalyticsDashboard'][0])
+    {
+        $returnType = '\Hermoso\Model\AnalyticsDashboard';
+        $request = $this->getAnalyticsDashboardRequest($period, $days, $from, $to, $channel, $account, $top_posts, $recent_posts, $timezone, $x_hermoso_user, $contentType);
+
+        return $this->client
+            ->sendAsync($request, $this->createHttpClientOption())
+            ->then(
+                function ($response) use ($returnType) {
+                    if ($returnType === '\SplFileObject') {
+                        $content = $response->getBody(); //stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ($returnType !== 'string') {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, $returnType, []),
+                        $response->getStatusCode(),
+                        $response->getHeaders()
+                    ];
+                },
+                function ($exception) {
+                    $response = $this->getExceptionResponse($exception);
+                    if ($response === null) {
+                        throw new ApiException(
+                            "[{$exception->getCode()}] {$exception->getMessage()}",
+                            (int) $exception->getCode(),
+                            null,
+                            null
+                        );
+                    }
+                    $statusCode = $response->getStatusCode();
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
+                }
+            );
+    }
+
+    /**
+     * Create request for operation 'getAnalyticsDashboard'
+     *
+     * @param  string|null $period last_7_days (default), last_30_days, last_90_days, this_week or this_month. (optional)
+     * @param  int|null $days Instead of period: the last N days, 1-365. (optional)
+     * @param  string|null $from Instead of period: YYYY-MM-DD, with &#x60;to&#x60;. (optional)
+     * @param  string|null $to YYYY-MM-DD, inclusive. (optional)
+     * @param  string|null $channel One channel. (optional)
+     * @param  string|null $account One account: handle, Page name or id. (optional)
+     * @param  int|null $top_posts Top posts per channel, 0-20. Default 3. (optional)
+     * @param  int|null $recent_posts Most recent posts of the window, 0-50. Default 5. (optional)
+     * @param  string|null $timezone IANA zone for the days. Default: the account’s. (optional)
+     * @param  string|null $x_hermoso_user Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result. (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getAnalyticsDashboard'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Psr7\Request
+     */
+    public function getAnalyticsDashboardRequest($period = null, $days = null, $from = null, $to = null, $channel = null, $account = null, $top_posts = null, $recent_posts = null, $timezone = null, $x_hermoso_user = null, string $contentType = self::contentTypes['getAnalyticsDashboard'][0])
+    {
+
+
+
+
+
+
+
+
+
+
+
+
+        $resourcePath = '/v1/analytics/dashboard';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $period,
+            'period', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $days,
+            'days', // param base name
+            'integer', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $from,
+            'from', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $to,
+            'to', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $channel,
+            'channel', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $account,
+            'account', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $top_posts,
+            'top_posts', // param base name
+            'integer', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $recent_posts,
+            'recent_posts', // param base name
+            'integer', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $timezone,
+            'timezone', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+
+        // header params
+        if ($x_hermoso_user !== null) {
+            $headerParams['X-Hermoso-User'] = ObjectSerializer::toHeaderValue($x_hermoso_user);
+        }
+
+
+
+        $headers = $this->headerSelector->selectHeaders(
+            ['application/json', ],
+            $contentType,
+            $multipart
+        );
+
+        // for model (json/xml)
+        if (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem
+                        ];
+                    }
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+
+            } elseif (stripos($headers['Content-Type'], 'application/json') !== false) {
+                # if Content-Type contains "application/json", json_encode the form parameters
+                try {
+                    $httpBody = json_encode($formParams, JSON_THROW_ON_ERROR);
+                } catch (\JsonException $e) {
+                    throw new \InvalidArgumentException('json_encode error: ' . $e->getMessage(), 0, $e);
+                }
+            } else {
+                // for HTTP post (form)
+                $httpBody = ObjectSerializer::buildQuery($formParams);
+            }
+        }
+
+        // this endpoint requires Bearer (hmk_...) authentication (access token)
+        if (!empty($this->config->getAccessToken())) {
+            $headers['Authorization'] = 'Bearer ' . $this->config->getAccessToken();
+        }
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $operationHost = $this->config->getHost();
+        $query = ObjectSerializer::buildQuery($queryParams);
+        return new Request(
+            'GET',
+            $operationHost . $resourcePath . ($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Operation getAnalyticsDelta
+     *
+     * Post readings recorded since a cursor
+     *
+     * @param  string|null $cursor The cursor a previous call returned. (optional)
+     * @param  int|null $limit 1-500. Default 100. (optional)
+     * @param  string|null $channel One channel. (optional)
+     * @param  bool|null $from_start Page through everything held instead of starting at now. (optional)
+     * @param  string|null $x_hermoso_user Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result. (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getAnalyticsDelta'] to see the possible values for this operation
+     *
+     * @throws \Hermoso\ApiException on non-2xx response or if the response body is not in the expected format
+     * @throws \InvalidArgumentException
+     * @return \Hermoso\Model\AnalyticsDelta|\Hermoso\Model\Error|\Hermoso\Model\Error|\Hermoso\Model\Error|\Hermoso\Model\Error
+     */
+    public function getAnalyticsDelta($cursor = null, $limit = null, $channel = null, $from_start = null, $x_hermoso_user = null, string $contentType = self::contentTypes['getAnalyticsDelta'][0])
+    {
+        list($response) = $this->getAnalyticsDeltaWithHttpInfo($cursor, $limit, $channel, $from_start, $x_hermoso_user, $contentType);
+        return $response;
+    }
+
+    /**
+     * Operation getAnalyticsDeltaWithHttpInfo
+     *
+     * Post readings recorded since a cursor
+     *
+     * @param  string|null $cursor The cursor a previous call returned. (optional)
+     * @param  int|null $limit 1-500. Default 100. (optional)
+     * @param  string|null $channel One channel. (optional)
+     * @param  bool|null $from_start Page through everything held instead of starting at now. (optional)
+     * @param  string|null $x_hermoso_user Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result. (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getAnalyticsDelta'] to see the possible values for this operation
+     *
+     * @throws \Hermoso\ApiException on non-2xx response or if the response body is not in the expected format
+     * @throws \InvalidArgumentException
+     * @return array of \Hermoso\Model\AnalyticsDelta|\Hermoso\Model\Error|\Hermoso\Model\Error|\Hermoso\Model\Error|\Hermoso\Model\Error, HTTP status code, HTTP response headers (array of strings)
+     */
+    public function getAnalyticsDeltaWithHttpInfo($cursor = null, $limit = null, $channel = null, $from_start = null, $x_hermoso_user = null, string $contentType = self::contentTypes['getAnalyticsDelta'][0])
+    {
+        $request = $this->getAnalyticsDeltaRequest($cursor, $limit, $channel, $from_start, $x_hermoso_user, $contentType);
+
+        try {
+            $options = $this->createHttpClientOption();
+            try {
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                $eResponse = $this->getExceptionResponse($e);
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $eResponse ? $eResponse->getHeaders() : null,
+                    $eResponse ? (string) $eResponse->getBody() : null
+                );
+            } catch (NetworkExceptionInterface $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    null,
+                    null
+                );
+            }
+
+            $statusCode = $response->getStatusCode();
+
+
+            switch($statusCode) {
+                case 200:
+                    return $this->handleResponseWithDataType(
+                        '\Hermoso\Model\AnalyticsDelta',
+                        $request,
+                        $response,
+                    );
+                case 400:
+                    return $this->handleResponseWithDataType(
+                        '\Hermoso\Model\Error',
+                        $request,
+                        $response,
+                    );
+                case 401:
+                    return $this->handleResponseWithDataType(
+                        '\Hermoso\Model\Error',
+                        $request,
+                        $response,
+                    );
+                case 404:
+                    return $this->handleResponseWithDataType(
+                        '\Hermoso\Model\Error',
+                        $request,
+                        $response,
+                    );
+                case 429:
+                    return $this->handleResponseWithDataType(
+                        '\Hermoso\Model\Error',
+                        $request,
+                        $response,
+                    );
+            }
+
+            
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
+            }
+
+            return $this->handleResponseWithDataType(
+                '\Hermoso\Model\AnalyticsDelta',
+                $request,
+                $response,
+            );
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Hermoso\Model\AnalyticsDelta',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 400:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Hermoso\Model\Error',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 401:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Hermoso\Model\Error',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 404:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Hermoso\Model\Error',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 429:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Hermoso\Model\Error',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+            }
+        
+
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation getAnalyticsDeltaAsync
+     *
+     * Post readings recorded since a cursor
+     *
+     * @param  string|null $cursor The cursor a previous call returned. (optional)
+     * @param  int|null $limit 1-500. Default 100. (optional)
+     * @param  string|null $channel One channel. (optional)
+     * @param  bool|null $from_start Page through everything held instead of starting at now. (optional)
+     * @param  string|null $x_hermoso_user Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result. (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getAnalyticsDelta'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function getAnalyticsDeltaAsync($cursor = null, $limit = null, $channel = null, $from_start = null, $x_hermoso_user = null, string $contentType = self::contentTypes['getAnalyticsDelta'][0])
+    {
+        return $this->getAnalyticsDeltaAsyncWithHttpInfo($cursor, $limit, $channel, $from_start, $x_hermoso_user, $contentType)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            );
+    }
+
+    /**
+     * Operation getAnalyticsDeltaAsyncWithHttpInfo
+     *
+     * Post readings recorded since a cursor
+     *
+     * @param  string|null $cursor The cursor a previous call returned. (optional)
+     * @param  int|null $limit 1-500. Default 100. (optional)
+     * @param  string|null $channel One channel. (optional)
+     * @param  bool|null $from_start Page through everything held instead of starting at now. (optional)
+     * @param  string|null $x_hermoso_user Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result. (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getAnalyticsDelta'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function getAnalyticsDeltaAsyncWithHttpInfo($cursor = null, $limit = null, $channel = null, $from_start = null, $x_hermoso_user = null, string $contentType = self::contentTypes['getAnalyticsDelta'][0])
+    {
+        $returnType = '\Hermoso\Model\AnalyticsDelta';
+        $request = $this->getAnalyticsDeltaRequest($cursor, $limit, $channel, $from_start, $x_hermoso_user, $contentType);
+
+        return $this->client
+            ->sendAsync($request, $this->createHttpClientOption())
+            ->then(
+                function ($response) use ($returnType) {
+                    if ($returnType === '\SplFileObject') {
+                        $content = $response->getBody(); //stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ($returnType !== 'string') {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, $returnType, []),
+                        $response->getStatusCode(),
+                        $response->getHeaders()
+                    ];
+                },
+                function ($exception) {
+                    $response = $this->getExceptionResponse($exception);
+                    if ($response === null) {
+                        throw new ApiException(
+                            "[{$exception->getCode()}] {$exception->getMessage()}",
+                            (int) $exception->getCode(),
+                            null,
+                            null
+                        );
+                    }
+                    $statusCode = $response->getStatusCode();
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
+                }
+            );
+    }
+
+    /**
+     * Create request for operation 'getAnalyticsDelta'
+     *
+     * @param  string|null $cursor The cursor a previous call returned. (optional)
+     * @param  int|null $limit 1-500. Default 100. (optional)
+     * @param  string|null $channel One channel. (optional)
+     * @param  bool|null $from_start Page through everything held instead of starting at now. (optional)
+     * @param  string|null $x_hermoso_user Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result. (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getAnalyticsDelta'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Psr7\Request
+     */
+    public function getAnalyticsDeltaRequest($cursor = null, $limit = null, $channel = null, $from_start = null, $x_hermoso_user = null, string $contentType = self::contentTypes['getAnalyticsDelta'][0])
+    {
+
+
+
+
+
+
+
+        $resourcePath = '/v1/analytics/delta';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $cursor,
+            'cursor', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $limit,
+            'limit', // param base name
+            'integer', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $channel,
+            'channel', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $from_start,
+            'from_start', // param base name
+            'boolean', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+
+        // header params
+        if ($x_hermoso_user !== null) {
+            $headerParams['X-Hermoso-User'] = ObjectSerializer::toHeaderValue($x_hermoso_user);
+        }
+
+
+
+        $headers = $this->headerSelector->selectHeaders(
+            ['application/json', ],
+            $contentType,
+            $multipart
+        );
+
+        // for model (json/xml)
+        if (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem
+                        ];
+                    }
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+
+            } elseif (stripos($headers['Content-Type'], 'application/json') !== false) {
+                # if Content-Type contains "application/json", json_encode the form parameters
+                try {
+                    $httpBody = json_encode($formParams, JSON_THROW_ON_ERROR);
+                } catch (\JsonException $e) {
+                    throw new \InvalidArgumentException('json_encode error: ' . $e->getMessage(), 0, $e);
+                }
+            } else {
+                // for HTTP post (form)
+                $httpBody = ObjectSerializer::buildQuery($formParams);
+            }
+        }
+
+        // this endpoint requires Bearer (hmk_...) authentication (access token)
+        if (!empty($this->config->getAccessToken())) {
+            $headers['Authorization'] = 'Bearer ' . $this->config->getAccessToken();
+        }
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $operationHost = $this->config->getHost();
+        $query = ObjectSerializer::buildQuery($queryParams);
+        return new Request(
+            'GET',
+            $operationHost . $resourcePath . ($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
     }
 
     /**
@@ -2177,6 +3403,1072 @@ class AnalyticsApi
         $query = ObjectSerializer::buildQuery($queryParams);
         return new Request(
             'GET',
+            $operationHost . $resourcePath . ($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Operation getTrackingWindow
+     *
+     * Retrieve a tracking window
+     *
+     * @param  string $window_id window_id (required)
+     * @param  string|null $x_hermoso_user Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result. (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getTrackingWindow'] to see the possible values for this operation
+     *
+     * @throws \Hermoso\ApiException on non-2xx response or if the response body is not in the expected format
+     * @throws \InvalidArgumentException
+     * @return \Hermoso\Model\TrackingWindow|\Hermoso\Model\Error|\Hermoso\Model\Error|\Hermoso\Model\Error|\Hermoso\Model\Error
+     */
+    public function getTrackingWindow($window_id, $x_hermoso_user = null, string $contentType = self::contentTypes['getTrackingWindow'][0])
+    {
+        list($response) = $this->getTrackingWindowWithHttpInfo($window_id, $x_hermoso_user, $contentType);
+        return $response;
+    }
+
+    /**
+     * Operation getTrackingWindowWithHttpInfo
+     *
+     * Retrieve a tracking window
+     *
+     * @param  string $window_id (required)
+     * @param  string|null $x_hermoso_user Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result. (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getTrackingWindow'] to see the possible values for this operation
+     *
+     * @throws \Hermoso\ApiException on non-2xx response or if the response body is not in the expected format
+     * @throws \InvalidArgumentException
+     * @return array of \Hermoso\Model\TrackingWindow|\Hermoso\Model\Error|\Hermoso\Model\Error|\Hermoso\Model\Error|\Hermoso\Model\Error, HTTP status code, HTTP response headers (array of strings)
+     */
+    public function getTrackingWindowWithHttpInfo($window_id, $x_hermoso_user = null, string $contentType = self::contentTypes['getTrackingWindow'][0])
+    {
+        $request = $this->getTrackingWindowRequest($window_id, $x_hermoso_user, $contentType);
+
+        try {
+            $options = $this->createHttpClientOption();
+            try {
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                $eResponse = $this->getExceptionResponse($e);
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $eResponse ? $eResponse->getHeaders() : null,
+                    $eResponse ? (string) $eResponse->getBody() : null
+                );
+            } catch (NetworkExceptionInterface $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    null,
+                    null
+                );
+            }
+
+            $statusCode = $response->getStatusCode();
+
+
+            switch($statusCode) {
+                case 200:
+                    return $this->handleResponseWithDataType(
+                        '\Hermoso\Model\TrackingWindow',
+                        $request,
+                        $response,
+                    );
+                case 400:
+                    return $this->handleResponseWithDataType(
+                        '\Hermoso\Model\Error',
+                        $request,
+                        $response,
+                    );
+                case 401:
+                    return $this->handleResponseWithDataType(
+                        '\Hermoso\Model\Error',
+                        $request,
+                        $response,
+                    );
+                case 404:
+                    return $this->handleResponseWithDataType(
+                        '\Hermoso\Model\Error',
+                        $request,
+                        $response,
+                    );
+                case 429:
+                    return $this->handleResponseWithDataType(
+                        '\Hermoso\Model\Error',
+                        $request,
+                        $response,
+                    );
+            }
+
+            
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
+            }
+
+            return $this->handleResponseWithDataType(
+                '\Hermoso\Model\TrackingWindow',
+                $request,
+                $response,
+            );
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Hermoso\Model\TrackingWindow',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 400:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Hermoso\Model\Error',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 401:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Hermoso\Model\Error',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 404:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Hermoso\Model\Error',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 429:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Hermoso\Model\Error',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+            }
+        
+
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation getTrackingWindowAsync
+     *
+     * Retrieve a tracking window
+     *
+     * @param  string $window_id (required)
+     * @param  string|null $x_hermoso_user Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result. (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getTrackingWindow'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function getTrackingWindowAsync($window_id, $x_hermoso_user = null, string $contentType = self::contentTypes['getTrackingWindow'][0])
+    {
+        return $this->getTrackingWindowAsyncWithHttpInfo($window_id, $x_hermoso_user, $contentType)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            );
+    }
+
+    /**
+     * Operation getTrackingWindowAsyncWithHttpInfo
+     *
+     * Retrieve a tracking window
+     *
+     * @param  string $window_id (required)
+     * @param  string|null $x_hermoso_user Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result. (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getTrackingWindow'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function getTrackingWindowAsyncWithHttpInfo($window_id, $x_hermoso_user = null, string $contentType = self::contentTypes['getTrackingWindow'][0])
+    {
+        $returnType = '\Hermoso\Model\TrackingWindow';
+        $request = $this->getTrackingWindowRequest($window_id, $x_hermoso_user, $contentType);
+
+        return $this->client
+            ->sendAsync($request, $this->createHttpClientOption())
+            ->then(
+                function ($response) use ($returnType) {
+                    if ($returnType === '\SplFileObject') {
+                        $content = $response->getBody(); //stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ($returnType !== 'string') {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, $returnType, []),
+                        $response->getStatusCode(),
+                        $response->getHeaders()
+                    ];
+                },
+                function ($exception) {
+                    $response = $this->getExceptionResponse($exception);
+                    if ($response === null) {
+                        throw new ApiException(
+                            "[{$exception->getCode()}] {$exception->getMessage()}",
+                            (int) $exception->getCode(),
+                            null,
+                            null
+                        );
+                    }
+                    $statusCode = $response->getStatusCode();
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
+                }
+            );
+    }
+
+    /**
+     * Create request for operation 'getTrackingWindow'
+     *
+     * @param  string $window_id (required)
+     * @param  string|null $x_hermoso_user Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result. (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getTrackingWindow'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Psr7\Request
+     */
+    public function getTrackingWindowRequest($window_id, $x_hermoso_user = null, string $contentType = self::contentTypes['getTrackingWindow'][0])
+    {
+
+        // verify the required parameter 'window_id' is set
+        if ($window_id === null || (is_array($window_id) && count($window_id) === 0)) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $window_id when calling getTrackingWindow'
+            );
+        }
+
+
+
+        $resourcePath = '/v1/analytics/tracking/{window_id}';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+
+
+        // header params
+        if ($x_hermoso_user !== null) {
+            $headerParams['X-Hermoso-User'] = ObjectSerializer::toHeaderValue($x_hermoso_user);
+        }
+
+        // path params
+        if ($window_id !== null) {
+            $resourcePath = str_replace(
+                '{window_id}',
+                ObjectSerializer::toPathValue($window_id),
+                $resourcePath
+            );
+        }
+
+
+        $headers = $this->headerSelector->selectHeaders(
+            ['application/json', ],
+            $contentType,
+            $multipart
+        );
+
+        // for model (json/xml)
+        if (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem
+                        ];
+                    }
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+
+            } elseif (stripos($headers['Content-Type'], 'application/json') !== false) {
+                # if Content-Type contains "application/json", json_encode the form parameters
+                try {
+                    $httpBody = json_encode($formParams, JSON_THROW_ON_ERROR);
+                } catch (\JsonException $e) {
+                    throw new \InvalidArgumentException('json_encode error: ' . $e->getMessage(), 0, $e);
+                }
+            } else {
+                // for HTTP post (form)
+                $httpBody = ObjectSerializer::buildQuery($formParams);
+            }
+        }
+
+        // this endpoint requires Bearer (hmk_...) authentication (access token)
+        if (!empty($this->config->getAccessToken())) {
+            $headers['Authorization'] = 'Bearer ' . $this->config->getAccessToken();
+        }
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $operationHost = $this->config->getHost();
+        $query = ObjectSerializer::buildQuery($queryParams);
+        return new Request(
+            'GET',
+            $operationHost . $resourcePath . ($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Operation listTrackingWindows
+     *
+     * List tracking windows
+     *
+     * @param  string|null $status open, completed or cancelled. (optional)
+     * @param  int|null $limit 1-200. Default 50. (optional)
+     * @param  string|null $x_hermoso_user Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result. (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['listTrackingWindows'] to see the possible values for this operation
+     *
+     * @throws \Hermoso\ApiException on non-2xx response or if the response body is not in the expected format
+     * @throws \InvalidArgumentException
+     * @return \Hermoso\Model\TrackingWindowList|\Hermoso\Model\Error|\Hermoso\Model\Error|\Hermoso\Model\Error|\Hermoso\Model\Error
+     */
+    public function listTrackingWindows($status = null, $limit = null, $x_hermoso_user = null, string $contentType = self::contentTypes['listTrackingWindows'][0])
+    {
+        list($response) = $this->listTrackingWindowsWithHttpInfo($status, $limit, $x_hermoso_user, $contentType);
+        return $response;
+    }
+
+    /**
+     * Operation listTrackingWindowsWithHttpInfo
+     *
+     * List tracking windows
+     *
+     * @param  string|null $status open, completed or cancelled. (optional)
+     * @param  int|null $limit 1-200. Default 50. (optional)
+     * @param  string|null $x_hermoso_user Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result. (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['listTrackingWindows'] to see the possible values for this operation
+     *
+     * @throws \Hermoso\ApiException on non-2xx response or if the response body is not in the expected format
+     * @throws \InvalidArgumentException
+     * @return array of \Hermoso\Model\TrackingWindowList|\Hermoso\Model\Error|\Hermoso\Model\Error|\Hermoso\Model\Error|\Hermoso\Model\Error, HTTP status code, HTTP response headers (array of strings)
+     */
+    public function listTrackingWindowsWithHttpInfo($status = null, $limit = null, $x_hermoso_user = null, string $contentType = self::contentTypes['listTrackingWindows'][0])
+    {
+        $request = $this->listTrackingWindowsRequest($status, $limit, $x_hermoso_user, $contentType);
+
+        try {
+            $options = $this->createHttpClientOption();
+            try {
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                $eResponse = $this->getExceptionResponse($e);
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $eResponse ? $eResponse->getHeaders() : null,
+                    $eResponse ? (string) $eResponse->getBody() : null
+                );
+            } catch (NetworkExceptionInterface $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    null,
+                    null
+                );
+            }
+
+            $statusCode = $response->getStatusCode();
+
+
+            switch($statusCode) {
+                case 200:
+                    return $this->handleResponseWithDataType(
+                        '\Hermoso\Model\TrackingWindowList',
+                        $request,
+                        $response,
+                    );
+                case 400:
+                    return $this->handleResponseWithDataType(
+                        '\Hermoso\Model\Error',
+                        $request,
+                        $response,
+                    );
+                case 401:
+                    return $this->handleResponseWithDataType(
+                        '\Hermoso\Model\Error',
+                        $request,
+                        $response,
+                    );
+                case 404:
+                    return $this->handleResponseWithDataType(
+                        '\Hermoso\Model\Error',
+                        $request,
+                        $response,
+                    );
+                case 429:
+                    return $this->handleResponseWithDataType(
+                        '\Hermoso\Model\Error',
+                        $request,
+                        $response,
+                    );
+            }
+
+            
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
+            }
+
+            return $this->handleResponseWithDataType(
+                '\Hermoso\Model\TrackingWindowList',
+                $request,
+                $response,
+            );
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Hermoso\Model\TrackingWindowList',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 400:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Hermoso\Model\Error',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 401:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Hermoso\Model\Error',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 404:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Hermoso\Model\Error',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 429:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Hermoso\Model\Error',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+            }
+        
+
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation listTrackingWindowsAsync
+     *
+     * List tracking windows
+     *
+     * @param  string|null $status open, completed or cancelled. (optional)
+     * @param  int|null $limit 1-200. Default 50. (optional)
+     * @param  string|null $x_hermoso_user Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result. (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['listTrackingWindows'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function listTrackingWindowsAsync($status = null, $limit = null, $x_hermoso_user = null, string $contentType = self::contentTypes['listTrackingWindows'][0])
+    {
+        return $this->listTrackingWindowsAsyncWithHttpInfo($status, $limit, $x_hermoso_user, $contentType)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            );
+    }
+
+    /**
+     * Operation listTrackingWindowsAsyncWithHttpInfo
+     *
+     * List tracking windows
+     *
+     * @param  string|null $status open, completed or cancelled. (optional)
+     * @param  int|null $limit 1-200. Default 50. (optional)
+     * @param  string|null $x_hermoso_user Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result. (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['listTrackingWindows'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function listTrackingWindowsAsyncWithHttpInfo($status = null, $limit = null, $x_hermoso_user = null, string $contentType = self::contentTypes['listTrackingWindows'][0])
+    {
+        $returnType = '\Hermoso\Model\TrackingWindowList';
+        $request = $this->listTrackingWindowsRequest($status, $limit, $x_hermoso_user, $contentType);
+
+        return $this->client
+            ->sendAsync($request, $this->createHttpClientOption())
+            ->then(
+                function ($response) use ($returnType) {
+                    if ($returnType === '\SplFileObject') {
+                        $content = $response->getBody(); //stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ($returnType !== 'string') {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, $returnType, []),
+                        $response->getStatusCode(),
+                        $response->getHeaders()
+                    ];
+                },
+                function ($exception) {
+                    $response = $this->getExceptionResponse($exception);
+                    if ($response === null) {
+                        throw new ApiException(
+                            "[{$exception->getCode()}] {$exception->getMessage()}",
+                            (int) $exception->getCode(),
+                            null,
+                            null
+                        );
+                    }
+                    $statusCode = $response->getStatusCode();
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
+                }
+            );
+    }
+
+    /**
+     * Create request for operation 'listTrackingWindows'
+     *
+     * @param  string|null $status open, completed or cancelled. (optional)
+     * @param  int|null $limit 1-200. Default 50. (optional)
+     * @param  string|null $x_hermoso_user Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result. (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['listTrackingWindows'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Psr7\Request
+     */
+    public function listTrackingWindowsRequest($status = null, $limit = null, $x_hermoso_user = null, string $contentType = self::contentTypes['listTrackingWindows'][0])
+    {
+
+
+
+
+
+        $resourcePath = '/v1/analytics/tracking';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $status,
+            'status', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $limit,
+            'limit', // param base name
+            'integer', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+
+        // header params
+        if ($x_hermoso_user !== null) {
+            $headerParams['X-Hermoso-User'] = ObjectSerializer::toHeaderValue($x_hermoso_user);
+        }
+
+
+
+        $headers = $this->headerSelector->selectHeaders(
+            ['application/json', ],
+            $contentType,
+            $multipart
+        );
+
+        // for model (json/xml)
+        if (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem
+                        ];
+                    }
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+
+            } elseif (stripos($headers['Content-Type'], 'application/json') !== false) {
+                # if Content-Type contains "application/json", json_encode the form parameters
+                try {
+                    $httpBody = json_encode($formParams, JSON_THROW_ON_ERROR);
+                } catch (\JsonException $e) {
+                    throw new \InvalidArgumentException('json_encode error: ' . $e->getMessage(), 0, $e);
+                }
+            } else {
+                // for HTTP post (form)
+                $httpBody = ObjectSerializer::buildQuery($formParams);
+            }
+        }
+
+        // this endpoint requires Bearer (hmk_...) authentication (access token)
+        if (!empty($this->config->getAccessToken())) {
+            $headers['Authorization'] = 'Bearer ' . $this->config->getAccessToken();
+        }
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $operationHost = $this->config->getHost();
+        $query = ObjectSerializer::buildQuery($queryParams);
+        return new Request(
+            'GET',
+            $operationHost . $resourcePath . ($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Operation openTrackingWindow
+     *
+     * Open a tracking window
+     *
+     * @param  \Hermoso\Model\TrackingWindowOpen $tracking_window_open tracking_window_open (required)
+     * @param  string|null $x_hermoso_user Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result. (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['openTrackingWindow'] to see the possible values for this operation
+     *
+     * @throws \Hermoso\ApiException on non-2xx response or if the response body is not in the expected format
+     * @throws \InvalidArgumentException
+     * @return \Hermoso\Model\TrackingWindow|\Hermoso\Model\Error|\Hermoso\Model\Error|\Hermoso\Model\Error|\Hermoso\Model\Error
+     */
+    public function openTrackingWindow($tracking_window_open, $x_hermoso_user = null, string $contentType = self::contentTypes['openTrackingWindow'][0])
+    {
+        list($response) = $this->openTrackingWindowWithHttpInfo($tracking_window_open, $x_hermoso_user, $contentType);
+        return $response;
+    }
+
+    /**
+     * Operation openTrackingWindowWithHttpInfo
+     *
+     * Open a tracking window
+     *
+     * @param  \Hermoso\Model\TrackingWindowOpen $tracking_window_open (required)
+     * @param  string|null $x_hermoso_user Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result. (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['openTrackingWindow'] to see the possible values for this operation
+     *
+     * @throws \Hermoso\ApiException on non-2xx response or if the response body is not in the expected format
+     * @throws \InvalidArgumentException
+     * @return array of \Hermoso\Model\TrackingWindow|\Hermoso\Model\Error|\Hermoso\Model\Error|\Hermoso\Model\Error|\Hermoso\Model\Error, HTTP status code, HTTP response headers (array of strings)
+     */
+    public function openTrackingWindowWithHttpInfo($tracking_window_open, $x_hermoso_user = null, string $contentType = self::contentTypes['openTrackingWindow'][0])
+    {
+        $request = $this->openTrackingWindowRequest($tracking_window_open, $x_hermoso_user, $contentType);
+
+        try {
+            $options = $this->createHttpClientOption();
+            try {
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                $eResponse = $this->getExceptionResponse($e);
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $eResponse ? $eResponse->getHeaders() : null,
+                    $eResponse ? (string) $eResponse->getBody() : null
+                );
+            } catch (NetworkExceptionInterface $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    null,
+                    null
+                );
+            }
+
+            $statusCode = $response->getStatusCode();
+
+
+            switch($statusCode) {
+                case 200:
+                    return $this->handleResponseWithDataType(
+                        '\Hermoso\Model\TrackingWindow',
+                        $request,
+                        $response,
+                    );
+                case 400:
+                    return $this->handleResponseWithDataType(
+                        '\Hermoso\Model\Error',
+                        $request,
+                        $response,
+                    );
+                case 401:
+                    return $this->handleResponseWithDataType(
+                        '\Hermoso\Model\Error',
+                        $request,
+                        $response,
+                    );
+                case 404:
+                    return $this->handleResponseWithDataType(
+                        '\Hermoso\Model\Error',
+                        $request,
+                        $response,
+                    );
+                case 429:
+                    return $this->handleResponseWithDataType(
+                        '\Hermoso\Model\Error',
+                        $request,
+                        $response,
+                    );
+            }
+
+            
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
+            }
+
+            return $this->handleResponseWithDataType(
+                '\Hermoso\Model\TrackingWindow',
+                $request,
+                $response,
+            );
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Hermoso\Model\TrackingWindow',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 400:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Hermoso\Model\Error',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 401:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Hermoso\Model\Error',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 404:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Hermoso\Model\Error',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 429:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Hermoso\Model\Error',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+            }
+        
+
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation openTrackingWindowAsync
+     *
+     * Open a tracking window
+     *
+     * @param  \Hermoso\Model\TrackingWindowOpen $tracking_window_open (required)
+     * @param  string|null $x_hermoso_user Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result. (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['openTrackingWindow'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function openTrackingWindowAsync($tracking_window_open, $x_hermoso_user = null, string $contentType = self::contentTypes['openTrackingWindow'][0])
+    {
+        return $this->openTrackingWindowAsyncWithHttpInfo($tracking_window_open, $x_hermoso_user, $contentType)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            );
+    }
+
+    /**
+     * Operation openTrackingWindowAsyncWithHttpInfo
+     *
+     * Open a tracking window
+     *
+     * @param  \Hermoso\Model\TrackingWindowOpen $tracking_window_open (required)
+     * @param  string|null $x_hermoso_user Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result. (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['openTrackingWindow'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function openTrackingWindowAsyncWithHttpInfo($tracking_window_open, $x_hermoso_user = null, string $contentType = self::contentTypes['openTrackingWindow'][0])
+    {
+        $returnType = '\Hermoso\Model\TrackingWindow';
+        $request = $this->openTrackingWindowRequest($tracking_window_open, $x_hermoso_user, $contentType);
+
+        return $this->client
+            ->sendAsync($request, $this->createHttpClientOption())
+            ->then(
+                function ($response) use ($returnType) {
+                    if ($returnType === '\SplFileObject') {
+                        $content = $response->getBody(); //stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ($returnType !== 'string') {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, $returnType, []),
+                        $response->getStatusCode(),
+                        $response->getHeaders()
+                    ];
+                },
+                function ($exception) {
+                    $response = $this->getExceptionResponse($exception);
+                    if ($response === null) {
+                        throw new ApiException(
+                            "[{$exception->getCode()}] {$exception->getMessage()}",
+                            (int) $exception->getCode(),
+                            null,
+                            null
+                        );
+                    }
+                    $statusCode = $response->getStatusCode();
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
+                }
+            );
+    }
+
+    /**
+     * Create request for operation 'openTrackingWindow'
+     *
+     * @param  \Hermoso\Model\TrackingWindowOpen $tracking_window_open (required)
+     * @param  string|null $x_hermoso_user Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result. (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['openTrackingWindow'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Psr7\Request
+     */
+    public function openTrackingWindowRequest($tracking_window_open, $x_hermoso_user = null, string $contentType = self::contentTypes['openTrackingWindow'][0])
+    {
+
+        // verify the required parameter 'tracking_window_open' is set
+        if ($tracking_window_open === null || (is_array($tracking_window_open) && count($tracking_window_open) === 0)) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $tracking_window_open when calling openTrackingWindow'
+            );
+        }
+
+
+
+        $resourcePath = '/v1/analytics/tracking';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+
+
+        // header params
+        if ($x_hermoso_user !== null) {
+            $headerParams['X-Hermoso-User'] = ObjectSerializer::toHeaderValue($x_hermoso_user);
+        }
+
+
+
+        $headers = $this->headerSelector->selectHeaders(
+            ['application/json', ],
+            $contentType,
+            $multipart
+        );
+
+        // for model (json/xml)
+        if (isset($tracking_window_open)) {
+            if (stripos($headers['Content-Type'], 'application/json') !== false) {
+                # if Content-Type contains "application/json", json_encode the body
+                try {
+                    $httpBody = json_encode(ObjectSerializer::sanitizeForSerialization($tracking_window_open), JSON_THROW_ON_ERROR);
+                } catch (\JsonException $e) {
+                    throw new \InvalidArgumentException('json_encode error: ' . $e->getMessage(), 0, $e);
+                }
+            } else {
+                $httpBody = $tracking_window_open;
+            }
+        } elseif (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem
+                        ];
+                    }
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+
+            } elseif (stripos($headers['Content-Type'], 'application/json') !== false) {
+                # if Content-Type contains "application/json", json_encode the form parameters
+                try {
+                    $httpBody = json_encode($formParams, JSON_THROW_ON_ERROR);
+                } catch (\JsonException $e) {
+                    throw new \InvalidArgumentException('json_encode error: ' . $e->getMessage(), 0, $e);
+                }
+            } else {
+                // for HTTP post (form)
+                $httpBody = ObjectSerializer::buildQuery($formParams);
+            }
+        }
+
+        // this endpoint requires Bearer (hmk_...) authentication (access token)
+        if (!empty($this->config->getAccessToken())) {
+            $headers['Authorization'] = 'Bearer ' . $this->config->getAccessToken();
+        }
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $operationHost = $this->config->getHost();
+        $query = ObjectSerializer::buildQuery($queryParams);
+        return new Request(
+            'POST',
             $operationHost . $resourcePath . ($query ? "?{$query}" : ''),
             $headers,
             $httpBody

@@ -19,6 +19,231 @@ module Hermoso
     def initialize(api_client = ApiClient.default)
       @api_client = api_client
     end
+    # Cancel a tracking window
+    # Stops the window: no final reading, no event, no further charges. A finished window keeps its status.
+    # @param window_id [String] 
+    # @param [Hash] opts the optional parameters
+    # @option opts [String] :x_hermoso_user Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result.
+    # @return [TrackingWindow]
+    def cancel_tracking_window(window_id, opts = {})
+      data, _status_code, _headers = cancel_tracking_window_with_http_info(window_id, opts)
+      data
+    end
+
+    # Cancel a tracking window
+    # Stops the window: no final reading, no event, no further charges. A finished window keeps its status.
+    # @param window_id [String] 
+    # @param [Hash] opts the optional parameters
+    # @option opts [String] :x_hermoso_user Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result.
+    # @return [Array<(TrackingWindow, Integer, Hash)>] TrackingWindow data, response status code and response headers
+    def cancel_tracking_window_with_http_info(window_id, opts = {})
+      if @api_client.config.debugging
+        @api_client.config.logger.debug 'Calling API: AnalyticsApi.cancel_tracking_window ...'
+      end
+      # verify the required parameter 'window_id' is set
+      if @api_client.config.client_side_validation && window_id.nil?
+        fail ArgumentError, "Missing the required parameter 'window_id' when calling AnalyticsApi.cancel_tracking_window"
+      end
+      # resource path
+      local_var_path = '/v1/analytics/tracking/{window_id}'.sub('{window_id}', CGI.escape(window_id.to_s))
+
+      # query parameters
+      query_params = opts[:query_params] || {}
+
+      # header parameters
+      header_params = opts[:header_params] || {}
+      # HTTP header 'Accept' (if needed)
+      header_params['Accept'] = @api_client.select_header_accept(['application/json']) unless header_params['Accept']
+      header_params[:'X-Hermoso-User'] = opts[:'x_hermoso_user'] if !opts[:'x_hermoso_user'].nil?
+
+      # form parameters
+      form_params = opts[:form_params] || {}
+
+      # http body (model)
+      post_body = opts[:debug_body]
+
+      # return_type
+      return_type = opts[:debug_return_type] || 'TrackingWindow'
+
+      # auth_names
+      auth_names = opts[:debug_auth_names] || ['bearerAuth']
+
+      new_options = opts.merge(
+        :operation => :"AnalyticsApi.cancel_tracking_window",
+        :header_params => header_params,
+        :query_params => query_params,
+        :form_params => form_params,
+        :body => post_body,
+        :auth_names => auth_names,
+        :return_type => return_type
+      )
+
+      data, status_code, headers = @api_client.call_api(:DELETE, local_var_path, new_options)
+      if @api_client.config.debugging
+        @api_client.config.logger.debug "API called: AnalyticsApi#cancel_tracking_window\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
+      end
+      return data, status_code, headers
+    end
+
+    # Analytics dashboard with the previous period
+    # One read across the brand’s connected channels: per channel, posts, reach (each platform’s own unit), engagement, engagement rate and follower change, each as `current`, `previous`, `change` and `pct`, plus a day-by-day series, top posts and recent posts. The previous window is the same number of days immediately before (`this_week` compares week to date with last week to the same weekday). Reach is never added across platforms, a missing number is null with `why`, and YouTube carries no totals or changes (its API policy). Numbers belong to the day a post was published. Free.
+    # @param [Hash] opts the optional parameters
+    # @option opts [String] :period last_7_days (default), last_30_days, last_90_days, this_week or this_month.
+    # @option opts [Integer] :days Instead of period: the last N days, 1-365.
+    # @option opts [String] :from Instead of period: YYYY-MM-DD, with &#x60;to&#x60;.
+    # @option opts [String] :to YYYY-MM-DD, inclusive.
+    # @option opts [String] :channel One channel.
+    # @option opts [String] :account One account: handle, Page name or id.
+    # @option opts [Integer] :top_posts Top posts per channel, 0-20. Default 3.
+    # @option opts [Integer] :recent_posts Most recent posts of the window, 0-50. Default 5.
+    # @option opts [String] :timezone IANA zone for the days. Default: the account’s.
+    # @option opts [String] :x_hermoso_user Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result.
+    # @return [AnalyticsDashboard]
+    def get_analytics_dashboard(opts = {})
+      data, _status_code, _headers = get_analytics_dashboard_with_http_info(opts)
+      data
+    end
+
+    # Analytics dashboard with the previous period
+    # One read across the brand’s connected channels: per channel, posts, reach (each platform’s own unit), engagement, engagement rate and follower change, each as &#x60;current&#x60;, &#x60;previous&#x60;, &#x60;change&#x60; and &#x60;pct&#x60;, plus a day-by-day series, top posts and recent posts. The previous window is the same number of days immediately before (&#x60;this_week&#x60; compares week to date with last week to the same weekday). Reach is never added across platforms, a missing number is null with &#x60;why&#x60;, and YouTube carries no totals or changes (its API policy). Numbers belong to the day a post was published. Free.
+    # @param [Hash] opts the optional parameters
+    # @option opts [String] :period last_7_days (default), last_30_days, last_90_days, this_week or this_month.
+    # @option opts [Integer] :days Instead of period: the last N days, 1-365.
+    # @option opts [String] :from Instead of period: YYYY-MM-DD, with &#x60;to&#x60;.
+    # @option opts [String] :to YYYY-MM-DD, inclusive.
+    # @option opts [String] :channel One channel.
+    # @option opts [String] :account One account: handle, Page name or id.
+    # @option opts [Integer] :top_posts Top posts per channel, 0-20. Default 3.
+    # @option opts [Integer] :recent_posts Most recent posts of the window, 0-50. Default 5.
+    # @option opts [String] :timezone IANA zone for the days. Default: the account’s.
+    # @option opts [String] :x_hermoso_user Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result.
+    # @return [Array<(AnalyticsDashboard, Integer, Hash)>] AnalyticsDashboard data, response status code and response headers
+    def get_analytics_dashboard_with_http_info(opts = {})
+      if @api_client.config.debugging
+        @api_client.config.logger.debug 'Calling API: AnalyticsApi.get_analytics_dashboard ...'
+      end
+      # resource path
+      local_var_path = '/v1/analytics/dashboard'
+
+      # query parameters
+      query_params = opts[:query_params] || {}
+      query_params[:'period'] = opts[:'period'] if !opts[:'period'].nil?
+      query_params[:'days'] = opts[:'days'] if !opts[:'days'].nil?
+      query_params[:'from'] = opts[:'from'] if !opts[:'from'].nil?
+      query_params[:'to'] = opts[:'to'] if !opts[:'to'].nil?
+      query_params[:'channel'] = opts[:'channel'] if !opts[:'channel'].nil?
+      query_params[:'account'] = opts[:'account'] if !opts[:'account'].nil?
+      query_params[:'top_posts'] = opts[:'top_posts'] if !opts[:'top_posts'].nil?
+      query_params[:'recent_posts'] = opts[:'recent_posts'] if !opts[:'recent_posts'].nil?
+      query_params[:'timezone'] = opts[:'timezone'] if !opts[:'timezone'].nil?
+
+      # header parameters
+      header_params = opts[:header_params] || {}
+      # HTTP header 'Accept' (if needed)
+      header_params['Accept'] = @api_client.select_header_accept(['application/json']) unless header_params['Accept']
+      header_params[:'X-Hermoso-User'] = opts[:'x_hermoso_user'] if !opts[:'x_hermoso_user'].nil?
+
+      # form parameters
+      form_params = opts[:form_params] || {}
+
+      # http body (model)
+      post_body = opts[:debug_body]
+
+      # return_type
+      return_type = opts[:debug_return_type] || 'AnalyticsDashboard'
+
+      # auth_names
+      auth_names = opts[:debug_auth_names] || ['bearerAuth']
+
+      new_options = opts.merge(
+        :operation => :"AnalyticsApi.get_analytics_dashboard",
+        :header_params => header_params,
+        :query_params => query_params,
+        :form_params => form_params,
+        :body => post_body,
+        :auth_names => auth_names,
+        :return_type => return_type
+      )
+
+      data, status_code, headers = @api_client.call_api(:GET, local_var_path, new_options)
+      if @api_client.config.debugging
+        @api_client.config.logger.debug "API called: AnalyticsApi#get_analytics_dashboard\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
+      end
+      return data, status_code, headers
+    end
+
+    # Post readings recorded since a cursor
+    # A cursor feed of every post reading recorded since `cursor`, across all of the brand’s posts. Call FIRST with no cursor: no rows and the current cursor. Store it, then pass it back to receive only what was recorded after; `has_more` says another page follows. `from_start=true` pages through every reading held instead. Free.
+    # @param [Hash] opts the optional parameters
+    # @option opts [String] :cursor The cursor a previous call returned.
+    # @option opts [Integer] :limit 1-500. Default 100.
+    # @option opts [String] :channel One channel.
+    # @option opts [Boolean] :from_start Page through everything held instead of starting at now.
+    # @option opts [String] :x_hermoso_user Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result.
+    # @return [AnalyticsDelta]
+    def get_analytics_delta(opts = {})
+      data, _status_code, _headers = get_analytics_delta_with_http_info(opts)
+      data
+    end
+
+    # Post readings recorded since a cursor
+    # A cursor feed of every post reading recorded since &#x60;cursor&#x60;, across all of the brand’s posts. Call FIRST with no cursor: no rows and the current cursor. Store it, then pass it back to receive only what was recorded after; &#x60;has_more&#x60; says another page follows. &#x60;from_start&#x3D;true&#x60; pages through every reading held instead. Free.
+    # @param [Hash] opts the optional parameters
+    # @option opts [String] :cursor The cursor a previous call returned.
+    # @option opts [Integer] :limit 1-500. Default 100.
+    # @option opts [String] :channel One channel.
+    # @option opts [Boolean] :from_start Page through everything held instead of starting at now.
+    # @option opts [String] :x_hermoso_user Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result.
+    # @return [Array<(AnalyticsDelta, Integer, Hash)>] AnalyticsDelta data, response status code and response headers
+    def get_analytics_delta_with_http_info(opts = {})
+      if @api_client.config.debugging
+        @api_client.config.logger.debug 'Calling API: AnalyticsApi.get_analytics_delta ...'
+      end
+      # resource path
+      local_var_path = '/v1/analytics/delta'
+
+      # query parameters
+      query_params = opts[:query_params] || {}
+      query_params[:'cursor'] = opts[:'cursor'] if !opts[:'cursor'].nil?
+      query_params[:'limit'] = opts[:'limit'] if !opts[:'limit'].nil?
+      query_params[:'channel'] = opts[:'channel'] if !opts[:'channel'].nil?
+      query_params[:'from_start'] = opts[:'from_start'] if !opts[:'from_start'].nil?
+
+      # header parameters
+      header_params = opts[:header_params] || {}
+      # HTTP header 'Accept' (if needed)
+      header_params['Accept'] = @api_client.select_header_accept(['application/json']) unless header_params['Accept']
+      header_params[:'X-Hermoso-User'] = opts[:'x_hermoso_user'] if !opts[:'x_hermoso_user'].nil?
+
+      # form parameters
+      form_params = opts[:form_params] || {}
+
+      # http body (model)
+      post_body = opts[:debug_body]
+
+      # return_type
+      return_type = opts[:debug_return_type] || 'AnalyticsDelta'
+
+      # auth_names
+      auth_names = opts[:debug_auth_names] || ['bearerAuth']
+
+      new_options = opts.merge(
+        :operation => :"AnalyticsApi.get_analytics_delta",
+        :header_params => header_params,
+        :query_params => query_params,
+        :form_params => form_params,
+        :body => post_body,
+        :auth_names => auth_names,
+        :return_type => return_type
+      )
+
+      data, status_code, headers = @api_client.call_api(:GET, local_var_path, new_options)
+      if @api_client.config.debugging
+        @api_client.config.logger.debug "API called: AnalyticsApi#get_analytics_delta\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
+      end
+      return data, status_code, headers
+    end
+
     # Best time to post
     # From this brand's own measured posts, per channel, on `timezone`: a day × hour grid (`slots`, one row per channel and slot with the post count, the average engagement and the lift against that channel's usual), the best weekday and 3-hour band where one beat the usual by 15% over at least 5 posts, and Instagram's followers-online hours when Instagram is connected. Raw numbers are never pooled across channels; below 15 measured posts nothing is named and `why` says how many there are. `day_of_week` 0 = Monday.
     # @param [Hash] opts the optional parameters
@@ -393,6 +618,209 @@ module Hermoso
       data, status_code, headers = @api_client.call_api(:GET, local_var_path, new_options)
       if @api_client.config.debugging
         @api_client.config.logger.debug "API called: AnalyticsApi#get_posting_frequency\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
+      end
+      return data, status_code, headers
+    end
+
+    # Retrieve a tracking window
+    # One window with its latest numbers; a finished one carries `final_read_at` and `completion_reason`.
+    # @param window_id [String] 
+    # @param [Hash] opts the optional parameters
+    # @option opts [String] :x_hermoso_user Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result.
+    # @return [TrackingWindow]
+    def get_tracking_window(window_id, opts = {})
+      data, _status_code, _headers = get_tracking_window_with_http_info(window_id, opts)
+      data
+    end
+
+    # Retrieve a tracking window
+    # One window with its latest numbers; a finished one carries &#x60;final_read_at&#x60; and &#x60;completion_reason&#x60;.
+    # @param window_id [String] 
+    # @param [Hash] opts the optional parameters
+    # @option opts [String] :x_hermoso_user Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result.
+    # @return [Array<(TrackingWindow, Integer, Hash)>] TrackingWindow data, response status code and response headers
+    def get_tracking_window_with_http_info(window_id, opts = {})
+      if @api_client.config.debugging
+        @api_client.config.logger.debug 'Calling API: AnalyticsApi.get_tracking_window ...'
+      end
+      # verify the required parameter 'window_id' is set
+      if @api_client.config.client_side_validation && window_id.nil?
+        fail ArgumentError, "Missing the required parameter 'window_id' when calling AnalyticsApi.get_tracking_window"
+      end
+      # resource path
+      local_var_path = '/v1/analytics/tracking/{window_id}'.sub('{window_id}', CGI.escape(window_id.to_s))
+
+      # query parameters
+      query_params = opts[:query_params] || {}
+
+      # header parameters
+      header_params = opts[:header_params] || {}
+      # HTTP header 'Accept' (if needed)
+      header_params['Accept'] = @api_client.select_header_accept(['application/json']) unless header_params['Accept']
+      header_params[:'X-Hermoso-User'] = opts[:'x_hermoso_user'] if !opts[:'x_hermoso_user'].nil?
+
+      # form parameters
+      form_params = opts[:form_params] || {}
+
+      # http body (model)
+      post_body = opts[:debug_body]
+
+      # return_type
+      return_type = opts[:debug_return_type] || 'TrackingWindow'
+
+      # auth_names
+      auth_names = opts[:debug_auth_names] || ['bearerAuth']
+
+      new_options = opts.merge(
+        :operation => :"AnalyticsApi.get_tracking_window",
+        :header_params => header_params,
+        :query_params => query_params,
+        :form_params => form_params,
+        :body => post_body,
+        :auth_names => auth_names,
+        :return_type => return_type
+      )
+
+      data, status_code, headers = @api_client.call_api(:GET, local_var_path, new_options)
+      if @api_client.config.debugging
+        @api_client.config.logger.debug "API called: AnalyticsApi#get_tracking_window\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
+      end
+      return data, status_code, headers
+    end
+
+    # List tracking windows
+    # The brand’s tracking windows, newest first, each with its latest numbers. Free.
+    # @param [Hash] opts the optional parameters
+    # @option opts [String] :status open, completed or cancelled.
+    # @option opts [Integer] :limit 1-200. Default 50.
+    # @option opts [String] :x_hermoso_user Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result.
+    # @return [TrackingWindowList]
+    def list_tracking_windows(opts = {})
+      data, _status_code, _headers = list_tracking_windows_with_http_info(opts)
+      data
+    end
+
+    # List tracking windows
+    # The brand’s tracking windows, newest first, each with its latest numbers. Free.
+    # @param [Hash] opts the optional parameters
+    # @option opts [String] :status open, completed or cancelled.
+    # @option opts [Integer] :limit 1-200. Default 50.
+    # @option opts [String] :x_hermoso_user Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result.
+    # @return [Array<(TrackingWindowList, Integer, Hash)>] TrackingWindowList data, response status code and response headers
+    def list_tracking_windows_with_http_info(opts = {})
+      if @api_client.config.debugging
+        @api_client.config.logger.debug 'Calling API: AnalyticsApi.list_tracking_windows ...'
+      end
+      # resource path
+      local_var_path = '/v1/analytics/tracking'
+
+      # query parameters
+      query_params = opts[:query_params] || {}
+      query_params[:'status'] = opts[:'status'] if !opts[:'status'].nil?
+      query_params[:'limit'] = opts[:'limit'] if !opts[:'limit'].nil?
+
+      # header parameters
+      header_params = opts[:header_params] || {}
+      # HTTP header 'Accept' (if needed)
+      header_params['Accept'] = @api_client.select_header_accept(['application/json']) unless header_params['Accept']
+      header_params[:'X-Hermoso-User'] = opts[:'x_hermoso_user'] if !opts[:'x_hermoso_user'].nil?
+
+      # form parameters
+      form_params = opts[:form_params] || {}
+
+      # http body (model)
+      post_body = opts[:debug_body]
+
+      # return_type
+      return_type = opts[:debug_return_type] || 'TrackingWindowList'
+
+      # auth_names
+      auth_names = opts[:debug_auth_names] || ['bearerAuth']
+
+      new_options = opts.merge(
+        :operation => :"AnalyticsApi.list_tracking_windows",
+        :header_params => header_params,
+        :query_params => query_params,
+        :form_params => form_params,
+        :body => post_body,
+        :auth_names => auth_names,
+        :return_type => return_type
+      )
+
+      data, status_code, headers = @api_client.call_api(:GET, local_var_path, new_options)
+      if @api_client.config.debugging
+        @api_client.config.logger.debug "API called: AnalyticsApi#list_tracking_windows\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
+      end
+      return data, status_code, headers
+    end
+
+    # Open a tracking window
+    # Watch a post once a day for `tracking_days` (1-90, default 30), then a final reading and the `post.tracking_completed` event. `post_id`: a post the brand published, read through its own connection, free. `url`: any public TikTok, Instagram, YouTube, Facebook, X or Threads post, one data lookup per reading: without `confirm: true` nothing is opened and the answer is the quote (`needs_confirm`). A post already tracked returns its open window (`existing: true`).
+    # @param tracking_window_open [TrackingWindowOpen] 
+    # @param [Hash] opts the optional parameters
+    # @option opts [String] :x_hermoso_user Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result.
+    # @return [TrackingWindow]
+    def open_tracking_window(tracking_window_open, opts = {})
+      data, _status_code, _headers = open_tracking_window_with_http_info(tracking_window_open, opts)
+      data
+    end
+
+    # Open a tracking window
+    # Watch a post once a day for &#x60;tracking_days&#x60; (1-90, default 30), then a final reading and the &#x60;post.tracking_completed&#x60; event. &#x60;post_id&#x60;: a post the brand published, read through its own connection, free. &#x60;url&#x60;: any public TikTok, Instagram, YouTube, Facebook, X or Threads post, one data lookup per reading: without &#x60;confirm: true&#x60; nothing is opened and the answer is the quote (&#x60;needs_confirm&#x60;). A post already tracked returns its open window (&#x60;existing: true&#x60;).
+    # @param tracking_window_open [TrackingWindowOpen] 
+    # @param [Hash] opts the optional parameters
+    # @option opts [String] :x_hermoso_user Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result.
+    # @return [Array<(TrackingWindow, Integer, Hash)>] TrackingWindow data, response status code and response headers
+    def open_tracking_window_with_http_info(tracking_window_open, opts = {})
+      if @api_client.config.debugging
+        @api_client.config.logger.debug 'Calling API: AnalyticsApi.open_tracking_window ...'
+      end
+      # verify the required parameter 'tracking_window_open' is set
+      if @api_client.config.client_side_validation && tracking_window_open.nil?
+        fail ArgumentError, "Missing the required parameter 'tracking_window_open' when calling AnalyticsApi.open_tracking_window"
+      end
+      # resource path
+      local_var_path = '/v1/analytics/tracking'
+
+      # query parameters
+      query_params = opts[:query_params] || {}
+
+      # header parameters
+      header_params = opts[:header_params] || {}
+      # HTTP header 'Accept' (if needed)
+      header_params['Accept'] = @api_client.select_header_accept(['application/json']) unless header_params['Accept']
+      # HTTP header 'Content-Type'
+      content_type = @api_client.select_header_content_type(['application/json'])
+      if !content_type.nil?
+          header_params['Content-Type'] = content_type
+      end
+      header_params[:'X-Hermoso-User'] = opts[:'x_hermoso_user'] if !opts[:'x_hermoso_user'].nil?
+
+      # form parameters
+      form_params = opts[:form_params] || {}
+
+      # http body (model)
+      post_body = opts[:debug_body] || @api_client.object_to_http_body(tracking_window_open)
+
+      # return_type
+      return_type = opts[:debug_return_type] || 'TrackingWindow'
+
+      # auth_names
+      auth_names = opts[:debug_auth_names] || ['bearerAuth']
+
+      new_options = opts.merge(
+        :operation => :"AnalyticsApi.open_tracking_window",
+        :header_params => header_params,
+        :query_params => query_params,
+        :form_params => form_params,
+        :body => post_body,
+        :auth_names => auth_names,
+        :return_type => return_type
+      )
+
+      data, status_code, headers = @api_client.call_api(:POST, local_var_path, new_options)
+      if @api_client.config.debugging
+        @api_client.config.logger.debug "API called: AnalyticsApi#open_tracking_window\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
       end
       return data, status_code, headers
     end

@@ -20,6 +20,21 @@ use crate::apis::ContentType;
 #[async_trait]
 pub trait AnalyticsApi: Send + Sync {
 
+    /// DELETE /v1/analytics/tracking/{window_id}
+    ///
+    /// Stops the window: no final reading, no event, no further charges. A finished window keeps its status.
+    async fn cancel_tracking_window(&self,  params: CancelTrackingWindowParams ) -> Result<models::TrackingWindow, Error<CancelTrackingWindowError>>;
+
+    /// GET /v1/analytics/dashboard
+    ///
+    /// One read across the brand’s connected channels: per channel, posts, reach (each platform’s own unit), engagement, engagement rate and follower change, each as `current`, `previous`, `change` and `pct`, plus a day-by-day series, top posts and recent posts. The previous window is the same number of days immediately before (`this_week` compares week to date with last week to the same weekday). Reach is never added across platforms, a missing number is null with `why`, and YouTube carries no totals or changes (its API policy). Numbers belong to the day a post was published. Free.
+    async fn get_analytics_dashboard(&self,  params: GetAnalyticsDashboardParams ) -> Result<models::AnalyticsDashboard, Error<GetAnalyticsDashboardError>>;
+
+    /// GET /v1/analytics/delta
+    ///
+    /// A cursor feed of every post reading recorded since `cursor`, across all of the brand’s posts. Call FIRST with no cursor: no rows and the current cursor. Store it, then pass it back to receive only what was recorded after; `has_more` says another page follows. `from_start=true` pages through every reading held instead. Free.
+    async fn get_analytics_delta(&self,  params: GetAnalyticsDeltaParams ) -> Result<models::AnalyticsDelta, Error<GetAnalyticsDeltaError>>;
+
     /// GET /v1/analytics/best-time
     ///
     /// From this brand's own measured posts, per channel, on `timezone`: a day × hour grid (`slots`, one row per channel and slot with the post count, the average engagement and the lift against that channel's usual), the best weekday and 3-hour band where one beat the usual by 15% over at least 5 posts, and Instagram's followers-online hours when Instagram is connected. Raw numbers are never pooled across channels; below 15 measured posts nothing is named and `why` says how many there are. `day_of_week` 0 = Monday.
@@ -44,6 +59,21 @@ pub trait AnalyticsApi: Send + Sync {
     ///
     /// Per channel, completed weeks only (the last 180 days): for each posts-per-week, the weeks observed, the average engagement per post, the average engagement rate and the average follower change in those weeks. `frequency` has one row per (platform, posts_per_week); each channel names `best`, the highest cadence before engagement per post drops by 15%, once two cadences have 3+ measured weeks each.
     async fn get_posting_frequency(&self,  params: GetPostingFrequencyParams ) -> Result<models::PostingFrequency, Error<GetPostingFrequencyError>>;
+
+    /// GET /v1/analytics/tracking/{window_id}
+    ///
+    /// One window with its latest numbers; a finished one carries `final_read_at` and `completion_reason`.
+    async fn get_tracking_window(&self,  params: GetTrackingWindowParams ) -> Result<models::TrackingWindow, Error<GetTrackingWindowError>>;
+
+    /// GET /v1/analytics/tracking
+    ///
+    /// The brand’s tracking windows, newest first, each with its latest numbers. Free.
+    async fn list_tracking_windows(&self,  params: ListTrackingWindowsParams ) -> Result<models::TrackingWindowList, Error<ListTrackingWindowsError>>;
+
+    /// POST /v1/analytics/tracking
+    ///
+    /// Watch a post once a day for `tracking_days` (1-90, default 30), then a final reading and the `post.tracking_completed` event. `post_id`: a post the brand published, read through its own connection, free. `url`: any public TikTok, Instagram, YouTube, Facebook, X or Threads post, one data lookup per reading: without `confirm: true` nothing is opened and the answer is the quote (`needs_confirm`). A post already tracked returns its open window (`existing: true`).
+    async fn open_tracking_window(&self,  params: OpenTrackingWindowParams ) -> Result<models::TrackingWindow, Error<OpenTrackingWindowError>>;
 }
 
 pub struct AnalyticsApiClient {
@@ -56,6 +86,57 @@ impl AnalyticsApiClient {
     }
 }
 
+
+/// struct for passing parameters to the method [`AnalyticsApi::cancel_tracking_window`]
+#[derive(Clone, Debug)]
+#[cfg_attr(feature = "bon", derive(::bon::Builder))]
+pub struct CancelTrackingWindowParams {
+    pub window_id: String,
+    /// Which profile to act on, when the account holds more than one: an `id` from `GET /v1/brands`. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 `brand_not_found`, never an empty result.
+    pub x_hermoso_user: Option<String>
+}
+
+/// struct for passing parameters to the method [`AnalyticsApi::get_analytics_dashboard`]
+#[derive(Clone, Debug)]
+#[cfg_attr(feature = "bon", derive(::bon::Builder))]
+pub struct GetAnalyticsDashboardParams {
+    /// last_7_days (default), last_30_days, last_90_days, this_week or this_month.
+    pub period: Option<String>,
+    /// Instead of period: the last N days, 1-365.
+    pub days: Option<i32>,
+    /// Instead of period: YYYY-MM-DD, with `to`.
+    pub from: Option<String>,
+    /// YYYY-MM-DD, inclusive.
+    pub to: Option<String>,
+    /// One channel.
+    pub channel: Option<String>,
+    /// One account: handle, Page name or id.
+    pub account: Option<String>,
+    /// Top posts per channel, 0-20. Default 3.
+    pub top_posts: Option<i32>,
+    /// Most recent posts of the window, 0-50. Default 5.
+    pub recent_posts: Option<i32>,
+    /// IANA zone for the days. Default: the account’s.
+    pub timezone: Option<String>,
+    /// Which profile to act on, when the account holds more than one: an `id` from `GET /v1/brands`. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 `brand_not_found`, never an empty result.
+    pub x_hermoso_user: Option<String>
+}
+
+/// struct for passing parameters to the method [`AnalyticsApi::get_analytics_delta`]
+#[derive(Clone, Debug)]
+#[cfg_attr(feature = "bon", derive(::bon::Builder))]
+pub struct GetAnalyticsDeltaParams {
+    /// The cursor a previous call returned.
+    pub cursor: Option<String>,
+    /// 1-500. Default 100.
+    pub limit: Option<i32>,
+    /// One channel.
+    pub channel: Option<String>,
+    /// Page through everything held instead of starting at now.
+    pub from_start: Option<bool>,
+    /// Which profile to act on, when the account holds more than one: an `id` from `GET /v1/brands`. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 `brand_not_found`, never an empty result.
+    pub x_hermoso_user: Option<String>
+}
 
 /// struct for passing parameters to the method [`AnalyticsApi::get_best_time`]
 #[derive(Clone, Debug)]
@@ -149,9 +230,242 @@ pub struct GetPostingFrequencyParams {
     pub x_hermoso_user: Option<String>
 }
 
+/// struct for passing parameters to the method [`AnalyticsApi::get_tracking_window`]
+#[derive(Clone, Debug)]
+#[cfg_attr(feature = "bon", derive(::bon::Builder))]
+pub struct GetTrackingWindowParams {
+    pub window_id: String,
+    /// Which profile to act on, when the account holds more than one: an `id` from `GET /v1/brands`. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 `brand_not_found`, never an empty result.
+    pub x_hermoso_user: Option<String>
+}
+
+/// struct for passing parameters to the method [`AnalyticsApi::list_tracking_windows`]
+#[derive(Clone, Debug)]
+#[cfg_attr(feature = "bon", derive(::bon::Builder))]
+pub struct ListTrackingWindowsParams {
+    /// open, completed or cancelled.
+    pub status: Option<String>,
+    /// 1-200. Default 50.
+    pub limit: Option<i32>,
+    /// Which profile to act on, when the account holds more than one: an `id` from `GET /v1/brands`. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 `brand_not_found`, never an empty result.
+    pub x_hermoso_user: Option<String>
+}
+
+/// struct for passing parameters to the method [`AnalyticsApi::open_tracking_window`]
+#[derive(Clone, Debug)]
+#[cfg_attr(feature = "bon", derive(::bon::Builder))]
+pub struct OpenTrackingWindowParams {
+    pub tracking_window_open: models::TrackingWindowOpen,
+    /// Which profile to act on, when the account holds more than one: an `id` from `GET /v1/brands`. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 `brand_not_found`, never an empty result.
+    pub x_hermoso_user: Option<String>
+}
+
 
 #[async_trait]
 impl AnalyticsApi for AnalyticsApiClient {
+    /// Stops the window: no final reading, no event, no further charges. A finished window keeps its status.
+    async fn cancel_tracking_window(&self,  params: CancelTrackingWindowParams ) -> Result<models::TrackingWindow, Error<CancelTrackingWindowError>> {
+        
+        let CancelTrackingWindowParams {
+            window_id,
+            x_hermoso_user,
+        } = params;
+        
+
+        let local_var_configuration = &self.configuration;
+
+        let local_var_client = &local_var_configuration.client;
+
+        let local_var_uri_str = format!("{}/v1/analytics/tracking/{window_id}", local_var_configuration.base_path, window_id=crate::apis::urlencode(window_id));
+        let mut local_var_req_builder = local_var_client.request(reqwest::Method::DELETE, local_var_uri_str.as_str());
+
+        if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
+            local_var_req_builder = local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
+        }
+        if let Some(local_var_param_value) = x_hermoso_user {
+            local_var_req_builder = local_var_req_builder.header("X-Hermoso-User", local_var_param_value.to_string());
+        }
+        if let Some(ref local_var_token) = local_var_configuration.bearer_access_token {
+            local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token.to_owned());
+        };
+
+        let local_var_req = local_var_req_builder.build()?;
+        let local_var_resp = local_var_client.execute(local_var_req).await?;
+
+        let local_var_status = local_var_resp.status();
+        let local_var_content_type = local_var_resp
+            .headers()
+            .get("content-type")
+            .and_then(|v| v.to_str().ok())
+            .unwrap_or("application/octet-stream");
+        let local_var_content_type = super::ContentType::from(local_var_content_type);
+        let local_var_content = local_var_resp.text().await?;
+
+        if !local_var_status.is_client_error() && !local_var_status.is_server_error() {
+            match local_var_content_type {
+                ContentType::Json => serde_json::from_str(&local_var_content).map_err(Error::from),
+                ContentType::Text => return Err(Error::from(serde_json::Error::custom("Received `text/plain` content type response that cannot be converted to `models::TrackingWindow`"))),
+                ContentType::Unsupported(local_var_unknown_type) => return Err(Error::from(serde_json::Error::custom(format!("Received `{local_var_unknown_type}` content type response that cannot be converted to `models::TrackingWindow`")))),
+            }
+        } else {
+            let local_var_entity: Option<CancelTrackingWindowError> = serde_json::from_str(&local_var_content).ok();
+            let local_var_error = ResponseContent { status: local_var_status, content: local_var_content, entity: local_var_entity };
+            Err(Error::ResponseError(local_var_error))
+        }
+    }
+
+    /// One read across the brand’s connected channels: per channel, posts, reach (each platform’s own unit), engagement, engagement rate and follower change, each as `current`, `previous`, `change` and `pct`, plus a day-by-day series, top posts and recent posts. The previous window is the same number of days immediately before (`this_week` compares week to date with last week to the same weekday). Reach is never added across platforms, a missing number is null with `why`, and YouTube carries no totals or changes (its API policy). Numbers belong to the day a post was published. Free.
+    async fn get_analytics_dashboard(&self,  params: GetAnalyticsDashboardParams ) -> Result<models::AnalyticsDashboard, Error<GetAnalyticsDashboardError>> {
+        
+        let GetAnalyticsDashboardParams {
+            period,
+            days,
+            from,
+            to,
+            channel,
+            account,
+            top_posts,
+            recent_posts,
+            timezone,
+            x_hermoso_user,
+        } = params;
+        
+
+        let local_var_configuration = &self.configuration;
+
+        let local_var_client = &local_var_configuration.client;
+
+        let local_var_uri_str = format!("{}/v1/analytics/dashboard", local_var_configuration.base_path);
+        let mut local_var_req_builder = local_var_client.request(reqwest::Method::GET, local_var_uri_str.as_str());
+
+        if let Some(ref param_value) = period {
+            local_var_req_builder = local_var_req_builder.query(&[("period", &param_value.to_string())]);
+        }
+        if let Some(ref param_value) = days {
+            local_var_req_builder = local_var_req_builder.query(&[("days", &param_value.to_string())]);
+        }
+        if let Some(ref param_value) = from {
+            local_var_req_builder = local_var_req_builder.query(&[("from", &param_value.to_string())]);
+        }
+        if let Some(ref param_value) = to {
+            local_var_req_builder = local_var_req_builder.query(&[("to", &param_value.to_string())]);
+        }
+        if let Some(ref param_value) = channel {
+            local_var_req_builder = local_var_req_builder.query(&[("channel", &param_value.to_string())]);
+        }
+        if let Some(ref param_value) = account {
+            local_var_req_builder = local_var_req_builder.query(&[("account", &param_value.to_string())]);
+        }
+        if let Some(ref param_value) = top_posts {
+            local_var_req_builder = local_var_req_builder.query(&[("top_posts", &param_value.to_string())]);
+        }
+        if let Some(ref param_value) = recent_posts {
+            local_var_req_builder = local_var_req_builder.query(&[("recent_posts", &param_value.to_string())]);
+        }
+        if let Some(ref param_value) = timezone {
+            local_var_req_builder = local_var_req_builder.query(&[("timezone", &param_value.to_string())]);
+        }
+        if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
+            local_var_req_builder = local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
+        }
+        if let Some(local_var_param_value) = x_hermoso_user {
+            local_var_req_builder = local_var_req_builder.header("X-Hermoso-User", local_var_param_value.to_string());
+        }
+        if let Some(ref local_var_token) = local_var_configuration.bearer_access_token {
+            local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token.to_owned());
+        };
+
+        let local_var_req = local_var_req_builder.build()?;
+        let local_var_resp = local_var_client.execute(local_var_req).await?;
+
+        let local_var_status = local_var_resp.status();
+        let local_var_content_type = local_var_resp
+            .headers()
+            .get("content-type")
+            .and_then(|v| v.to_str().ok())
+            .unwrap_or("application/octet-stream");
+        let local_var_content_type = super::ContentType::from(local_var_content_type);
+        let local_var_content = local_var_resp.text().await?;
+
+        if !local_var_status.is_client_error() && !local_var_status.is_server_error() {
+            match local_var_content_type {
+                ContentType::Json => serde_json::from_str(&local_var_content).map_err(Error::from),
+                ContentType::Text => return Err(Error::from(serde_json::Error::custom("Received `text/plain` content type response that cannot be converted to `models::AnalyticsDashboard`"))),
+                ContentType::Unsupported(local_var_unknown_type) => return Err(Error::from(serde_json::Error::custom(format!("Received `{local_var_unknown_type}` content type response that cannot be converted to `models::AnalyticsDashboard`")))),
+            }
+        } else {
+            let local_var_entity: Option<GetAnalyticsDashboardError> = serde_json::from_str(&local_var_content).ok();
+            let local_var_error = ResponseContent { status: local_var_status, content: local_var_content, entity: local_var_entity };
+            Err(Error::ResponseError(local_var_error))
+        }
+    }
+
+    /// A cursor feed of every post reading recorded since `cursor`, across all of the brand’s posts. Call FIRST with no cursor: no rows and the current cursor. Store it, then pass it back to receive only what was recorded after; `has_more` says another page follows. `from_start=true` pages through every reading held instead. Free.
+    async fn get_analytics_delta(&self,  params: GetAnalyticsDeltaParams ) -> Result<models::AnalyticsDelta, Error<GetAnalyticsDeltaError>> {
+        
+        let GetAnalyticsDeltaParams {
+            cursor,
+            limit,
+            channel,
+            from_start,
+            x_hermoso_user,
+        } = params;
+        
+
+        let local_var_configuration = &self.configuration;
+
+        let local_var_client = &local_var_configuration.client;
+
+        let local_var_uri_str = format!("{}/v1/analytics/delta", local_var_configuration.base_path);
+        let mut local_var_req_builder = local_var_client.request(reqwest::Method::GET, local_var_uri_str.as_str());
+
+        if let Some(ref param_value) = cursor {
+            local_var_req_builder = local_var_req_builder.query(&[("cursor", &param_value.to_string())]);
+        }
+        if let Some(ref param_value) = limit {
+            local_var_req_builder = local_var_req_builder.query(&[("limit", &param_value.to_string())]);
+        }
+        if let Some(ref param_value) = channel {
+            local_var_req_builder = local_var_req_builder.query(&[("channel", &param_value.to_string())]);
+        }
+        if let Some(ref param_value) = from_start {
+            local_var_req_builder = local_var_req_builder.query(&[("from_start", &param_value.to_string())]);
+        }
+        if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
+            local_var_req_builder = local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
+        }
+        if let Some(local_var_param_value) = x_hermoso_user {
+            local_var_req_builder = local_var_req_builder.header("X-Hermoso-User", local_var_param_value.to_string());
+        }
+        if let Some(ref local_var_token) = local_var_configuration.bearer_access_token {
+            local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token.to_owned());
+        };
+
+        let local_var_req = local_var_req_builder.build()?;
+        let local_var_resp = local_var_client.execute(local_var_req).await?;
+
+        let local_var_status = local_var_resp.status();
+        let local_var_content_type = local_var_resp
+            .headers()
+            .get("content-type")
+            .and_then(|v| v.to_str().ok())
+            .unwrap_or("application/octet-stream");
+        let local_var_content_type = super::ContentType::from(local_var_content_type);
+        let local_var_content = local_var_resp.text().await?;
+
+        if !local_var_status.is_client_error() && !local_var_status.is_server_error() {
+            match local_var_content_type {
+                ContentType::Json => serde_json::from_str(&local_var_content).map_err(Error::from),
+                ContentType::Text => return Err(Error::from(serde_json::Error::custom("Received `text/plain` content type response that cannot be converted to `models::AnalyticsDelta`"))),
+                ContentType::Unsupported(local_var_unknown_type) => return Err(Error::from(serde_json::Error::custom(format!("Received `{local_var_unknown_type}` content type response that cannot be converted to `models::AnalyticsDelta`")))),
+            }
+        } else {
+            let local_var_entity: Option<GetAnalyticsDeltaError> = serde_json::from_str(&local_var_content).ok();
+            let local_var_error = ResponseContent { status: local_var_status, content: local_var_content, entity: local_var_entity };
+            Err(Error::ResponseError(local_var_error))
+        }
+    }
+
     /// From this brand's own measured posts, per channel, on `timezone`: a day × hour grid (`slots`, one row per channel and slot with the post count, the average engagement and the lift against that channel's usual), the best weekday and 3-hour band where one beat the usual by 15% over at least 5 posts, and Instagram's followers-online hours when Instagram is connected. Raw numbers are never pooled across channels; below 15 measured posts nothing is named and `why` says how many there are. `day_of_week` 0 = Monday.
     async fn get_best_time(&self,  params: GetBestTimeParams ) -> Result<models::BestTime, Error<GetBestTimeError>> {
         
@@ -506,6 +820,200 @@ impl AnalyticsApi for AnalyticsApiClient {
         }
     }
 
+    /// One window with its latest numbers; a finished one carries `final_read_at` and `completion_reason`.
+    async fn get_tracking_window(&self,  params: GetTrackingWindowParams ) -> Result<models::TrackingWindow, Error<GetTrackingWindowError>> {
+        
+        let GetTrackingWindowParams {
+            window_id,
+            x_hermoso_user,
+        } = params;
+        
+
+        let local_var_configuration = &self.configuration;
+
+        let local_var_client = &local_var_configuration.client;
+
+        let local_var_uri_str = format!("{}/v1/analytics/tracking/{window_id}", local_var_configuration.base_path, window_id=crate::apis::urlencode(window_id));
+        let mut local_var_req_builder = local_var_client.request(reqwest::Method::GET, local_var_uri_str.as_str());
+
+        if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
+            local_var_req_builder = local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
+        }
+        if let Some(local_var_param_value) = x_hermoso_user {
+            local_var_req_builder = local_var_req_builder.header("X-Hermoso-User", local_var_param_value.to_string());
+        }
+        if let Some(ref local_var_token) = local_var_configuration.bearer_access_token {
+            local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token.to_owned());
+        };
+
+        let local_var_req = local_var_req_builder.build()?;
+        let local_var_resp = local_var_client.execute(local_var_req).await?;
+
+        let local_var_status = local_var_resp.status();
+        let local_var_content_type = local_var_resp
+            .headers()
+            .get("content-type")
+            .and_then(|v| v.to_str().ok())
+            .unwrap_or("application/octet-stream");
+        let local_var_content_type = super::ContentType::from(local_var_content_type);
+        let local_var_content = local_var_resp.text().await?;
+
+        if !local_var_status.is_client_error() && !local_var_status.is_server_error() {
+            match local_var_content_type {
+                ContentType::Json => serde_json::from_str(&local_var_content).map_err(Error::from),
+                ContentType::Text => return Err(Error::from(serde_json::Error::custom("Received `text/plain` content type response that cannot be converted to `models::TrackingWindow`"))),
+                ContentType::Unsupported(local_var_unknown_type) => return Err(Error::from(serde_json::Error::custom(format!("Received `{local_var_unknown_type}` content type response that cannot be converted to `models::TrackingWindow`")))),
+            }
+        } else {
+            let local_var_entity: Option<GetTrackingWindowError> = serde_json::from_str(&local_var_content).ok();
+            let local_var_error = ResponseContent { status: local_var_status, content: local_var_content, entity: local_var_entity };
+            Err(Error::ResponseError(local_var_error))
+        }
+    }
+
+    /// The brand’s tracking windows, newest first, each with its latest numbers. Free.
+    async fn list_tracking_windows(&self,  params: ListTrackingWindowsParams ) -> Result<models::TrackingWindowList, Error<ListTrackingWindowsError>> {
+        
+        let ListTrackingWindowsParams {
+            status,
+            limit,
+            x_hermoso_user,
+        } = params;
+        
+
+        let local_var_configuration = &self.configuration;
+
+        let local_var_client = &local_var_configuration.client;
+
+        let local_var_uri_str = format!("{}/v1/analytics/tracking", local_var_configuration.base_path);
+        let mut local_var_req_builder = local_var_client.request(reqwest::Method::GET, local_var_uri_str.as_str());
+
+        if let Some(ref param_value) = status {
+            local_var_req_builder = local_var_req_builder.query(&[("status", &param_value.to_string())]);
+        }
+        if let Some(ref param_value) = limit {
+            local_var_req_builder = local_var_req_builder.query(&[("limit", &param_value.to_string())]);
+        }
+        if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
+            local_var_req_builder = local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
+        }
+        if let Some(local_var_param_value) = x_hermoso_user {
+            local_var_req_builder = local_var_req_builder.header("X-Hermoso-User", local_var_param_value.to_string());
+        }
+        if let Some(ref local_var_token) = local_var_configuration.bearer_access_token {
+            local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token.to_owned());
+        };
+
+        let local_var_req = local_var_req_builder.build()?;
+        let local_var_resp = local_var_client.execute(local_var_req).await?;
+
+        let local_var_status = local_var_resp.status();
+        let local_var_content_type = local_var_resp
+            .headers()
+            .get("content-type")
+            .and_then(|v| v.to_str().ok())
+            .unwrap_or("application/octet-stream");
+        let local_var_content_type = super::ContentType::from(local_var_content_type);
+        let local_var_content = local_var_resp.text().await?;
+
+        if !local_var_status.is_client_error() && !local_var_status.is_server_error() {
+            match local_var_content_type {
+                ContentType::Json => serde_json::from_str(&local_var_content).map_err(Error::from),
+                ContentType::Text => return Err(Error::from(serde_json::Error::custom("Received `text/plain` content type response that cannot be converted to `models::TrackingWindowList`"))),
+                ContentType::Unsupported(local_var_unknown_type) => return Err(Error::from(serde_json::Error::custom(format!("Received `{local_var_unknown_type}` content type response that cannot be converted to `models::TrackingWindowList`")))),
+            }
+        } else {
+            let local_var_entity: Option<ListTrackingWindowsError> = serde_json::from_str(&local_var_content).ok();
+            let local_var_error = ResponseContent { status: local_var_status, content: local_var_content, entity: local_var_entity };
+            Err(Error::ResponseError(local_var_error))
+        }
+    }
+
+    /// Watch a post once a day for `tracking_days` (1-90, default 30), then a final reading and the `post.tracking_completed` event. `post_id`: a post the brand published, read through its own connection, free. `url`: any public TikTok, Instagram, YouTube, Facebook, X or Threads post, one data lookup per reading: without `confirm: true` nothing is opened and the answer is the quote (`needs_confirm`). A post already tracked returns its open window (`existing: true`).
+    async fn open_tracking_window(&self,  params: OpenTrackingWindowParams ) -> Result<models::TrackingWindow, Error<OpenTrackingWindowError>> {
+        
+        let OpenTrackingWindowParams {
+            tracking_window_open,
+            x_hermoso_user,
+        } = params;
+        
+
+        let local_var_configuration = &self.configuration;
+
+        let local_var_client = &local_var_configuration.client;
+
+        let local_var_uri_str = format!("{}/v1/analytics/tracking", local_var_configuration.base_path);
+        let mut local_var_req_builder = local_var_client.request(reqwest::Method::POST, local_var_uri_str.as_str());
+
+        if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
+            local_var_req_builder = local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
+        }
+        if let Some(local_var_param_value) = x_hermoso_user {
+            local_var_req_builder = local_var_req_builder.header("X-Hermoso-User", local_var_param_value.to_string());
+        }
+        if let Some(ref local_var_token) = local_var_configuration.bearer_access_token {
+            local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token.to_owned());
+        };
+        local_var_req_builder = local_var_req_builder.json(&tracking_window_open);
+
+        let local_var_req = local_var_req_builder.build()?;
+        let local_var_resp = local_var_client.execute(local_var_req).await?;
+
+        let local_var_status = local_var_resp.status();
+        let local_var_content_type = local_var_resp
+            .headers()
+            .get("content-type")
+            .and_then(|v| v.to_str().ok())
+            .unwrap_or("application/octet-stream");
+        let local_var_content_type = super::ContentType::from(local_var_content_type);
+        let local_var_content = local_var_resp.text().await?;
+
+        if !local_var_status.is_client_error() && !local_var_status.is_server_error() {
+            match local_var_content_type {
+                ContentType::Json => serde_json::from_str(&local_var_content).map_err(Error::from),
+                ContentType::Text => return Err(Error::from(serde_json::Error::custom("Received `text/plain` content type response that cannot be converted to `models::TrackingWindow`"))),
+                ContentType::Unsupported(local_var_unknown_type) => return Err(Error::from(serde_json::Error::custom(format!("Received `{local_var_unknown_type}` content type response that cannot be converted to `models::TrackingWindow`")))),
+            }
+        } else {
+            let local_var_entity: Option<OpenTrackingWindowError> = serde_json::from_str(&local_var_content).ok();
+            let local_var_error = ResponseContent { status: local_var_status, content: local_var_content, entity: local_var_entity };
+            Err(Error::ResponseError(local_var_error))
+        }
+    }
+
+}
+
+/// struct for typed errors of method [`AnalyticsApi::cancel_tracking_window`]
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum CancelTrackingWindowError {
+    Status400(models::Error),
+    Status401(models::Error),
+    Status404(models::Error),
+    Status429(models::Error),
+    UnknownValue(serde_json::Value),
+}
+
+/// struct for typed errors of method [`AnalyticsApi::get_analytics_dashboard`]
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum GetAnalyticsDashboardError {
+    Status400(models::Error),
+    Status401(models::Error),
+    Status404(models::Error),
+    Status429(models::Error),
+    UnknownValue(serde_json::Value),
+}
+
+/// struct for typed errors of method [`AnalyticsApi::get_analytics_delta`]
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum GetAnalyticsDeltaError {
+    Status400(models::Error),
+    Status401(models::Error),
+    Status404(models::Error),
+    Status429(models::Error),
+    UnknownValue(serde_json::Value),
 }
 
 /// struct for typed errors of method [`AnalyticsApi::get_best_time`]
@@ -556,6 +1064,39 @@ pub enum GetInboxStatsError {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
 pub enum GetPostingFrequencyError {
+    Status400(models::Error),
+    Status401(models::Error),
+    Status404(models::Error),
+    Status429(models::Error),
+    UnknownValue(serde_json::Value),
+}
+
+/// struct for typed errors of method [`AnalyticsApi::get_tracking_window`]
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum GetTrackingWindowError {
+    Status400(models::Error),
+    Status401(models::Error),
+    Status404(models::Error),
+    Status429(models::Error),
+    UnknownValue(serde_json::Value),
+}
+
+/// struct for typed errors of method [`AnalyticsApi::list_tracking_windows`]
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum ListTrackingWindowsError {
+    Status400(models::Error),
+    Status401(models::Error),
+    Status404(models::Error),
+    Status429(models::Error),
+    UnknownValue(serde_json::Value),
+}
+
+/// struct for typed errors of method [`AnalyticsApi::open_tracking_window`]
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum OpenTrackingWindowError {
     Status400(models::Error),
     Status401(models::Error),
     Status404(models::Error),

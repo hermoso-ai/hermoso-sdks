@@ -25,10 +25,20 @@ pub trait CampaignResultsApi: Send + Sync {
     /// 
     async fn get_profit_settings(&self,  params: GetProfitSettingsParams ) -> Result<models::ProfitSettings, Error<GetProfitSettingsError>>;
 
+    /// GET /v1/campaign-results/metrics
+    ///
+    /// Every metric key the brand uploaded (with its label and kind: count, money, percent or ratio), then every formula: the built-in ones (cac_percent, cost_per_sale, cost_per_qualified_lead, lead_to_sale, qualified_rate) and the brand’s own, plus the conversion events that count as campaign results.
+    async fn list_campaign_result_metrics(&self,  params: ListCampaignResultMetricsParams ) -> Result<models::CampaignResultMetrics, Error<ListCampaignResultMetricsError>>;
+
     /// GET /v1/campaign-results
     ///
     /// 
     async fn list_campaign_results(&self,  params: ListCampaignResultsParams ) -> Result<models::CampaignResults, Error<ListCampaignResultsError>>;
+
+    /// PUT /v1/campaign-results/metrics/{key}
+    ///
+    /// Sets a metric key’s `label` and `kind` (count, money with its `currency`, percent or ratio), and optionally a `formula` with + - * / and parentheses over spend, impressions, clicks, sales, revenue, leads, qualified_leads, profit and any uploaded metric key. `formula: null` removes it. A formula is parsed, never run as code; division by zero gives null. Every formula shows per campaign in GET /v1/campaign-profit.
+    async fn set_campaign_result_metric(&self,  params: SetCampaignResultMetricParams ) -> Result<models::CampaignResultMetrics, Error<SetCampaignResultMetricError>>;
 
     /// PUT /v1/campaign-results/profit-settings
     ///
@@ -60,12 +70,30 @@ pub struct GetProfitSettingsParams {
     pub x_hermoso_user: Option<String>
 }
 
+/// struct for passing parameters to the method [`CampaignResultsApi::list_campaign_result_metrics`]
+#[derive(Clone, Debug)]
+#[cfg_attr(feature = "bon", derive(::bon::Builder))]
+pub struct ListCampaignResultMetricsParams {
+    /// Which profile to act on, when the account holds more than one: an `id` from `GET /v1/brands`. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 `brand_not_found`, never an empty result.
+    pub x_hermoso_user: Option<String>
+}
+
 /// struct for passing parameters to the method [`CampaignResultsApi::list_campaign_results`]
 #[derive(Clone, Debug)]
 #[cfg_attr(feature = "bon", derive(::bon::Builder))]
 pub struct ListCampaignResultsParams {
     pub from: Option<String>,
     pub to: Option<String>,
+    /// Which profile to act on, when the account holds more than one: an `id` from `GET /v1/brands`. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 `brand_not_found`, never an empty result.
+    pub x_hermoso_user: Option<String>
+}
+
+/// struct for passing parameters to the method [`CampaignResultsApi::set_campaign_result_metric`]
+#[derive(Clone, Debug)]
+#[cfg_attr(feature = "bon", derive(::bon::Builder))]
+pub struct SetCampaignResultMetricParams {
+    pub key: String,
+    pub campaign_result_metric: models::CampaignResultMetric,
     /// Which profile to act on, when the account holds more than one: an `id` from `GET /v1/brands`. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 `brand_not_found`, never an empty result.
     pub x_hermoso_user: Option<String>
 }
@@ -142,6 +170,56 @@ impl CampaignResultsApi for CampaignResultsApiClient {
         }
     }
 
+    /// Every metric key the brand uploaded (with its label and kind: count, money, percent or ratio), then every formula: the built-in ones (cac_percent, cost_per_sale, cost_per_qualified_lead, lead_to_sale, qualified_rate) and the brand’s own, plus the conversion events that count as campaign results.
+    async fn list_campaign_result_metrics(&self,  params: ListCampaignResultMetricsParams ) -> Result<models::CampaignResultMetrics, Error<ListCampaignResultMetricsError>> {
+        
+        let ListCampaignResultMetricsParams {
+            x_hermoso_user,
+        } = params;
+        
+
+        let local_var_configuration = &self.configuration;
+
+        let local_var_client = &local_var_configuration.client;
+
+        let local_var_uri_str = format!("{}/v1/campaign-results/metrics", local_var_configuration.base_path);
+        let mut local_var_req_builder = local_var_client.request(reqwest::Method::GET, local_var_uri_str.as_str());
+
+        if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
+            local_var_req_builder = local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
+        }
+        if let Some(local_var_param_value) = x_hermoso_user {
+            local_var_req_builder = local_var_req_builder.header("X-Hermoso-User", local_var_param_value.to_string());
+        }
+        if let Some(ref local_var_token) = local_var_configuration.bearer_access_token {
+            local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token.to_owned());
+        };
+
+        let local_var_req = local_var_req_builder.build()?;
+        let local_var_resp = local_var_client.execute(local_var_req).await?;
+
+        let local_var_status = local_var_resp.status();
+        let local_var_content_type = local_var_resp
+            .headers()
+            .get("content-type")
+            .and_then(|v| v.to_str().ok())
+            .unwrap_or("application/octet-stream");
+        let local_var_content_type = super::ContentType::from(local_var_content_type);
+        let local_var_content = local_var_resp.text().await?;
+
+        if !local_var_status.is_client_error() && !local_var_status.is_server_error() {
+            match local_var_content_type {
+                ContentType::Json => serde_json::from_str(&local_var_content).map_err(Error::from),
+                ContentType::Text => return Err(Error::from(serde_json::Error::custom("Received `text/plain` content type response that cannot be converted to `models::CampaignResultMetrics`"))),
+                ContentType::Unsupported(local_var_unknown_type) => return Err(Error::from(serde_json::Error::custom(format!("Received `{local_var_unknown_type}` content type response that cannot be converted to `models::CampaignResultMetrics`")))),
+            }
+        } else {
+            let local_var_entity: Option<ListCampaignResultMetricsError> = serde_json::from_str(&local_var_content).ok();
+            let local_var_error = ResponseContent { status: local_var_status, content: local_var_content, entity: local_var_entity };
+            Err(Error::ResponseError(local_var_error))
+        }
+    }
+
     async fn list_campaign_results(&self,  params: ListCampaignResultsParams ) -> Result<models::CampaignResults, Error<ListCampaignResultsError>> {
         
         let ListCampaignResultsParams {
@@ -194,6 +272,59 @@ impl CampaignResultsApi for CampaignResultsApiClient {
             }
         } else {
             let local_var_entity: Option<ListCampaignResultsError> = serde_json::from_str(&local_var_content).ok();
+            let local_var_error = ResponseContent { status: local_var_status, content: local_var_content, entity: local_var_entity };
+            Err(Error::ResponseError(local_var_error))
+        }
+    }
+
+    /// Sets a metric key’s `label` and `kind` (count, money with its `currency`, percent or ratio), and optionally a `formula` with + - * / and parentheses over spend, impressions, clicks, sales, revenue, leads, qualified_leads, profit and any uploaded metric key. `formula: null` removes it. A formula is parsed, never run as code; division by zero gives null. Every formula shows per campaign in GET /v1/campaign-profit.
+    async fn set_campaign_result_metric(&self,  params: SetCampaignResultMetricParams ) -> Result<models::CampaignResultMetrics, Error<SetCampaignResultMetricError>> {
+        
+        let SetCampaignResultMetricParams {
+            key,
+            campaign_result_metric,
+            x_hermoso_user,
+        } = params;
+        
+
+        let local_var_configuration = &self.configuration;
+
+        let local_var_client = &local_var_configuration.client;
+
+        let local_var_uri_str = format!("{}/v1/campaign-results/metrics/{key}", local_var_configuration.base_path, key=crate::apis::urlencode(key));
+        let mut local_var_req_builder = local_var_client.request(reqwest::Method::PUT, local_var_uri_str.as_str());
+
+        if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
+            local_var_req_builder = local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
+        }
+        if let Some(local_var_param_value) = x_hermoso_user {
+            local_var_req_builder = local_var_req_builder.header("X-Hermoso-User", local_var_param_value.to_string());
+        }
+        if let Some(ref local_var_token) = local_var_configuration.bearer_access_token {
+            local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token.to_owned());
+        };
+        local_var_req_builder = local_var_req_builder.json(&campaign_result_metric);
+
+        let local_var_req = local_var_req_builder.build()?;
+        let local_var_resp = local_var_client.execute(local_var_req).await?;
+
+        let local_var_status = local_var_resp.status();
+        let local_var_content_type = local_var_resp
+            .headers()
+            .get("content-type")
+            .and_then(|v| v.to_str().ok())
+            .unwrap_or("application/octet-stream");
+        let local_var_content_type = super::ContentType::from(local_var_content_type);
+        let local_var_content = local_var_resp.text().await?;
+
+        if !local_var_status.is_client_error() && !local_var_status.is_server_error() {
+            match local_var_content_type {
+                ContentType::Json => serde_json::from_str(&local_var_content).map_err(Error::from),
+                ContentType::Text => return Err(Error::from(serde_json::Error::custom("Received `text/plain` content type response that cannot be converted to `models::CampaignResultMetrics`"))),
+                ContentType::Unsupported(local_var_unknown_type) => return Err(Error::from(serde_json::Error::custom(format!("Received `{local_var_unknown_type}` content type response that cannot be converted to `models::CampaignResultMetrics`")))),
+            }
+        } else {
+            let local_var_entity: Option<SetCampaignResultMetricError> = serde_json::from_str(&local_var_content).ok();
             let local_var_error = ResponseContent { status: local_var_status, content: local_var_content, entity: local_var_entity };
             Err(Error::ResponseError(local_var_error))
         }
@@ -320,10 +451,32 @@ pub enum GetProfitSettingsError {
     UnknownValue(serde_json::Value),
 }
 
+/// struct for typed errors of method [`CampaignResultsApi::list_campaign_result_metrics`]
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum ListCampaignResultMetricsError {
+    Status400(models::Error),
+    Status401(models::Error),
+    Status404(models::Error),
+    Status429(models::Error),
+    UnknownValue(serde_json::Value),
+}
+
 /// struct for typed errors of method [`CampaignResultsApi::list_campaign_results`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
 pub enum ListCampaignResultsError {
+    Status400(models::Error),
+    Status401(models::Error),
+    Status404(models::Error),
+    Status429(models::Error),
+    UnknownValue(serde_json::Value),
+}
+
+/// struct for typed errors of method [`CampaignResultsApi::set_campaign_result_metric`]
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum SetCampaignResultMetricError {
     Status400(models::Error),
     Status401(models::Error),
     Status404(models::Error),

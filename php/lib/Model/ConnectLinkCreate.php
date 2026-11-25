@@ -61,7 +61,9 @@ class ConnectLinkCreate implements ModelInterface, ArrayAccess, \JsonSerializabl
         'provider' => 'string',
         'redirect_url' => 'string',
         'state' => 'string',
-        'expires_in_minutes' => 'int'
+        'expires_in_minutes' => 'int',
+        'external_id' => 'string',
+        'welcome' => 'bool'
     ];
 
     /**
@@ -75,7 +77,9 @@ class ConnectLinkCreate implements ModelInterface, ArrayAccess, \JsonSerializabl
         'provider' => null,
         'redirect_url' => null,
         'state' => null,
-        'expires_in_minutes' => null
+        'expires_in_minutes' => null,
+        'external_id' => null,
+        'welcome' => null
     ];
 
     /**
@@ -87,7 +91,9 @@ class ConnectLinkCreate implements ModelInterface, ArrayAccess, \JsonSerializabl
         'provider' => false,
         'redirect_url' => false,
         'state' => false,
-        'expires_in_minutes' => false
+        'expires_in_minutes' => false,
+        'external_id' => false,
+        'welcome' => false
     ];
 
     /**
@@ -179,7 +185,9 @@ class ConnectLinkCreate implements ModelInterface, ArrayAccess, \JsonSerializabl
         'provider' => 'provider',
         'redirect_url' => 'redirect_url',
         'state' => 'state',
-        'expires_in_minutes' => 'expires_in_minutes'
+        'expires_in_minutes' => 'expires_in_minutes',
+        'external_id' => 'external_id',
+        'welcome' => 'welcome'
     ];
 
     /**
@@ -191,7 +199,9 @@ class ConnectLinkCreate implements ModelInterface, ArrayAccess, \JsonSerializabl
         'provider' => 'setProvider',
         'redirect_url' => 'setRedirectUrl',
         'state' => 'setState',
-        'expires_in_minutes' => 'setExpiresInMinutes'
+        'expires_in_minutes' => 'setExpiresInMinutes',
+        'external_id' => 'setExternalId',
+        'welcome' => 'setWelcome'
     ];
 
     /**
@@ -203,7 +213,9 @@ class ConnectLinkCreate implements ModelInterface, ArrayAccess, \JsonSerializabl
         'provider' => 'getProvider',
         'redirect_url' => 'getRedirectUrl',
         'state' => 'getState',
-        'expires_in_minutes' => 'getExpiresInMinutes'
+        'expires_in_minutes' => 'getExpiresInMinutes',
+        'external_id' => 'getExternalId',
+        'welcome' => 'getWelcome'
     ];
 
     /**
@@ -267,6 +279,8 @@ class ConnectLinkCreate implements ModelInterface, ArrayAccess, \JsonSerializabl
         $this->setIfExists('redirect_url', $data ?? [], null);
         $this->setIfExists('state', $data ?? [], null);
         $this->setIfExists('expires_in_minutes', $data ?? [], null);
+        $this->setIfExists('external_id', $data ?? [], null);
+        $this->setIfExists('welcome', $data ?? [], null);
     }
 
     /**
@@ -433,6 +447,60 @@ class ConnectLinkCreate implements ModelInterface, ArrayAccess, \JsonSerializabl
         }
 
         $this->container['expires_in_minutes'] = $expires_in_minutes;
+
+        return $this;
+    }
+
+    /**
+     * Gets external_id
+     *
+     * @return string|null
+     */
+    public function getExternalId()
+    {
+        return $this->container['external_id'];
+    }
+
+    /**
+     * Sets external_id
+     *
+     * @param string|null $external_id Your own id for this customer (letters, digits, - _ . : @, up to 128). It is mapped to this brand and returned on the link.
+     *
+     * @return self
+     */
+    public function setExternalId($external_id)
+    {
+        if (is_null($external_id)) {
+            throw new \InvalidArgumentException('non-nullable external_id cannot be null');
+        }
+        $this->container['external_id'] = $external_id;
+
+        return $this;
+    }
+
+    /**
+     * Gets welcome
+     *
+     * @return bool|null
+     */
+    public function getWelcome()
+    {
+        return $this->container['welcome'];
+    }
+
+    /**
+     * Sets welcome
+     *
+     * @param bool|null $welcome true shows your saved welcome screen on this link, false shows the plain page; omitted follows the screen’s showByDefault.
+     *
+     * @return self
+     */
+    public function setWelcome($welcome)
+    {
+        if (is_null($welcome)) {
+            throw new \InvalidArgumentException('non-nullable welcome cannot be null');
+        }
+        $this->container['welcome'] = $welcome;
 
         return $this;
     }

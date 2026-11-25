@@ -38,6 +38,9 @@ pub struct ConnectLink {
     pub connected_at: Option<chrono::DateTime<chrono::FixedOffset>>,
     #[serde(rename = "account", skip_serializing_if = "Option::is_none")]
     pub account: Option<models::ConnectLinkAccount>,
+    /// Your own customer id, when the link was created with one.
+    #[serde(rename = "external_id", skip_serializing_if = "Option::is_none")]
+    pub external_id: Option<String>,
     /// True for Facebook/Instagram (meta) and LinkedIn: choose which Pages the brand may use with list_connector_accounts + set_connector_accounts before posting.
     #[serde(rename = "account_selection_required", skip_serializing_if = "Option::is_none")]
     pub account_selection_required: Option<bool>,
@@ -60,6 +63,7 @@ impl ConnectLink {
             expires_at: None,
             connected_at: None,
             account: None,
+            external_id: None,
             account_selection_required: None,
             error: None,
         }

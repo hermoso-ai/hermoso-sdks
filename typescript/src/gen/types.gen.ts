@@ -194,6 +194,24 @@ export type PostCreate = {
         [key: string]: unknown;
     };
     /**
+     * Your own labels for finding the post again (up to 10, 40 characters each). Never published. GET /v1/posts?label= filters on them.
+     */
+    labels?: Array<string>;
+    /**
+     * Your own id for the post (up to 128 characters), e.g. a CRM or sheet row id. GET /v1/posts?external_id= finds it, also after it publishes.
+     */
+    external_id?: string;
+    /**
+     * Your own key/value notes stored with the post: strings, numbers, booleans or null, up to 20 keys and 4 KB. Refused, never trimmed, when over.
+     */
+    metadata?: {
+        [key: string]: unknown;
+    };
+    /**
+     * Run every check a create runs and store nothing. Answers 200 with {ok, channels, media, pipeline, note}: lengths per channel (with X’s weighted count), each media URL identified and measured from its bytes, and the exact refusal a create would get.
+     */
+    dry_run?: boolean;
+    /**
      * A comment the account posts on its own post right after it publishes: Facebook Pages, Instagram, and LinkedIn company Pages (LinkedIn needs its comments authorization, provider linkedin_community). Up to 2,000 characters, refused (never cut) when longer. Other channels publish the post without it and say so on their result. A comment that fails never undoes the post; its outcome is reported on the channel’s result.
      */
     first_comment?: string;
@@ -1519,7 +1537,33 @@ export type ProfitSettings = {
     campaign_margins?: {
         [key: string]: number;
     };
+    result_events?: Array<string>;
+    metrics?: {
+        [key: string]: {
+            [key: string]: unknown;
+        };
+    };
     note?: string;
+};
+
+export type CampaignResultMetric = {
+    label?: string;
+    kind?: 'count' | 'money' | 'percent' | 'ratio';
+    currency?: string;
+    formula?: string;
+};
+
+export type CampaignResultMetrics = {
+    object?: 'campaign_result_metrics';
+    metrics?: Array<{
+        [key: string]: unknown;
+    }>;
+    formulas?: Array<{
+        [key: string]: unknown;
+    }>;
+    result_events?: Array<string>;
+    note?: string;
+    [key: string]: unknown;
 };
 
 export type CampaignProfit = {
@@ -1536,6 +1580,683 @@ export type CampaignProfit = {
     unreadable?: Array<{
         [key: string]: unknown;
     }>;
+    note?: string;
+    [key: string]: unknown;
+};
+
+export type ChangelogPage = {
+    object?: 'list';
+    data?: Array<{
+        id?: string;
+        type?: string;
+        impact?: string;
+        platforms?: Array<string>;
+        title?: string;
+        summary?: string;
+        message?: string;
+        published_at?: string;
+        changes?: {
+            [key: string]: unknown;
+        };
+        [key: string]: unknown;
+    }>;
+    next_cursor?: string;
+    [key: string]: unknown;
+};
+
+export type ActivityLogPage = {
+    object?: 'list';
+    data?: Array<{
+        [key: string]: unknown;
+    }>;
+    unreadable?: Array<string>;
+    retention_days?: number;
+    [key: string]: unknown;
+};
+
+export type ConnectedAppList = {
+    object?: 'list';
+    data?: Array<{
+        id?: string;
+        name?: string;
+        host?: string;
+        authorized_at?: string;
+        last_used_at?: string;
+        token_count?: number;
+        [key: string]: unknown;
+    }>;
+    [key: string]: unknown;
+};
+
+export type ConnectedAppRevocation = {
+    object?: 'connected_app_revocation';
+    id?: string;
+    revoked?: boolean;
+    tokens_revoked?: number;
+    message?: string;
+    [key: string]: unknown;
+};
+
+export type AccountGroupWrite = {
+    name?: string;
+    members?: Array<{
+        channel?: string;
+        account?: string;
+    }>;
+};
+
+export type AccountGroup = {
+    object?: 'account_group';
+    id?: string;
+    name?: string;
+    members?: Array<{
+        [key: string]: unknown;
+    }>;
+    deleted?: boolean;
+    [key: string]: unknown;
+};
+
+export type AccountGroupList = {
+    object?: 'list';
+    data?: Array<AccountGroup>;
+    [key: string]: unknown;
+};
+
+export type WorkspaceWrite = {
+    name?: string;
+};
+
+export type Workspace = {
+    object?: 'workspace';
+    id?: string;
+    name?: string;
+    current?: boolean;
+    shared?: boolean;
+    owner_account_id?: string;
+    role?: string;
+    [key: string]: unknown;
+};
+
+export type WorkspaceList = {
+    object?: 'list';
+    data?: Array<Workspace>;
+    [key: string]: unknown;
+};
+
+export type WorkspaceDeletion = {
+    object?: 'workspace_deletion';
+    id?: string;
+    deleted?: boolean;
+    message?: string;
+    [key: string]: unknown;
+};
+
+export type UserList = {
+    object?: 'list';
+    data?: Array<User>;
+    roles?: Array<{
+        [key: string]: unknown;
+    }>;
+    areas?: Array<{
+        [key: string]: unknown;
+    }>;
+    [key: string]: unknown;
+};
+
+export type User = {
+    object?: 'user';
+    email?: string;
+    role?: 'owner' | 'admin' | 'member' | 'billing_admin' | 'viewer';
+    role_label?: string;
+    disabled_areas?: Array<string>;
+    access?: string;
+    status?: string;
+    accepted?: boolean;
+    is_you?: boolean;
+    [key: string]: unknown;
+};
+
+export type InviteCreate = {
+    email: string;
+    /**
+     * Default member.
+     */
+    role?: 'admin' | 'member' | 'billing_admin' | 'viewer';
+    /**
+     * Areas they may not use. Ignored for admin.
+     */
+    disabled_areas?: Array<'publishing' | 'engagement' | 'messages' | 'contacts' | 'analytics' | 'ads' | 'telephony' | 'accounts' | 'billing' | 'webhooks' | 'commerce' | 'creative' | 'research' | 'creators'>;
+    /**
+     * false = return invite_url instead of emailing it.
+     */
+    send_email?: boolean;
+};
+
+export type Invite = {
+    object?: 'invite';
+    email?: string;
+    invited?: boolean;
+    already_member?: boolean;
+    emailed?: boolean;
+    invite_url?: string;
+    role?: string;
+    disabled_areas?: Array<string>;
+    expires_in_days?: number;
+    message?: string;
+    [key: string]: unknown;
+};
+
+export type UserUpdate = {
+    role: 'admin' | 'member' | 'billing_admin' | 'viewer';
+    disabled_areas?: Array<string>;
+};
+
+export type UserRemoval = {
+    object?: 'user_removal';
+    email?: string;
+    removed?: boolean;
+    connections_disconnected?: Array<{
+        [key: string]: unknown;
+    }>;
+    scheduled_posts_not_going_out?: number;
+    message?: string;
+    [key: string]: unknown;
+};
+
+export type AutomationList = {
+    object?: 'list';
+    data?: Array<{
+        [key: string]: unknown;
+    }>;
+    unread?: Array<{
+        [key: string]: unknown;
+    }>;
+    note?: string;
+    [key: string]: unknown;
+};
+
+export type Automation = {
+    note?: string;
+    [key: string]: unknown;
+};
+
+export type AutomationControls = {
+    object?: 'automation_controls';
+    paused?: boolean;
+    paused_at?: string;
+    ad_accounts?: Array<{
+        [key: string]: unknown;
+    }>;
+    needs_confirm?: boolean;
+    note?: string;
+    [key: string]: unknown;
+};
+
+export type AutomationControlsUpdate = {
+    paused: boolean;
+    confirm?: boolean;
+};
+
+export type AdAccountAutomationControlsUpdate = {
+    platform: 'meta' | 'google_ads' | 'tiktok_ads';
+    ad_account_id: string;
+    paused?: boolean;
+    daily_raise_limit?: number;
+    confirm?: boolean;
+};
+
+export type AutomationTemplateList = {
+    object?: 'list';
+    data?: Array<{
+        [key: string]: unknown;
+    }>;
+    hermoso?: Array<{
+        [key: string]: unknown;
+    }>;
+    note?: string;
+    [key: string]: unknown;
+};
+
+export type AutomationTemplate = {
+    note?: string;
+    [key: string]: unknown;
+};
+
+export type AutomationTemplateCreate = {
+    name: string;
+    description?: string;
+    automations?: Array<{
+        [key: string]: unknown;
+    }>;
+    from?: {
+        [key: string]: unknown;
+    };
+    share?: boolean;
+};
+
+export type AutomationTemplateInstall = {
+    inputs?: {
+        [key: string]: string;
+    };
+};
+
+export type AutomationInstall = {
+    object?: 'automation_install';
+    made?: Array<{
+        [key: string]: unknown;
+    }>;
+    failed?: Array<{
+        [key: string]: unknown;
+    }>;
+    note?: string;
+    [key: string]: unknown;
+};
+
+export type BoostAutomationCreate = {
+    name?: string;
+    /**
+     * facebook or instagram today. NOT AN ENUM: a channel boost automations reach later is another value here; the server refuses one it cannot boost, by name.
+     */
+    channel: string;
+    adAccountId: string;
+    every?: 'daily' | 'weekly';
+    filter: {
+        [key: string]: unknown;
+    };
+    boost: {
+        [key: string]: unknown;
+    };
+    launch?: 'review' | 'live';
+};
+
+export type AutomationUpdate = {
+    changes?: {
+        [key: string]: unknown;
+    };
+};
+
+export type AutomationActivate = {
+    confirm?: boolean;
+    confirm_scope?: string;
+};
+
+export type AutomationRunList = {
+    object?: 'list';
+    data?: Array<{
+        [key: string]: unknown;
+    }>;
+    note?: string;
+    [key: string]: unknown;
+};
+
+export type AutomationTest = {
+    event?: {
+        [key: string]: unknown;
+    };
+    subject_id?: string;
+};
+
+export type AutomationTestResult = {
+    note?: string;
+    [key: string]: unknown;
+};
+
+export type AutomationTestSample = {
+    note?: string;
+    [key: string]: unknown;
+};
+
+export type WhiteLabelResult = {
+    object?: string;
+    note?: string;
+    [key: string]: unknown;
+};
+
+export type OAuthAppCreate = {
+    /**
+     * facebook, instagram, google, tiktok, linkedin, x, pinterest, microsoft, … (GET /v1/connect/oauth-apps lists them)
+     */
+    platform: string;
+    label: string;
+    client_id: string;
+    /**
+     * Stored encrypted; never returned.
+     */
+    client_secret: string;
+    /**
+     * Facebook app only: its WhatsApp Embedded Signup configuration id.
+     */
+    config_id?: string;
+    confirm?: boolean;
+};
+
+export type OAuthAppUpdate = {
+    label?: string;
+    client_secret?: string;
+    config_id?: string;
+};
+
+export type WelcomeScreen = {
+    show_by_default: boolean;
+    brand_name?: string;
+    /**
+     * https
+     */
+    logo_url?: string;
+    headline?: string;
+    message?: string;
+    /**
+     * background, card, text, muted, accent, buttonText as #hex
+     */
+    theme?: {
+        [key: string]: string;
+    };
+};
+
+export type CustomDomainCreate = {
+    /**
+     * A subdomain, never the bare domain.
+     */
+    hostname: string;
+};
+
+export type CustomDomainUpdate = {
+    connect_enabled: boolean;
+};
+
+export type HandoffCreate = {
+    provider: string;
+};
+
+export type AdChangeStage = {
+    /**
+     * The ads tool to run later, e.g. set_meta_campaign_status.
+     */
+    tool: string;
+    /**
+     * Its arguments, exactly as the tool takes them (without confirm).
+     */
+    args?: {
+        [key: string]: unknown;
+    };
+    /**
+     * Why, shown to the person who confirms.
+     */
+    note?: string;
+};
+
+export type AdChangeConfirm = {
+    /**
+     * true after the person agreed to this exact change.
+     */
+    confirm?: boolean;
+};
+
+export type AnalyticsDashboard = {
+    object?: 'analytics_dashboard';
+    current?: {
+        [key: string]: unknown;
+    };
+    previous?: {
+        [key: string]: unknown;
+    };
+    totals?: {
+        [key: string]: unknown;
+    };
+    channels?: Array<{
+        [key: string]: unknown;
+    }>;
+    daily?: Array<{
+        [key: string]: unknown;
+    }>;
+    top_posts?: Array<{
+        [key: string]: unknown;
+    }>;
+    recent_posts?: Array<{
+        [key: string]: unknown;
+    }>;
+    notes?: Array<string>;
+    text?: string;
+    [key: string]: unknown;
+};
+
+export type AnalyticsDelta = {
+    object?: 'list';
+    data?: Array<{
+        [key: string]: unknown;
+    }>;
+    cursor?: string;
+    has_more?: boolean;
+    note?: string;
+};
+
+export type TrackingWindow = {
+    object?: 'tracking_window';
+    id?: string;
+    status?: 'open' | 'completed' | 'cancelled';
+    source?: 'record' | 'link';
+    channel?: string;
+    post_id?: string;
+    url?: string;
+    tracking_days?: number;
+    readings?: number;
+    failed_readings?: number;
+    latest?: {
+        [key: string]: unknown;
+    };
+    needs_confirm?: boolean;
+    quote?: {
+        [key: string]: unknown;
+    };
+    existing?: boolean;
+    text?: string;
+    [key: string]: unknown;
+};
+
+export type TrackingWindowList = {
+    object?: 'list';
+    data?: Array<TrackingWindow>;
+    count?: number;
+};
+
+export type TrackingWindowOpen = {
+    /**
+     * A post the brand published: record id, platform post id or link.
+     */
+    post_id?: string;
+    /**
+     * A link to any public post.
+     */
+    url?: string;
+    /**
+     * 1-90. Default 30.
+     */
+    tracking_days?: number;
+    /**
+     * Required for a url window, once the person accepted the quote.
+     */
+    confirm?: boolean;
+};
+
+export type MetricsResult = {
+    object?: 'metrics';
+    entity?: string;
+    granularity?: string;
+    rows?: Array<{
+        [key: string]: unknown;
+    }>;
+    notes?: Array<string>;
+    text?: string;
+    [key: string]: unknown;
+};
+
+export type MetricsCatalog = {
+    object?: 'metrics_catalog';
+    entities?: {
+        [key: string]: unknown;
+    };
+    channels?: {
+        [key: string]: unknown;
+    };
+    rules?: Array<string>;
+    [key: string]: unknown;
+};
+
+export type AdChange = {
+    object?: 'ad_change';
+    id?: string;
+    tool?: string;
+    platform?: string;
+    title?: string;
+    status?: 'staged' | 'confirming' | 'confirmed' | 'failed' | 'discarded';
+    after?: Array<{
+        [key: string]: unknown;
+    }>;
+    before?: Array<{
+        [key: string]: unknown;
+    }>;
+    result?: string;
+    needs_confirm?: boolean;
+    note?: string;
+    [key: string]: unknown;
+};
+
+export type AdChangeList = {
+    object?: 'list';
+    data?: Array<{
+        [key: string]: unknown;
+    }>;
+    note?: string;
+    [key: string]: unknown;
+};
+
+export type UsageStatement = {
+    object?: 'usage_statement';
+    from?: string;
+    to?: string;
+    group_by?: string;
+    brands?: Array<{
+        [key: string]: unknown;
+    }>;
+    total?: {
+        [key: string]: unknown;
+    };
+    csv?: string;
+    note?: string;
+    [key: string]: unknown;
+};
+
+export type WorkspaceBilling = {
+    object?: 'workspace_billing';
+    brand?: string;
+    name?: string;
+    billed_separately?: boolean;
+    external_id?: string;
+    wallet?: {
+        [key: string]: unknown;
+    };
+    needs_confirm?: boolean;
+    note?: string;
+    [key: string]: unknown;
+};
+
+export type WorkspaceBillingList = {
+    object?: 'list';
+    data?: Array<{
+        [key: string]: unknown;
+    }>;
+    note?: string;
+    [key: string]: unknown;
+};
+
+export type WorkspaceBillingUpdate = {
+    billed_separately?: boolean;
+    /**
+     * true after the account holder agreed to change who pays.
+     */
+    confirm?: boolean;
+};
+
+export type WorkspaceCheckoutLinkCreate = {
+    kind?: 'pack' | 'plan';
+    /**
+     * the pack or plan id.
+     */
+    id: string;
+};
+
+export type WorkspaceCheckoutLink = {
+    object?: 'checkout_link';
+    url?: string;
+    brand?: string;
+    kind?: string;
+    item?: string;
+    note?: string;
+    [key: string]: unknown;
+};
+
+export type InvoiceList = {
+    object?: 'invoice_list';
+    invoices?: Array<{
+        [key: string]: unknown;
+    }>;
+    receipts?: Array<{
+        [key: string]: unknown;
+    }>;
+    note?: string;
+    [key: string]: unknown;
+};
+
+export type TaxPreviewRequest = {
+    kind?: 'pack' | 'plan';
+    id: string;
+};
+
+export type TaxPreview = {
+    object?: 'tax_preview';
+    subtotal_usd?: number;
+    tax_usd?: number;
+    total_usd?: number;
+    currency?: string;
+    note?: string;
+    [key: string]: unknown;
+};
+
+export type LedgerBalances = {
+    object?: 'ledger_balances';
+    data?: Array<{
+        [key: string]: unknown;
+    }>;
+    note?: string;
+    [key: string]: unknown;
+};
+
+export type LedgerEntries = {
+    object?: 'list';
+    data?: Array<{
+        [key: string]: unknown;
+    }>;
+    total?: number;
+    next_offset?: number;
+    note?: string;
+    [key: string]: unknown;
+};
+
+export type TransferList = {
+    object?: 'list';
+    data?: Array<{
+        [key: string]: unknown;
+    }>;
+    note?: string;
+    [key: string]: unknown;
+};
+
+export type Transfer = {
+    object?: 'transfer';
+    id?: string;
+    cents?: number;
+    currency?: string;
+    status?: string;
     note?: string;
     [key: string]: unknown;
 };
@@ -1719,6 +2440,14 @@ export type ConnectLinkCreate = {
      * Default 60, at most 2880 (48 hours).
      */
     expires_in_minutes?: number;
+    /**
+     * Your own id for this customer (letters, digits, - _ . : @, up to 128). It is mapped to this brand and returned on the link.
+     */
+    external_id?: string;
+    /**
+     * true shows your saved welcome screen on this link, false shows the plain page; omitted follows the screen’s showByDefault.
+     */
+    welcome?: boolean;
 };
 
 export type ConnectLink = {
@@ -1741,6 +2470,10 @@ export type ConnectLink = {
         handle?: string;
         id?: string;
     };
+    /**
+     * Your own customer id, when the link was created with one.
+     */
+    external_id?: string;
     /**
      * True for Facebook/Instagram (meta) and LinkedIn: choose which Pages the brand may use with list_connector_accounts + set_connector_accounts before posting.
      */
@@ -1860,6 +2593,26 @@ export type ListPostsData = {
          * Filter to posts that include this channel.
          */
         channel?: string;
+        /**
+         * Filter to posts whose caption, title, labels or external_id contain this text (case-insensitive).
+         */
+        search?: string;
+        /**
+         * Filter to posts carrying ALL of these labels (comma-separated).
+         */
+        label?: string;
+        /**
+         * Filter to the post(s) with this external_id.
+         */
+        external_id?: string;
+        /**
+         * Only posts scheduled or published at or after this ISO date/time.
+         */
+        from?: string;
+        /**
+         * Only posts scheduled or published at or before this ISO date/time.
+         */
+        to?: string;
     };
     url: '/v1/posts';
 };
@@ -4179,6 +4932,94 @@ export type SetProfitSettingsResponses = {
 
 export type SetProfitSettingsResponse = SetProfitSettingsResponses[keyof SetProfitSettingsResponses];
 
+export type ListCampaignResultMetricsData = {
+    body?: never;
+    headers?: {
+        /**
+         * Which profile to act on, when the account holds more than one: an `id` from `GET /v1/brands`. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 `brand_not_found`, never an empty result.
+         */
+        'X-Hermoso-User'?: string;
+    };
+    path?: never;
+    query?: never;
+    url: '/v1/campaign-results/metrics';
+};
+
+export type ListCampaignResultMetricsErrors = {
+    /**
+     * Invalid request.
+     */
+    400: Error;
+    /**
+     * Missing, invalid or revoked key — or a channel that is not connected, in which case `error.connector` names it and `error.type` is `connector_error`.
+     */
+    401: Error;
+    /**
+     * `error.code: brand_not_found`: `X-Hermoso-User` (or the profile this key is pinned to) names a profile this key cannot act on. `GET /v1/brands` lists the valid ids.
+     */
+    404: Error;
+    /**
+     * Rate limited. `Retry-After` says how long to wait.
+     */
+    429: Error;
+};
+
+export type ListCampaignResultMetricsError = ListCampaignResultMetricsErrors[keyof ListCampaignResultMetricsErrors];
+
+export type ListCampaignResultMetricsResponses = {
+    /**
+     * Success
+     */
+    200: CampaignResultMetrics;
+};
+
+export type ListCampaignResultMetricsResponse = ListCampaignResultMetricsResponses[keyof ListCampaignResultMetricsResponses];
+
+export type SetCampaignResultMetricData = {
+    body: CampaignResultMetric;
+    headers?: {
+        /**
+         * Which profile to act on, when the account holds more than one: an `id` from `GET /v1/brands`. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 `brand_not_found`, never an empty result.
+         */
+        'X-Hermoso-User'?: string;
+    };
+    path: {
+        key: string;
+    };
+    query?: never;
+    url: '/v1/campaign-results/metrics/{key}';
+};
+
+export type SetCampaignResultMetricErrors = {
+    /**
+     * Invalid request.
+     */
+    400: Error;
+    /**
+     * Missing, invalid or revoked key — or a channel that is not connected, in which case `error.connector` names it and `error.type` is `connector_error`.
+     */
+    401: Error;
+    /**
+     * `error.code: brand_not_found`: `X-Hermoso-User` (or the profile this key is pinned to) names a profile this key cannot act on. `GET /v1/brands` lists the valid ids.
+     */
+    404: Error;
+    /**
+     * Rate limited. `Retry-After` says how long to wait.
+     */
+    429: Error;
+};
+
+export type SetCampaignResultMetricError = SetCampaignResultMetricErrors[keyof SetCampaignResultMetricErrors];
+
+export type SetCampaignResultMetricResponses = {
+    /**
+     * Success
+     */
+    200: CampaignResultMetrics;
+};
+
+export type SetCampaignResultMetricResponse = SetCampaignResultMetricResponses[keyof SetCampaignResultMetricResponses];
+
 export type GetCampaignProfitData = {
     body?: never;
     headers?: {
@@ -4238,6 +5079,3629 @@ export type GetCampaignProfitResponses = {
 };
 
 export type GetCampaignProfitResponse = GetCampaignProfitResponses[keyof GetCampaignProfitResponses];
+
+export type ListUsersData = {
+    body?: never;
+    headers?: {
+        /**
+         * Which profile to act on, when the account holds more than one: an `id` from `GET /v1/brands`. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 `brand_not_found`, never an empty result.
+         */
+        'X-Hermoso-User'?: string;
+    };
+    path?: never;
+    query?: never;
+    url: '/v1/users';
+};
+
+export type ListUsersErrors = {
+    /**
+     * Invalid request.
+     */
+    400: Error;
+    /**
+     * Missing, invalid or revoked key — or a channel that is not connected, in which case `error.connector` names it and `error.type` is `connector_error`.
+     */
+    401: Error;
+    /**
+     * `error.code: brand_not_found`: `X-Hermoso-User` (or the profile this key is pinned to) names a profile this key cannot act on. `GET /v1/brands` lists the valid ids.
+     */
+    404: Error;
+    /**
+     * Rate limited. `Retry-After` says how long to wait.
+     */
+    429: Error;
+};
+
+export type ListUsersError = ListUsersErrors[keyof ListUsersErrors];
+
+export type ListUsersResponses = {
+    /**
+     * Success
+     */
+    200: UserList;
+};
+
+export type ListUsersResponse = ListUsersResponses[keyof ListUsersResponses];
+
+export type GetCurrentUserData = {
+    body?: never;
+    headers?: {
+        /**
+         * Which profile to act on, when the account holds more than one: an `id` from `GET /v1/brands`. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 `brand_not_found`, never an empty result.
+         */
+        'X-Hermoso-User'?: string;
+    };
+    path?: never;
+    query?: never;
+    url: '/v1/users/me';
+};
+
+export type GetCurrentUserErrors = {
+    /**
+     * Invalid request.
+     */
+    400: Error;
+    /**
+     * Missing, invalid or revoked key — or a channel that is not connected, in which case `error.connector` names it and `error.type` is `connector_error`.
+     */
+    401: Error;
+    /**
+     * `error.code: brand_not_found`: `X-Hermoso-User` (or the profile this key is pinned to) names a profile this key cannot act on. `GET /v1/brands` lists the valid ids.
+     */
+    404: Error;
+    /**
+     * Rate limited. `Retry-After` says how long to wait.
+     */
+    429: Error;
+};
+
+export type GetCurrentUserError = GetCurrentUserErrors[keyof GetCurrentUserErrors];
+
+export type GetCurrentUserResponses = {
+    /**
+     * Success
+     */
+    200: User;
+};
+
+export type GetCurrentUserResponse = GetCurrentUserResponses[keyof GetCurrentUserResponses];
+
+export type CreateInviteTokenData = {
+    body: InviteCreate;
+    headers?: {
+        /**
+         * Which profile to act on, when the account holds more than one: an `id` from `GET /v1/brands`. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 `brand_not_found`, never an empty result.
+         */
+        'X-Hermoso-User'?: string;
+    };
+    path?: never;
+    query?: never;
+    url: '/v1/invite/tokens';
+};
+
+export type CreateInviteTokenErrors = {
+    /**
+     * Invalid request.
+     */
+    400: Error;
+    /**
+     * Missing, invalid or revoked key — or a channel that is not connected, in which case `error.connector` names it and `error.type` is `connector_error`.
+     */
+    401: Error;
+    /**
+     * `error.code: brand_not_found`: `X-Hermoso-User` (or the profile this key is pinned to) names a profile this key cannot act on. `GET /v1/brands` lists the valid ids.
+     */
+    404: Error;
+    /**
+     * Rate limited. `Retry-After` says how long to wait.
+     */
+    429: Error;
+};
+
+export type CreateInviteTokenError = CreateInviteTokenErrors[keyof CreateInviteTokenErrors];
+
+export type CreateInviteTokenResponses = {
+    /**
+     * Success
+     */
+    200: Invite;
+};
+
+export type CreateInviteTokenResponse = CreateInviteTokenResponses[keyof CreateInviteTokenResponses];
+
+export type RemoveUserData = {
+    body?: never;
+    headers?: {
+        /**
+         * Which profile to act on, when the account holds more than one: an `id` from `GET /v1/brands`. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 `brand_not_found`, never an empty result.
+         */
+        'X-Hermoso-User'?: string;
+    };
+    path: {
+        email: string;
+    };
+    query?: never;
+    url: '/v1/users/{email}';
+};
+
+export type RemoveUserErrors = {
+    /**
+     * Invalid request.
+     */
+    400: Error;
+    /**
+     * Missing, invalid or revoked key — or a channel that is not connected, in which case `error.connector` names it and `error.type` is `connector_error`.
+     */
+    401: Error;
+    /**
+     * `error.code: brand_not_found`: `X-Hermoso-User` (or the profile this key is pinned to) names a profile this key cannot act on. `GET /v1/brands` lists the valid ids.
+     */
+    404: Error;
+    /**
+     * Rate limited. `Retry-After` says how long to wait.
+     */
+    429: Error;
+};
+
+export type RemoveUserError = RemoveUserErrors[keyof RemoveUserErrors];
+
+export type RemoveUserResponses = {
+    /**
+     * Success
+     */
+    200: UserRemoval;
+};
+
+export type RemoveUserResponse = RemoveUserResponses[keyof RemoveUserResponses];
+
+export type UpdateUserData = {
+    body: UserUpdate;
+    headers?: {
+        /**
+         * Which profile to act on, when the account holds more than one: an `id` from `GET /v1/brands`. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 `brand_not_found`, never an empty result.
+         */
+        'X-Hermoso-User'?: string;
+    };
+    path: {
+        email: string;
+    };
+    query?: never;
+    url: '/v1/users/{email}';
+};
+
+export type UpdateUserErrors = {
+    /**
+     * Invalid request.
+     */
+    400: Error;
+    /**
+     * Missing, invalid or revoked key — or a channel that is not connected, in which case `error.connector` names it and `error.type` is `connector_error`.
+     */
+    401: Error;
+    /**
+     * `error.code: brand_not_found`: `X-Hermoso-User` (or the profile this key is pinned to) names a profile this key cannot act on. `GET /v1/brands` lists the valid ids.
+     */
+    404: Error;
+    /**
+     * Rate limited. `Retry-After` says how long to wait.
+     */
+    429: Error;
+};
+
+export type UpdateUserError = UpdateUserErrors[keyof UpdateUserErrors];
+
+export type UpdateUserResponses = {
+    /**
+     * Success
+     */
+    200: User;
+};
+
+export type UpdateUserResponse = UpdateUserResponses[keyof UpdateUserResponses];
+
+export type ListAutomationsData = {
+    body?: never;
+    headers?: {
+        /**
+         * Which profile to act on, when the account holds more than one: an `id` from `GET /v1/brands`. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 `brand_not_found`, never an empty result.
+         */
+        'X-Hermoso-User'?: string;
+    };
+    path?: never;
+    query?: {
+        /**
+         * meta_rule, google_rule, tiktok_rule, boost, alerts, dm or refill.
+         */
+        engine?: string;
+        /**
+         * active or paused.
+         */
+        status?: string;
+        ad_account_id?: string;
+        advertiser_id?: string;
+    };
+    url: '/v1/automations';
+};
+
+export type ListAutomationsErrors = {
+    /**
+     * Invalid request.
+     */
+    400: Error;
+    /**
+     * Missing, invalid or revoked key — or a channel that is not connected, in which case `error.connector` names it and `error.type` is `connector_error`.
+     */
+    401: Error;
+    /**
+     * `error.code: brand_not_found`: `X-Hermoso-User` (or the profile this key is pinned to) names a profile this key cannot act on. `GET /v1/brands` lists the valid ids.
+     */
+    404: Error;
+    /**
+     * Rate limited. `Retry-After` says how long to wait.
+     */
+    429: Error;
+};
+
+export type ListAutomationsError = ListAutomationsErrors[keyof ListAutomationsErrors];
+
+export type ListAutomationsResponses = {
+    /**
+     * Success
+     */
+    200: AutomationList;
+};
+
+export type ListAutomationsResponse = ListAutomationsResponses[keyof ListAutomationsResponses];
+
+export type GetAutomationControlsData = {
+    body?: never;
+    headers?: {
+        /**
+         * Which profile to act on, when the account holds more than one: an `id` from `GET /v1/brands`. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 `brand_not_found`, never an empty result.
+         */
+        'X-Hermoso-User'?: string;
+    };
+    path?: never;
+    query?: never;
+    url: '/v1/automations/controls';
+};
+
+export type GetAutomationControlsErrors = {
+    /**
+     * Invalid request.
+     */
+    400: Error;
+    /**
+     * Missing, invalid or revoked key — or a channel that is not connected, in which case `error.connector` names it and `error.type` is `connector_error`.
+     */
+    401: Error;
+    /**
+     * `error.code: brand_not_found`: `X-Hermoso-User` (or the profile this key is pinned to) names a profile this key cannot act on. `GET /v1/brands` lists the valid ids.
+     */
+    404: Error;
+    /**
+     * Rate limited. `Retry-After` says how long to wait.
+     */
+    429: Error;
+};
+
+export type GetAutomationControlsError = GetAutomationControlsErrors[keyof GetAutomationControlsErrors];
+
+export type GetAutomationControlsResponses = {
+    /**
+     * Success
+     */
+    200: AutomationControls;
+};
+
+export type GetAutomationControlsResponse = GetAutomationControlsResponses[keyof GetAutomationControlsResponses];
+
+export type UpdateAutomationControlsData = {
+    body: AutomationControlsUpdate;
+    headers?: {
+        /**
+         * Which profile to act on, when the account holds more than one: an `id` from `GET /v1/brands`. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 `brand_not_found`, never an empty result.
+         */
+        'X-Hermoso-User'?: string;
+    };
+    path?: never;
+    query?: never;
+    url: '/v1/automations/controls';
+};
+
+export type UpdateAutomationControlsErrors = {
+    /**
+     * Invalid request.
+     */
+    400: Error;
+    /**
+     * Missing, invalid or revoked key — or a channel that is not connected, in which case `error.connector` names it and `error.type` is `connector_error`.
+     */
+    401: Error;
+    /**
+     * `error.code: brand_not_found`: `X-Hermoso-User` (or the profile this key is pinned to) names a profile this key cannot act on. `GET /v1/brands` lists the valid ids.
+     */
+    404: Error;
+    /**
+     * Rate limited. `Retry-After` says how long to wait.
+     */
+    429: Error;
+};
+
+export type UpdateAutomationControlsError = UpdateAutomationControlsErrors[keyof UpdateAutomationControlsErrors];
+
+export type UpdateAutomationControlsResponses = {
+    /**
+     * Success
+     */
+    200: AutomationControls;
+};
+
+export type UpdateAutomationControlsResponse = UpdateAutomationControlsResponses[keyof UpdateAutomationControlsResponses];
+
+export type UpdateAdAccountAutomationControlsData = {
+    body: AdAccountAutomationControlsUpdate;
+    headers?: {
+        /**
+         * Which profile to act on, when the account holds more than one: an `id` from `GET /v1/brands`. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 `brand_not_found`, never an empty result.
+         */
+        'X-Hermoso-User'?: string;
+    };
+    path?: never;
+    query?: never;
+    url: '/v1/automations/controls/ad-accounts';
+};
+
+export type UpdateAdAccountAutomationControlsErrors = {
+    /**
+     * Invalid request.
+     */
+    400: Error;
+    /**
+     * Missing, invalid or revoked key — or a channel that is not connected, in which case `error.connector` names it and `error.type` is `connector_error`.
+     */
+    401: Error;
+    /**
+     * `error.code: brand_not_found`: `X-Hermoso-User` (or the profile this key is pinned to) names a profile this key cannot act on. `GET /v1/brands` lists the valid ids.
+     */
+    404: Error;
+    /**
+     * Rate limited. `Retry-After` says how long to wait.
+     */
+    429: Error;
+};
+
+export type UpdateAdAccountAutomationControlsError = UpdateAdAccountAutomationControlsErrors[keyof UpdateAdAccountAutomationControlsErrors];
+
+export type UpdateAdAccountAutomationControlsResponses = {
+    /**
+     * Success
+     */
+    200: AutomationControls;
+};
+
+export type UpdateAdAccountAutomationControlsResponse = UpdateAdAccountAutomationControlsResponses[keyof UpdateAdAccountAutomationControlsResponses];
+
+export type ListAutomationTemplatesData = {
+    body?: never;
+    headers?: {
+        /**
+         * Which profile to act on, when the account holds more than one: an `id` from `GET /v1/brands`. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 `brand_not_found`, never an empty result.
+         */
+        'X-Hermoso-User'?: string;
+    };
+    path?: never;
+    query?: never;
+    url: '/v1/automations/templates';
+};
+
+export type ListAutomationTemplatesErrors = {
+    /**
+     * Invalid request.
+     */
+    400: Error;
+    /**
+     * Missing, invalid or revoked key — or a channel that is not connected, in which case `error.connector` names it and `error.type` is `connector_error`.
+     */
+    401: Error;
+    /**
+     * `error.code: brand_not_found`: `X-Hermoso-User` (or the profile this key is pinned to) names a profile this key cannot act on. `GET /v1/brands` lists the valid ids.
+     */
+    404: Error;
+    /**
+     * Rate limited. `Retry-After` says how long to wait.
+     */
+    429: Error;
+};
+
+export type ListAutomationTemplatesError = ListAutomationTemplatesErrors[keyof ListAutomationTemplatesErrors];
+
+export type ListAutomationTemplatesResponses = {
+    /**
+     * Success
+     */
+    200: AutomationTemplateList;
+};
+
+export type ListAutomationTemplatesResponse = ListAutomationTemplatesResponses[keyof ListAutomationTemplatesResponses];
+
+export type CreateAutomationTemplateData = {
+    body: AutomationTemplateCreate;
+    headers?: {
+        /**
+         * Which profile to act on, when the account holds more than one: an `id` from `GET /v1/brands`. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 `brand_not_found`, never an empty result.
+         */
+        'X-Hermoso-User'?: string;
+    };
+    path?: never;
+    query?: never;
+    url: '/v1/automations/templates';
+};
+
+export type CreateAutomationTemplateErrors = {
+    /**
+     * Invalid request.
+     */
+    400: Error;
+    /**
+     * Missing, invalid or revoked key — or a channel that is not connected, in which case `error.connector` names it and `error.type` is `connector_error`.
+     */
+    401: Error;
+    /**
+     * `error.code: brand_not_found`: `X-Hermoso-User` (or the profile this key is pinned to) names a profile this key cannot act on. `GET /v1/brands` lists the valid ids.
+     */
+    404: Error;
+    /**
+     * Rate limited. `Retry-After` says how long to wait.
+     */
+    429: Error;
+};
+
+export type CreateAutomationTemplateError = CreateAutomationTemplateErrors[keyof CreateAutomationTemplateErrors];
+
+export type CreateAutomationTemplateResponses = {
+    /**
+     * Success
+     */
+    200: AutomationTemplate;
+};
+
+export type CreateAutomationTemplateResponse = CreateAutomationTemplateResponses[keyof CreateAutomationTemplateResponses];
+
+export type InstallAutomationTemplateData = {
+    body: AutomationTemplateInstall;
+    headers?: {
+        /**
+         * Which profile to act on, when the account holds more than one: an `id` from `GET /v1/brands`. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 `brand_not_found`, never an empty result.
+         */
+        'X-Hermoso-User'?: string;
+    };
+    path: {
+        template_id: string;
+    };
+    query?: never;
+    url: '/v1/automations/templates/{template_id}/install';
+};
+
+export type InstallAutomationTemplateErrors = {
+    /**
+     * Invalid request.
+     */
+    400: Error;
+    /**
+     * Missing, invalid or revoked key — or a channel that is not connected, in which case `error.connector` names it and `error.type` is `connector_error`.
+     */
+    401: Error;
+    /**
+     * `error.code: brand_not_found`: `X-Hermoso-User` (or the profile this key is pinned to) names a profile this key cannot act on. `GET /v1/brands` lists the valid ids.
+     */
+    404: Error;
+    /**
+     * Rate limited. `Retry-After` says how long to wait.
+     */
+    429: Error;
+};
+
+export type InstallAutomationTemplateError = InstallAutomationTemplateErrors[keyof InstallAutomationTemplateErrors];
+
+export type InstallAutomationTemplateResponses = {
+    /**
+     * Success
+     */
+    200: AutomationInstall;
+};
+
+export type InstallAutomationTemplateResponse = InstallAutomationTemplateResponses[keyof InstallAutomationTemplateResponses];
+
+export type InstallSharedAutomationTemplateData = {
+    body: AutomationTemplateInstall;
+    headers?: {
+        /**
+         * Which profile to act on, when the account holds more than one: an `id` from `GET /v1/brands`. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 `brand_not_found`, never an empty result.
+         */
+        'X-Hermoso-User'?: string;
+    };
+    path: {
+        share_token: string;
+    };
+    query?: never;
+    url: '/v1/automations/templates/shared/{share_token}/install';
+};
+
+export type InstallSharedAutomationTemplateErrors = {
+    /**
+     * Invalid request.
+     */
+    400: Error;
+    /**
+     * Missing, invalid or revoked key — or a channel that is not connected, in which case `error.connector` names it and `error.type` is `connector_error`.
+     */
+    401: Error;
+    /**
+     * `error.code: brand_not_found`: `X-Hermoso-User` (or the profile this key is pinned to) names a profile this key cannot act on. `GET /v1/brands` lists the valid ids.
+     */
+    404: Error;
+    /**
+     * Rate limited. `Retry-After` says how long to wait.
+     */
+    429: Error;
+};
+
+export type InstallSharedAutomationTemplateError = InstallSharedAutomationTemplateErrors[keyof InstallSharedAutomationTemplateErrors];
+
+export type InstallSharedAutomationTemplateResponses = {
+    /**
+     * Success
+     */
+    200: AutomationInstall;
+};
+
+export type InstallSharedAutomationTemplateResponse = InstallSharedAutomationTemplateResponses[keyof InstallSharedAutomationTemplateResponses];
+
+export type CreateBoostAutomationData = {
+    body: BoostAutomationCreate;
+    headers?: {
+        /**
+         * Which profile to act on, when the account holds more than one: an `id` from `GET /v1/brands`. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 `brand_not_found`, never an empty result.
+         */
+        'X-Hermoso-User'?: string;
+    };
+    path?: never;
+    query?: never;
+    url: '/v1/automations/boost';
+};
+
+export type CreateBoostAutomationErrors = {
+    /**
+     * Invalid request.
+     */
+    400: Error;
+    /**
+     * Missing, invalid or revoked key — or a channel that is not connected, in which case `error.connector` names it and `error.type` is `connector_error`.
+     */
+    401: Error;
+    /**
+     * `error.code: brand_not_found`: `X-Hermoso-User` (or the profile this key is pinned to) names a profile this key cannot act on. `GET /v1/brands` lists the valid ids.
+     */
+    404: Error;
+    /**
+     * Rate limited. `Retry-After` says how long to wait.
+     */
+    429: Error;
+};
+
+export type CreateBoostAutomationError = CreateBoostAutomationErrors[keyof CreateBoostAutomationErrors];
+
+export type CreateBoostAutomationResponses = {
+    /**
+     * Success
+     */
+    200: Automation;
+};
+
+export type CreateBoostAutomationResponse = CreateBoostAutomationResponses[keyof CreateBoostAutomationResponses];
+
+export type DeleteAutomationData = {
+    body?: never;
+    headers?: {
+        /**
+         * Which profile to act on, when the account holds more than one: an `id` from `GET /v1/brands`. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 `brand_not_found`, never an empty result.
+         */
+        'X-Hermoso-User'?: string;
+    };
+    path: {
+        automation_id: string;
+    };
+    query?: {
+        confirm?: boolean;
+    };
+    url: '/v1/automations/{automation_id}';
+};
+
+export type DeleteAutomationErrors = {
+    /**
+     * Invalid request.
+     */
+    400: Error;
+    /**
+     * Missing, invalid or revoked key — or a channel that is not connected, in which case `error.connector` names it and `error.type` is `connector_error`.
+     */
+    401: Error;
+    /**
+     * `error.code: brand_not_found`: `X-Hermoso-User` (or the profile this key is pinned to) names a profile this key cannot act on. `GET /v1/brands` lists the valid ids.
+     */
+    404: Error;
+    /**
+     * Rate limited. `Retry-After` says how long to wait.
+     */
+    429: Error;
+};
+
+export type DeleteAutomationError = DeleteAutomationErrors[keyof DeleteAutomationErrors];
+
+export type DeleteAutomationResponses = {
+    /**
+     * Success
+     */
+    200: Automation;
+};
+
+export type DeleteAutomationResponse = DeleteAutomationResponses[keyof DeleteAutomationResponses];
+
+export type GetAutomationData = {
+    body?: never;
+    headers?: {
+        /**
+         * Which profile to act on, when the account holds more than one: an `id` from `GET /v1/brands`. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 `brand_not_found`, never an empty result.
+         */
+        'X-Hermoso-User'?: string;
+    };
+    path: {
+        automation_id: string;
+    };
+    query?: never;
+    url: '/v1/automations/{automation_id}';
+};
+
+export type GetAutomationErrors = {
+    /**
+     * Invalid request.
+     */
+    400: Error;
+    /**
+     * Missing, invalid or revoked key — or a channel that is not connected, in which case `error.connector` names it and `error.type` is `connector_error`.
+     */
+    401: Error;
+    /**
+     * `error.code: brand_not_found`: `X-Hermoso-User` (or the profile this key is pinned to) names a profile this key cannot act on. `GET /v1/brands` lists the valid ids.
+     */
+    404: Error;
+    /**
+     * Rate limited. `Retry-After` says how long to wait.
+     */
+    429: Error;
+};
+
+export type GetAutomationError = GetAutomationErrors[keyof GetAutomationErrors];
+
+export type GetAutomationResponses = {
+    /**
+     * Success
+     */
+    200: Automation;
+};
+
+export type GetAutomationResponse = GetAutomationResponses[keyof GetAutomationResponses];
+
+export type UpdateAutomationData = {
+    body: AutomationUpdate;
+    headers?: {
+        /**
+         * Which profile to act on, when the account holds more than one: an `id` from `GET /v1/brands`. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 `brand_not_found`, never an empty result.
+         */
+        'X-Hermoso-User'?: string;
+    };
+    path: {
+        automation_id: string;
+    };
+    query?: never;
+    url: '/v1/automations/{automation_id}';
+};
+
+export type UpdateAutomationErrors = {
+    /**
+     * Invalid request.
+     */
+    400: Error;
+    /**
+     * Missing, invalid or revoked key — or a channel that is not connected, in which case `error.connector` names it and `error.type` is `connector_error`.
+     */
+    401: Error;
+    /**
+     * `error.code: brand_not_found`: `X-Hermoso-User` (or the profile this key is pinned to) names a profile this key cannot act on. `GET /v1/brands` lists the valid ids.
+     */
+    404: Error;
+    /**
+     * Rate limited. `Retry-After` says how long to wait.
+     */
+    429: Error;
+};
+
+export type UpdateAutomationError = UpdateAutomationErrors[keyof UpdateAutomationErrors];
+
+export type UpdateAutomationResponses = {
+    /**
+     * Success
+     */
+    200: Automation;
+};
+
+export type UpdateAutomationResponse = UpdateAutomationResponses[keyof UpdateAutomationResponses];
+
+export type ActivateAutomationData = {
+    body: AutomationActivate;
+    headers?: {
+        /**
+         * Which profile to act on, when the account holds more than one: an `id` from `GET /v1/brands`. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 `brand_not_found`, never an empty result.
+         */
+        'X-Hermoso-User'?: string;
+    };
+    path: {
+        automation_id: string;
+    };
+    query?: never;
+    url: '/v1/automations/{automation_id}/activate';
+};
+
+export type ActivateAutomationErrors = {
+    /**
+     * Invalid request.
+     */
+    400: Error;
+    /**
+     * Missing, invalid or revoked key — or a channel that is not connected, in which case `error.connector` names it and `error.type` is `connector_error`.
+     */
+    401: Error;
+    /**
+     * `error.code: brand_not_found`: `X-Hermoso-User` (or the profile this key is pinned to) names a profile this key cannot act on. `GET /v1/brands` lists the valid ids.
+     */
+    404: Error;
+    /**
+     * Rate limited. `Retry-After` says how long to wait.
+     */
+    429: Error;
+};
+
+export type ActivateAutomationError = ActivateAutomationErrors[keyof ActivateAutomationErrors];
+
+export type ActivateAutomationResponses = {
+    /**
+     * Success
+     */
+    200: Automation;
+};
+
+export type ActivateAutomationResponse = ActivateAutomationResponses[keyof ActivateAutomationResponses];
+
+export type PauseAutomationData = {
+    body?: never;
+    headers?: {
+        /**
+         * Which profile to act on, when the account holds more than one: an `id` from `GET /v1/brands`. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 `brand_not_found`, never an empty result.
+         */
+        'X-Hermoso-User'?: string;
+    };
+    path: {
+        automation_id: string;
+    };
+    query?: never;
+    url: '/v1/automations/{automation_id}/pause';
+};
+
+export type PauseAutomationErrors = {
+    /**
+     * Invalid request.
+     */
+    400: Error;
+    /**
+     * Missing, invalid or revoked key — or a channel that is not connected, in which case `error.connector` names it and `error.type` is `connector_error`.
+     */
+    401: Error;
+    /**
+     * `error.code: brand_not_found`: `X-Hermoso-User` (or the profile this key is pinned to) names a profile this key cannot act on. `GET /v1/brands` lists the valid ids.
+     */
+    404: Error;
+    /**
+     * Rate limited. `Retry-After` says how long to wait.
+     */
+    429: Error;
+};
+
+export type PauseAutomationError = PauseAutomationErrors[keyof PauseAutomationErrors];
+
+export type PauseAutomationResponses = {
+    /**
+     * Success
+     */
+    200: Automation;
+};
+
+export type PauseAutomationResponse = PauseAutomationResponses[keyof PauseAutomationResponses];
+
+export type ListAutomationRunsData = {
+    body?: never;
+    headers?: {
+        /**
+         * Which profile to act on, when the account holds more than one: an `id` from `GET /v1/brands`. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 `brand_not_found`, never an empty result.
+         */
+        'X-Hermoso-User'?: string;
+    };
+    path: {
+        automation_id: string;
+    };
+    query?: {
+        limit?: number;
+        acted_only?: boolean;
+    };
+    url: '/v1/automations/{automation_id}/runs';
+};
+
+export type ListAutomationRunsErrors = {
+    /**
+     * Invalid request.
+     */
+    400: Error;
+    /**
+     * Missing, invalid or revoked key — or a channel that is not connected, in which case `error.connector` names it and `error.type` is `connector_error`.
+     */
+    401: Error;
+    /**
+     * `error.code: brand_not_found`: `X-Hermoso-User` (or the profile this key is pinned to) names a profile this key cannot act on. `GET /v1/brands` lists the valid ids.
+     */
+    404: Error;
+    /**
+     * Rate limited. `Retry-After` says how long to wait.
+     */
+    429: Error;
+};
+
+export type ListAutomationRunsError = ListAutomationRunsErrors[keyof ListAutomationRunsErrors];
+
+export type ListAutomationRunsResponses = {
+    /**
+     * Success
+     */
+    200: AutomationRunList;
+};
+
+export type ListAutomationRunsResponse = ListAutomationRunsResponses[keyof ListAutomationRunsResponses];
+
+export type TestAutomationData = {
+    body: AutomationTest;
+    headers?: {
+        /**
+         * Which profile to act on, when the account holds more than one: an `id` from `GET /v1/brands`. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 `brand_not_found`, never an empty result.
+         */
+        'X-Hermoso-User'?: string;
+    };
+    path: {
+        automation_id: string;
+    };
+    query?: never;
+    url: '/v1/automations/{automation_id}/test';
+};
+
+export type TestAutomationErrors = {
+    /**
+     * Invalid request.
+     */
+    400: Error;
+    /**
+     * Missing, invalid or revoked key — or a channel that is not connected, in which case `error.connector` names it and `error.type` is `connector_error`.
+     */
+    401: Error;
+    /**
+     * `error.code: brand_not_found`: `X-Hermoso-User` (or the profile this key is pinned to) names a profile this key cannot act on. `GET /v1/brands` lists the valid ids.
+     */
+    404: Error;
+    /**
+     * Rate limited. `Retry-After` says how long to wait.
+     */
+    429: Error;
+};
+
+export type TestAutomationError = TestAutomationErrors[keyof TestAutomationErrors];
+
+export type TestAutomationResponses = {
+    /**
+     * Success
+     */
+    200: AutomationTestResult;
+};
+
+export type TestAutomationResponse = TestAutomationResponses[keyof TestAutomationResponses];
+
+export type GetAutomationTestSampleData = {
+    body?: never;
+    headers?: {
+        /**
+         * Which profile to act on, when the account holds more than one: an `id` from `GET /v1/brands`. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 `brand_not_found`, never an empty result.
+         */
+        'X-Hermoso-User'?: string;
+    };
+    path: {
+        automation_id: string;
+    };
+    query?: never;
+    url: '/v1/automations/{automation_id}/test/sample';
+};
+
+export type GetAutomationTestSampleErrors = {
+    /**
+     * Invalid request.
+     */
+    400: Error;
+    /**
+     * Missing, invalid or revoked key — or a channel that is not connected, in which case `error.connector` names it and `error.type` is `connector_error`.
+     */
+    401: Error;
+    /**
+     * `error.code: brand_not_found`: `X-Hermoso-User` (or the profile this key is pinned to) names a profile this key cannot act on. `GET /v1/brands` lists the valid ids.
+     */
+    404: Error;
+    /**
+     * Rate limited. `Retry-After` says how long to wait.
+     */
+    429: Error;
+};
+
+export type GetAutomationTestSampleError = GetAutomationTestSampleErrors[keyof GetAutomationTestSampleErrors];
+
+export type GetAutomationTestSampleResponses = {
+    /**
+     * Success
+     */
+    200: AutomationTestSample;
+};
+
+export type GetAutomationTestSampleResponse = GetAutomationTestSampleResponses[keyof GetAutomationTestSampleResponses];
+
+export type ListOAuthAppsData = {
+    body?: never;
+    headers?: {
+        /**
+         * Which profile to act on, when the account holds more than one: an `id` from `GET /v1/brands`. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 `brand_not_found`, never an empty result.
+         */
+        'X-Hermoso-User'?: string;
+    };
+    path?: never;
+    query?: never;
+    url: '/v1/connect/oauth-apps';
+};
+
+export type ListOAuthAppsErrors = {
+    /**
+     * Invalid request.
+     */
+    400: Error;
+    /**
+     * Missing, invalid or revoked key — or a channel that is not connected, in which case `error.connector` names it and `error.type` is `connector_error`.
+     */
+    401: Error;
+    /**
+     * `error.code: brand_not_found`: `X-Hermoso-User` (or the profile this key is pinned to) names a profile this key cannot act on. `GET /v1/brands` lists the valid ids.
+     */
+    404: Error;
+    /**
+     * Rate limited. `Retry-After` says how long to wait.
+     */
+    429: Error;
+};
+
+export type ListOAuthAppsError = ListOAuthAppsErrors[keyof ListOAuthAppsErrors];
+
+export type ListOAuthAppsResponses = {
+    /**
+     * Success
+     */
+    200: WhiteLabelResult;
+};
+
+export type ListOAuthAppsResponse = ListOAuthAppsResponses[keyof ListOAuthAppsResponses];
+
+export type CreateOAuthAppData = {
+    body: OAuthAppCreate;
+    headers?: {
+        /**
+         * Which profile to act on, when the account holds more than one: an `id` from `GET /v1/brands`. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 `brand_not_found`, never an empty result.
+         */
+        'X-Hermoso-User'?: string;
+    };
+    path?: never;
+    query?: never;
+    url: '/v1/connect/oauth-apps';
+};
+
+export type CreateOAuthAppErrors = {
+    /**
+     * Invalid request.
+     */
+    400: Error;
+    /**
+     * Missing, invalid or revoked key — or a channel that is not connected, in which case `error.connector` names it and `error.type` is `connector_error`.
+     */
+    401: Error;
+    /**
+     * `error.code: brand_not_found`: `X-Hermoso-User` (or the profile this key is pinned to) names a profile this key cannot act on. `GET /v1/brands` lists the valid ids.
+     */
+    404: Error;
+    /**
+     * Rate limited. `Retry-After` says how long to wait.
+     */
+    429: Error;
+};
+
+export type CreateOAuthAppError = CreateOAuthAppErrors[keyof CreateOAuthAppErrors];
+
+export type CreateOAuthAppResponses = {
+    /**
+     * Success
+     */
+    200: WhiteLabelResult;
+};
+
+export type CreateOAuthAppResponse = CreateOAuthAppResponses[keyof CreateOAuthAppResponses];
+
+export type DeleteOAuthAppData = {
+    body?: never;
+    headers?: {
+        /**
+         * Which profile to act on, when the account holds more than one: an `id` from `GET /v1/brands`. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 `brand_not_found`, never an empty result.
+         */
+        'X-Hermoso-User'?: string;
+    };
+    path: {
+        app_id: string;
+    };
+    query?: {
+        confirm?: boolean;
+    };
+    url: '/v1/connect/oauth-apps/{app_id}';
+};
+
+export type DeleteOAuthAppErrors = {
+    /**
+     * Invalid request.
+     */
+    400: Error;
+    /**
+     * Missing, invalid or revoked key — or a channel that is not connected, in which case `error.connector` names it and `error.type` is `connector_error`.
+     */
+    401: Error;
+    /**
+     * `error.code: brand_not_found`: `X-Hermoso-User` (or the profile this key is pinned to) names a profile this key cannot act on. `GET /v1/brands` lists the valid ids.
+     */
+    404: Error;
+    /**
+     * Rate limited. `Retry-After` says how long to wait.
+     */
+    429: Error;
+};
+
+export type DeleteOAuthAppError = DeleteOAuthAppErrors[keyof DeleteOAuthAppErrors];
+
+export type DeleteOAuthAppResponses = {
+    /**
+     * Success
+     */
+    200: WhiteLabelResult;
+};
+
+export type DeleteOAuthAppResponse = DeleteOAuthAppResponses[keyof DeleteOAuthAppResponses];
+
+export type GetOAuthAppData = {
+    body?: never;
+    headers?: {
+        /**
+         * Which profile to act on, when the account holds more than one: an `id` from `GET /v1/brands`. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 `brand_not_found`, never an empty result.
+         */
+        'X-Hermoso-User'?: string;
+    };
+    path: {
+        app_id: string;
+    };
+    query?: never;
+    url: '/v1/connect/oauth-apps/{app_id}';
+};
+
+export type GetOAuthAppErrors = {
+    /**
+     * Invalid request.
+     */
+    400: Error;
+    /**
+     * Missing, invalid or revoked key — or a channel that is not connected, in which case `error.connector` names it and `error.type` is `connector_error`.
+     */
+    401: Error;
+    /**
+     * `error.code: brand_not_found`: `X-Hermoso-User` (or the profile this key is pinned to) names a profile this key cannot act on. `GET /v1/brands` lists the valid ids.
+     */
+    404: Error;
+    /**
+     * Rate limited. `Retry-After` says how long to wait.
+     */
+    429: Error;
+};
+
+export type GetOAuthAppError = GetOAuthAppErrors[keyof GetOAuthAppErrors];
+
+export type GetOAuthAppResponses = {
+    /**
+     * Success
+     */
+    200: WhiteLabelResult;
+};
+
+export type GetOAuthAppResponse = GetOAuthAppResponses[keyof GetOAuthAppResponses];
+
+export type UpdateOAuthAppData = {
+    body: OAuthAppUpdate;
+    headers?: {
+        /**
+         * Which profile to act on, when the account holds more than one: an `id` from `GET /v1/brands`. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 `brand_not_found`, never an empty result.
+         */
+        'X-Hermoso-User'?: string;
+    };
+    path: {
+        app_id: string;
+    };
+    query?: never;
+    url: '/v1/connect/oauth-apps/{app_id}';
+};
+
+export type UpdateOAuthAppErrors = {
+    /**
+     * Invalid request.
+     */
+    400: Error;
+    /**
+     * Missing, invalid or revoked key — or a channel that is not connected, in which case `error.connector` names it and `error.type` is `connector_error`.
+     */
+    401: Error;
+    /**
+     * `error.code: brand_not_found`: `X-Hermoso-User` (or the profile this key is pinned to) names a profile this key cannot act on. `GET /v1/brands` lists the valid ids.
+     */
+    404: Error;
+    /**
+     * Rate limited. `Retry-After` says how long to wait.
+     */
+    429: Error;
+};
+
+export type UpdateOAuthAppError = UpdateOAuthAppErrors[keyof UpdateOAuthAppErrors];
+
+export type UpdateOAuthAppResponses = {
+    /**
+     * Success
+     */
+    200: WhiteLabelResult;
+};
+
+export type UpdateOAuthAppResponse = UpdateOAuthAppResponses[keyof UpdateOAuthAppResponses];
+
+export type TestOAuthAppData = {
+    body?: never;
+    headers?: {
+        /**
+         * Which profile to act on, when the account holds more than one: an `id` from `GET /v1/brands`. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 `brand_not_found`, never an empty result.
+         */
+        'X-Hermoso-User'?: string;
+    };
+    path: {
+        app_id: string;
+    };
+    query?: never;
+    url: '/v1/connect/oauth-apps/{app_id}/test';
+};
+
+export type TestOAuthAppErrors = {
+    /**
+     * Invalid request.
+     */
+    400: Error;
+    /**
+     * Missing, invalid or revoked key — or a channel that is not connected, in which case `error.connector` names it and `error.type` is `connector_error`.
+     */
+    401: Error;
+    /**
+     * `error.code: brand_not_found`: `X-Hermoso-User` (or the profile this key is pinned to) names a profile this key cannot act on. `GET /v1/brands` lists the valid ids.
+     */
+    404: Error;
+    /**
+     * Rate limited. `Retry-After` says how long to wait.
+     */
+    429: Error;
+};
+
+export type TestOAuthAppError = TestOAuthAppErrors[keyof TestOAuthAppErrors];
+
+export type TestOAuthAppResponses = {
+    /**
+     * Success
+     */
+    200: WhiteLabelResult;
+};
+
+export type TestOAuthAppResponse = TestOAuthAppResponses[keyof TestOAuthAppResponses];
+
+export type GetWelcomeScreenData = {
+    body?: never;
+    headers?: {
+        /**
+         * Which profile to act on, when the account holds more than one: an `id` from `GET /v1/brands`. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 `brand_not_found`, never an empty result.
+         */
+        'X-Hermoso-User'?: string;
+    };
+    path?: never;
+    query?: never;
+    url: '/v1/connect/welcome-screen';
+};
+
+export type GetWelcomeScreenErrors = {
+    /**
+     * Invalid request.
+     */
+    400: Error;
+    /**
+     * Missing, invalid or revoked key — or a channel that is not connected, in which case `error.connector` names it and `error.type` is `connector_error`.
+     */
+    401: Error;
+    /**
+     * `error.code: brand_not_found`: `X-Hermoso-User` (or the profile this key is pinned to) names a profile this key cannot act on. `GET /v1/brands` lists the valid ids.
+     */
+    404: Error;
+    /**
+     * Rate limited. `Retry-After` says how long to wait.
+     */
+    429: Error;
+};
+
+export type GetWelcomeScreenError = GetWelcomeScreenErrors[keyof GetWelcomeScreenErrors];
+
+export type GetWelcomeScreenResponses = {
+    /**
+     * Success
+     */
+    200: WhiteLabelResult;
+};
+
+export type GetWelcomeScreenResponse = GetWelcomeScreenResponses[keyof GetWelcomeScreenResponses];
+
+export type SaveWelcomeScreenData = {
+    body: WelcomeScreen;
+    headers?: {
+        /**
+         * Which profile to act on, when the account holds more than one: an `id` from `GET /v1/brands`. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 `brand_not_found`, never an empty result.
+         */
+        'X-Hermoso-User'?: string;
+    };
+    path?: never;
+    query?: never;
+    url: '/v1/connect/welcome-screen';
+};
+
+export type SaveWelcomeScreenErrors = {
+    /**
+     * Invalid request.
+     */
+    400: Error;
+    /**
+     * Missing, invalid or revoked key — or a channel that is not connected, in which case `error.connector` names it and `error.type` is `connector_error`.
+     */
+    401: Error;
+    /**
+     * `error.code: brand_not_found`: `X-Hermoso-User` (or the profile this key is pinned to) names a profile this key cannot act on. `GET /v1/brands` lists the valid ids.
+     */
+    404: Error;
+    /**
+     * Rate limited. `Retry-After` says how long to wait.
+     */
+    429: Error;
+};
+
+export type SaveWelcomeScreenError = SaveWelcomeScreenErrors[keyof SaveWelcomeScreenErrors];
+
+export type SaveWelcomeScreenResponses = {
+    /**
+     * Success
+     */
+    200: WhiteLabelResult;
+};
+
+export type SaveWelcomeScreenResponse = SaveWelcomeScreenResponses[keyof SaveWelcomeScreenResponses];
+
+export type ListCustomDomainsData = {
+    body?: never;
+    headers?: {
+        /**
+         * Which profile to act on, when the account holds more than one: an `id` from `GET /v1/brands`. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 `brand_not_found`, never an empty result.
+         */
+        'X-Hermoso-User'?: string;
+    };
+    path?: never;
+    query?: never;
+    url: '/v1/connect/custom-domains';
+};
+
+export type ListCustomDomainsErrors = {
+    /**
+     * Invalid request.
+     */
+    400: Error;
+    /**
+     * Missing, invalid or revoked key — or a channel that is not connected, in which case `error.connector` names it and `error.type` is `connector_error`.
+     */
+    401: Error;
+    /**
+     * `error.code: brand_not_found`: `X-Hermoso-User` (or the profile this key is pinned to) names a profile this key cannot act on. `GET /v1/brands` lists the valid ids.
+     */
+    404: Error;
+    /**
+     * Rate limited. `Retry-After` says how long to wait.
+     */
+    429: Error;
+};
+
+export type ListCustomDomainsError = ListCustomDomainsErrors[keyof ListCustomDomainsErrors];
+
+export type ListCustomDomainsResponses = {
+    /**
+     * Success
+     */
+    200: WhiteLabelResult;
+};
+
+export type ListCustomDomainsResponse = ListCustomDomainsResponses[keyof ListCustomDomainsResponses];
+
+export type CreateCustomDomainData = {
+    body: CustomDomainCreate;
+    headers?: {
+        /**
+         * Which profile to act on, when the account holds more than one: an `id` from `GET /v1/brands`. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 `brand_not_found`, never an empty result.
+         */
+        'X-Hermoso-User'?: string;
+    };
+    path?: never;
+    query?: never;
+    url: '/v1/connect/custom-domains';
+};
+
+export type CreateCustomDomainErrors = {
+    /**
+     * Invalid request.
+     */
+    400: Error;
+    /**
+     * Missing, invalid or revoked key — or a channel that is not connected, in which case `error.connector` names it and `error.type` is `connector_error`.
+     */
+    401: Error;
+    /**
+     * `error.code: brand_not_found`: `X-Hermoso-User` (or the profile this key is pinned to) names a profile this key cannot act on. `GET /v1/brands` lists the valid ids.
+     */
+    404: Error;
+    /**
+     * Rate limited. `Retry-After` says how long to wait.
+     */
+    429: Error;
+};
+
+export type CreateCustomDomainError = CreateCustomDomainErrors[keyof CreateCustomDomainErrors];
+
+export type CreateCustomDomainResponses = {
+    /**
+     * Success
+     */
+    200: WhiteLabelResult;
+};
+
+export type CreateCustomDomainResponse = CreateCustomDomainResponses[keyof CreateCustomDomainResponses];
+
+export type DeleteCustomDomainData = {
+    body?: never;
+    headers?: {
+        /**
+         * Which profile to act on, when the account holds more than one: an `id` from `GET /v1/brands`. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 `brand_not_found`, never an empty result.
+         */
+        'X-Hermoso-User'?: string;
+    };
+    path: {
+        domain_id: string;
+    };
+    query?: {
+        confirm?: boolean;
+    };
+    url: '/v1/connect/custom-domains/{domain_id}';
+};
+
+export type DeleteCustomDomainErrors = {
+    /**
+     * Invalid request.
+     */
+    400: Error;
+    /**
+     * Missing, invalid or revoked key — or a channel that is not connected, in which case `error.connector` names it and `error.type` is `connector_error`.
+     */
+    401: Error;
+    /**
+     * `error.code: brand_not_found`: `X-Hermoso-User` (or the profile this key is pinned to) names a profile this key cannot act on. `GET /v1/brands` lists the valid ids.
+     */
+    404: Error;
+    /**
+     * Rate limited. `Retry-After` says how long to wait.
+     */
+    429: Error;
+};
+
+export type DeleteCustomDomainError = DeleteCustomDomainErrors[keyof DeleteCustomDomainErrors];
+
+export type DeleteCustomDomainResponses = {
+    /**
+     * Success
+     */
+    200: WhiteLabelResult;
+};
+
+export type DeleteCustomDomainResponse = DeleteCustomDomainResponses[keyof DeleteCustomDomainResponses];
+
+export type GetCustomDomainData = {
+    body?: never;
+    headers?: {
+        /**
+         * Which profile to act on, when the account holds more than one: an `id` from `GET /v1/brands`. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 `brand_not_found`, never an empty result.
+         */
+        'X-Hermoso-User'?: string;
+    };
+    path: {
+        domain_id: string;
+    };
+    query?: never;
+    url: '/v1/connect/custom-domains/{domain_id}';
+};
+
+export type GetCustomDomainErrors = {
+    /**
+     * Invalid request.
+     */
+    400: Error;
+    /**
+     * Missing, invalid or revoked key — or a channel that is not connected, in which case `error.connector` names it and `error.type` is `connector_error`.
+     */
+    401: Error;
+    /**
+     * `error.code: brand_not_found`: `X-Hermoso-User` (or the profile this key is pinned to) names a profile this key cannot act on. `GET /v1/brands` lists the valid ids.
+     */
+    404: Error;
+    /**
+     * Rate limited. `Retry-After` says how long to wait.
+     */
+    429: Error;
+};
+
+export type GetCustomDomainError = GetCustomDomainErrors[keyof GetCustomDomainErrors];
+
+export type GetCustomDomainResponses = {
+    /**
+     * Success
+     */
+    200: WhiteLabelResult;
+};
+
+export type GetCustomDomainResponse = GetCustomDomainResponses[keyof GetCustomDomainResponses];
+
+export type UpdateCustomDomainData = {
+    body: CustomDomainUpdate;
+    headers?: {
+        /**
+         * Which profile to act on, when the account holds more than one: an `id` from `GET /v1/brands`. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 `brand_not_found`, never an empty result.
+         */
+        'X-Hermoso-User'?: string;
+    };
+    path: {
+        domain_id: string;
+    };
+    query?: never;
+    url: '/v1/connect/custom-domains/{domain_id}';
+};
+
+export type UpdateCustomDomainErrors = {
+    /**
+     * Invalid request.
+     */
+    400: Error;
+    /**
+     * Missing, invalid or revoked key — or a channel that is not connected, in which case `error.connector` names it and `error.type` is `connector_error`.
+     */
+    401: Error;
+    /**
+     * `error.code: brand_not_found`: `X-Hermoso-User` (or the profile this key is pinned to) names a profile this key cannot act on. `GET /v1/brands` lists the valid ids.
+     */
+    404: Error;
+    /**
+     * Rate limited. `Retry-After` says how long to wait.
+     */
+    429: Error;
+};
+
+export type UpdateCustomDomainError = UpdateCustomDomainErrors[keyof UpdateCustomDomainErrors];
+
+export type UpdateCustomDomainResponses = {
+    /**
+     * Success
+     */
+    200: WhiteLabelResult;
+};
+
+export type UpdateCustomDomainResponse = UpdateCustomDomainResponses[keyof UpdateCustomDomainResponses];
+
+export type VerifyCustomDomainData = {
+    body?: never;
+    headers?: {
+        /**
+         * Which profile to act on, when the account holds more than one: an `id` from `GET /v1/brands`. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 `brand_not_found`, never an empty result.
+         */
+        'X-Hermoso-User'?: string;
+    };
+    path: {
+        domain_id: string;
+    };
+    query?: never;
+    url: '/v1/connect/custom-domains/{domain_id}/verify';
+};
+
+export type VerifyCustomDomainErrors = {
+    /**
+     * Invalid request.
+     */
+    400: Error;
+    /**
+     * Missing, invalid or revoked key — or a channel that is not connected, in which case `error.connector` names it and `error.type` is `connector_error`.
+     */
+    401: Error;
+    /**
+     * `error.code: brand_not_found`: `X-Hermoso-User` (or the profile this key is pinned to) names a profile this key cannot act on. `GET /v1/brands` lists the valid ids.
+     */
+    404: Error;
+    /**
+     * Rate limited. `Retry-After` says how long to wait.
+     */
+    429: Error;
+};
+
+export type VerifyCustomDomainError = VerifyCustomDomainErrors[keyof VerifyCustomDomainErrors];
+
+export type VerifyCustomDomainResponses = {
+    /**
+     * Success
+     */
+    200: WhiteLabelResult;
+};
+
+export type VerifyCustomDomainResponse = VerifyCustomDomainResponses[keyof VerifyCustomDomainResponses];
+
+export type GetExternalIdData = {
+    body?: never;
+    headers?: {
+        /**
+         * Which profile to act on, when the account holds more than one: an `id` from `GET /v1/brands`. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 `brand_not_found`, never an empty result.
+         */
+        'X-Hermoso-User'?: string;
+    };
+    path: {
+        external_id: string;
+    };
+    query?: never;
+    url: '/v1/connect/external-ids/{external_id}';
+};
+
+export type GetExternalIdErrors = {
+    /**
+     * Invalid request.
+     */
+    400: Error;
+    /**
+     * Missing, invalid or revoked key — or a channel that is not connected, in which case `error.connector` names it and `error.type` is `connector_error`.
+     */
+    401: Error;
+    /**
+     * `error.code: brand_not_found`: `X-Hermoso-User` (or the profile this key is pinned to) names a profile this key cannot act on. `GET /v1/brands` lists the valid ids.
+     */
+    404: Error;
+    /**
+     * Rate limited. `Retry-After` says how long to wait.
+     */
+    429: Error;
+};
+
+export type GetExternalIdError = GetExternalIdErrors[keyof GetExternalIdErrors];
+
+export type GetExternalIdResponses = {
+    /**
+     * Success
+     */
+    200: WhiteLabelResult;
+};
+
+export type GetExternalIdResponse = GetExternalIdResponses[keyof GetExternalIdResponses];
+
+export type CreateHandoffData = {
+    body: HandoffCreate;
+    headers?: {
+        /**
+         * Which profile to act on, when the account holds more than one: an `id` from `GET /v1/brands`. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 `brand_not_found`, never an empty result.
+         */
+        'X-Hermoso-User'?: string;
+    };
+    path?: never;
+    query?: never;
+    url: '/v1/connect/handoffs';
+};
+
+export type CreateHandoffErrors = {
+    /**
+     * Invalid request.
+     */
+    400: Error;
+    /**
+     * Missing, invalid or revoked key — or a channel that is not connected, in which case `error.connector` names it and `error.type` is `connector_error`.
+     */
+    401: Error;
+    /**
+     * `error.code: brand_not_found`: `X-Hermoso-User` (or the profile this key is pinned to) names a profile this key cannot act on. `GET /v1/brands` lists the valid ids.
+     */
+    404: Error;
+    /**
+     * Rate limited. `Retry-After` says how long to wait.
+     */
+    429: Error;
+};
+
+export type CreateHandoffError = CreateHandoffErrors[keyof CreateHandoffErrors];
+
+export type CreateHandoffResponses = {
+    /**
+     * Success
+     */
+    200: WhiteLabelResult;
+};
+
+export type CreateHandoffResponse = CreateHandoffResponses[keyof CreateHandoffResponses];
+
+export type GetHandoffData = {
+    body?: never;
+    headers?: {
+        /**
+         * Which profile to act on, when the account holds more than one: an `id` from `GET /v1/brands`. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 `brand_not_found`, never an empty result.
+         */
+        'X-Hermoso-User'?: string;
+    };
+    path: {
+        handoff_id: string;
+    };
+    query?: never;
+    url: '/v1/connect/handoffs/{handoff_id}';
+};
+
+export type GetHandoffErrors = {
+    /**
+     * Invalid request.
+     */
+    400: Error;
+    /**
+     * Missing, invalid or revoked key — or a channel that is not connected, in which case `error.connector` names it and `error.type` is `connector_error`.
+     */
+    401: Error;
+    /**
+     * `error.code: brand_not_found`: `X-Hermoso-User` (or the profile this key is pinned to) names a profile this key cannot act on. `GET /v1/brands` lists the valid ids.
+     */
+    404: Error;
+    /**
+     * Rate limited. `Retry-After` says how long to wait.
+     */
+    429: Error;
+};
+
+export type GetHandoffError = GetHandoffErrors[keyof GetHandoffErrors];
+
+export type GetHandoffResponses = {
+    /**
+     * Success
+     */
+    200: WhiteLabelResult;
+};
+
+export type GetHandoffResponse = GetHandoffResponses[keyof GetHandoffResponses];
+
+export type ListChangelogData = {
+    body?: never;
+    path?: never;
+    query?: {
+        /**
+         * new_feature, breaking_change, improvement, deprecation or minor.
+         */
+        type?: string;
+        /**
+         * none, additive or action_required.
+         */
+        impact?: string;
+        /**
+         * One platform or area slug, e.g. instagram, team, api.
+         */
+        platform?: string;
+        /**
+         * Only entries published before this instant (the previous page’s next_cursor).
+         */
+        before?: string;
+        /**
+         * Same as before.
+         */
+        cursor?: string;
+        /**
+         * 1 to 100, default 20.
+         */
+        limit?: number;
+    };
+    url: '/v1/changelog';
+};
+
+export type ListChangelogErrors = {
+    /**
+     * Invalid request.
+     */
+    400: Error;
+    /**
+     * Missing, invalid or revoked key — or a channel that is not connected, in which case `error.connector` names it and `error.type` is `connector_error`.
+     */
+    401: Error;
+    /**
+     * Rate limited. `Retry-After` says how long to wait.
+     */
+    429: Error;
+};
+
+export type ListChangelogError = ListChangelogErrors[keyof ListChangelogErrors];
+
+export type ListChangelogResponses = {
+    /**
+     * Success
+     */
+    200: ChangelogPage;
+};
+
+export type ListChangelogResponse = ListChangelogResponses[keyof ListChangelogResponses];
+
+export type ListActivityLogsData = {
+    body?: never;
+    headers?: {
+        /**
+         * Which profile to act on, when the account holds more than one: an `id` from `GET /v1/brands`. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 `brand_not_found`, never an empty result.
+         */
+        'X-Hermoso-User'?: string;
+    };
+    path?: never;
+    query?: {
+        /**
+         * all (default), api_request, publishing, webhooks or connections.
+         */
+        type?: string;
+        /**
+         * success, failed, pending, skipped or all.
+         */
+        status?: string;
+        /**
+         * An exact HTTP status (api_request).
+         */
+        status_code?: number;
+        /**
+         * Every line of one request (the X-Request-Id response header).
+         */
+        request_id?: string;
+        /**
+         * Only this key’s requests.
+         */
+        api_key_id?: string;
+        profile_id?: string;
+        search?: string;
+        /**
+         * 1 to 90, default 90.
+         */
+        days?: number;
+        from?: string;
+        to?: string;
+        /**
+         * 1 to 100, default 50.
+         */
+        limit?: number;
+        skip?: number;
+    };
+    url: '/v1/logs';
+};
+
+export type ListActivityLogsErrors = {
+    /**
+     * Invalid request.
+     */
+    400: Error;
+    /**
+     * Missing, invalid or revoked key — or a channel that is not connected, in which case `error.connector` names it and `error.type` is `connector_error`.
+     */
+    401: Error;
+    /**
+     * `error.code: brand_not_found`: `X-Hermoso-User` (or the profile this key is pinned to) names a profile this key cannot act on. `GET /v1/brands` lists the valid ids.
+     */
+    404: Error;
+    /**
+     * Rate limited. `Retry-After` says how long to wait.
+     */
+    429: Error;
+};
+
+export type ListActivityLogsError = ListActivityLogsErrors[keyof ListActivityLogsErrors];
+
+export type ListActivityLogsResponses = {
+    /**
+     * Success
+     */
+    200: ActivityLogPage;
+};
+
+export type ListActivityLogsResponse = ListActivityLogsResponses[keyof ListActivityLogsResponses];
+
+export type ListConnectedAppsData = {
+    body?: never;
+    headers?: {
+        /**
+         * Which profile to act on, when the account holds more than one: an `id` from `GET /v1/brands`. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 `brand_not_found`, never an empty result.
+         */
+        'X-Hermoso-User'?: string;
+    };
+    path?: never;
+    query?: never;
+    url: '/v1/me/connected-apps';
+};
+
+export type ListConnectedAppsErrors = {
+    /**
+     * Invalid request.
+     */
+    400: Error;
+    /**
+     * Missing, invalid or revoked key — or a channel that is not connected, in which case `error.connector` names it and `error.type` is `connector_error`.
+     */
+    401: Error;
+    /**
+     * `error.code: brand_not_found`: `X-Hermoso-User` (or the profile this key is pinned to) names a profile this key cannot act on. `GET /v1/brands` lists the valid ids.
+     */
+    404: Error;
+    /**
+     * Rate limited. `Retry-After` says how long to wait.
+     */
+    429: Error;
+};
+
+export type ListConnectedAppsError = ListConnectedAppsErrors[keyof ListConnectedAppsErrors];
+
+export type ListConnectedAppsResponses = {
+    /**
+     * Success
+     */
+    200: ConnectedAppList;
+};
+
+export type ListConnectedAppsResponse = ListConnectedAppsResponses[keyof ListConnectedAppsResponses];
+
+export type RevokeConnectedAppData = {
+    body?: never;
+    headers?: {
+        /**
+         * Which profile to act on, when the account holds more than one: an `id` from `GET /v1/brands`. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 `brand_not_found`, never an empty result.
+         */
+        'X-Hermoso-User'?: string;
+    };
+    path: {
+        /**
+         * The `id` from GET /v1/me/connected-apps.
+         */
+        app_id: string;
+    };
+    query?: never;
+    url: '/v1/me/connected-apps/{app_id}';
+};
+
+export type RevokeConnectedAppErrors = {
+    /**
+     * Invalid request.
+     */
+    400: Error;
+    /**
+     * Missing, invalid or revoked key — or a channel that is not connected, in which case `error.connector` names it and `error.type` is `connector_error`.
+     */
+    401: Error;
+    /**
+     * `error.code: brand_not_found`: `X-Hermoso-User` (or the profile this key is pinned to) names a profile this key cannot act on. `GET /v1/brands` lists the valid ids.
+     */
+    404: Error;
+    /**
+     * Rate limited. `Retry-After` says how long to wait.
+     */
+    429: Error;
+};
+
+export type RevokeConnectedAppError = RevokeConnectedAppErrors[keyof RevokeConnectedAppErrors];
+
+export type RevokeConnectedAppResponses = {
+    /**
+     * Success
+     */
+    200: ConnectedAppRevocation;
+};
+
+export type RevokeConnectedAppResponse = RevokeConnectedAppResponses[keyof RevokeConnectedAppResponses];
+
+export type ListAccountGroupsData = {
+    body?: never;
+    headers?: {
+        /**
+         * Which profile to act on, when the account holds more than one: an `id` from `GET /v1/brands`. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 `brand_not_found`, never an empty result.
+         */
+        'X-Hermoso-User'?: string;
+    };
+    path?: never;
+    query?: never;
+    url: '/v1/account-groups';
+};
+
+export type ListAccountGroupsErrors = {
+    /**
+     * Invalid request.
+     */
+    400: Error;
+    /**
+     * Missing, invalid or revoked key — or a channel that is not connected, in which case `error.connector` names it and `error.type` is `connector_error`.
+     */
+    401: Error;
+    /**
+     * `error.code: brand_not_found`: `X-Hermoso-User` (or the profile this key is pinned to) names a profile this key cannot act on. `GET /v1/brands` lists the valid ids.
+     */
+    404: Error;
+    /**
+     * Rate limited. `Retry-After` says how long to wait.
+     */
+    429: Error;
+};
+
+export type ListAccountGroupsError = ListAccountGroupsErrors[keyof ListAccountGroupsErrors];
+
+export type ListAccountGroupsResponses = {
+    /**
+     * Success
+     */
+    200: AccountGroupList;
+};
+
+export type ListAccountGroupsResponse = ListAccountGroupsResponses[keyof ListAccountGroupsResponses];
+
+export type CreateAccountGroupData = {
+    body: AccountGroupWrite;
+    headers?: {
+        /**
+         * Which profile to act on, when the account holds more than one: an `id` from `GET /v1/brands`. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 `brand_not_found`, never an empty result.
+         */
+        'X-Hermoso-User'?: string;
+    };
+    path?: never;
+    query?: never;
+    url: '/v1/account-groups';
+};
+
+export type CreateAccountGroupErrors = {
+    /**
+     * Invalid request.
+     */
+    400: Error;
+    /**
+     * Missing, invalid or revoked key — or a channel that is not connected, in which case `error.connector` names it and `error.type` is `connector_error`.
+     */
+    401: Error;
+    /**
+     * `error.code: brand_not_found`: `X-Hermoso-User` (or the profile this key is pinned to) names a profile this key cannot act on. `GET /v1/brands` lists the valid ids.
+     */
+    404: Error;
+    /**
+     * Rate limited. `Retry-After` says how long to wait.
+     */
+    429: Error;
+};
+
+export type CreateAccountGroupError = CreateAccountGroupErrors[keyof CreateAccountGroupErrors];
+
+export type CreateAccountGroupResponses = {
+    /**
+     * Success
+     */
+    200: AccountGroup;
+};
+
+export type CreateAccountGroupResponse = CreateAccountGroupResponses[keyof CreateAccountGroupResponses];
+
+export type DeleteAccountGroupData = {
+    body?: never;
+    headers?: {
+        /**
+         * Which profile to act on, when the account holds more than one: an `id` from `GET /v1/brands`. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 `brand_not_found`, never an empty result.
+         */
+        'X-Hermoso-User'?: string;
+    };
+    path: {
+        group_id: string;
+    };
+    query?: never;
+    url: '/v1/account-groups/{group_id}';
+};
+
+export type DeleteAccountGroupErrors = {
+    /**
+     * Invalid request.
+     */
+    400: Error;
+    /**
+     * Missing, invalid or revoked key — or a channel that is not connected, in which case `error.connector` names it and `error.type` is `connector_error`.
+     */
+    401: Error;
+    /**
+     * `error.code: brand_not_found`: `X-Hermoso-User` (or the profile this key is pinned to) names a profile this key cannot act on. `GET /v1/brands` lists the valid ids.
+     */
+    404: Error;
+    /**
+     * Rate limited. `Retry-After` says how long to wait.
+     */
+    429: Error;
+};
+
+export type DeleteAccountGroupError = DeleteAccountGroupErrors[keyof DeleteAccountGroupErrors];
+
+export type DeleteAccountGroupResponses = {
+    /**
+     * Success
+     */
+    200: AccountGroup;
+};
+
+export type DeleteAccountGroupResponse = DeleteAccountGroupResponses[keyof DeleteAccountGroupResponses];
+
+export type UpdateAccountGroupData = {
+    body: AccountGroupWrite;
+    headers?: {
+        /**
+         * Which profile to act on, when the account holds more than one: an `id` from `GET /v1/brands`. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 `brand_not_found`, never an empty result.
+         */
+        'X-Hermoso-User'?: string;
+    };
+    path: {
+        group_id: string;
+    };
+    query?: never;
+    url: '/v1/account-groups/{group_id}';
+};
+
+export type UpdateAccountGroupErrors = {
+    /**
+     * Invalid request.
+     */
+    400: Error;
+    /**
+     * Missing, invalid or revoked key — or a channel that is not connected, in which case `error.connector` names it and `error.type` is `connector_error`.
+     */
+    401: Error;
+    /**
+     * `error.code: brand_not_found`: `X-Hermoso-User` (or the profile this key is pinned to) names a profile this key cannot act on. `GET /v1/brands` lists the valid ids.
+     */
+    404: Error;
+    /**
+     * Rate limited. `Retry-After` says how long to wait.
+     */
+    429: Error;
+};
+
+export type UpdateAccountGroupError = UpdateAccountGroupErrors[keyof UpdateAccountGroupErrors];
+
+export type UpdateAccountGroupResponses = {
+    /**
+     * Success
+     */
+    200: AccountGroup;
+};
+
+export type UpdateAccountGroupResponse = UpdateAccountGroupResponses[keyof UpdateAccountGroupResponses];
+
+export type ListWorkspacesData = {
+    body?: never;
+    headers?: {
+        /**
+         * Which profile to act on, when the account holds more than one: an `id` from `GET /v1/brands`. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 `brand_not_found`, never an empty result.
+         */
+        'X-Hermoso-User'?: string;
+    };
+    path?: never;
+    query?: never;
+    url: '/v1/workspaces';
+};
+
+export type ListWorkspacesErrors = {
+    /**
+     * Invalid request.
+     */
+    400: Error;
+    /**
+     * Missing, invalid or revoked key — or a channel that is not connected, in which case `error.connector` names it and `error.type` is `connector_error`.
+     */
+    401: Error;
+    /**
+     * `error.code: brand_not_found`: `X-Hermoso-User` (or the profile this key is pinned to) names a profile this key cannot act on. `GET /v1/brands` lists the valid ids.
+     */
+    404: Error;
+    /**
+     * Rate limited. `Retry-After` says how long to wait.
+     */
+    429: Error;
+};
+
+export type ListWorkspacesError = ListWorkspacesErrors[keyof ListWorkspacesErrors];
+
+export type ListWorkspacesResponses = {
+    /**
+     * Success
+     */
+    200: WorkspaceList;
+};
+
+export type ListWorkspacesResponse = ListWorkspacesResponses[keyof ListWorkspacesResponses];
+
+export type CreateWorkspaceData = {
+    body: WorkspaceWrite;
+    headers?: {
+        /**
+         * Which profile to act on, when the account holds more than one: an `id` from `GET /v1/brands`. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 `brand_not_found`, never an empty result.
+         */
+        'X-Hermoso-User'?: string;
+    };
+    path?: never;
+    query?: never;
+    url: '/v1/workspaces';
+};
+
+export type CreateWorkspaceErrors = {
+    /**
+     * Invalid request.
+     */
+    400: Error;
+    /**
+     * Missing, invalid or revoked key — or a channel that is not connected, in which case `error.connector` names it and `error.type` is `connector_error`.
+     */
+    401: Error;
+    /**
+     * `error.code: brand_not_found`: `X-Hermoso-User` (or the profile this key is pinned to) names a profile this key cannot act on. `GET /v1/brands` lists the valid ids.
+     */
+    404: Error;
+    /**
+     * Rate limited. `Retry-After` says how long to wait.
+     */
+    429: Error;
+};
+
+export type CreateWorkspaceError = CreateWorkspaceErrors[keyof CreateWorkspaceErrors];
+
+export type CreateWorkspaceResponses = {
+    /**
+     * Success
+     */
+    200: Workspace;
+};
+
+export type CreateWorkspaceResponse = CreateWorkspaceResponses[keyof CreateWorkspaceResponses];
+
+export type DeleteWorkspaceData = {
+    body?: never;
+    headers?: {
+        /**
+         * Which profile to act on, when the account holds more than one: an `id` from `GET /v1/brands`. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 `brand_not_found`, never an empty result.
+         */
+        'X-Hermoso-User'?: string;
+    };
+    path: {
+        workspace_id: string;
+    };
+    query?: {
+        confirm?: boolean;
+        confirm_name?: string;
+        confirm_connectors?: number;
+    };
+    url: '/v1/workspaces/{workspace_id}';
+};
+
+export type DeleteWorkspaceErrors = {
+    /**
+     * Invalid request.
+     */
+    400: Error;
+    /**
+     * Missing, invalid or revoked key — or a channel that is not connected, in which case `error.connector` names it and `error.type` is `connector_error`.
+     */
+    401: Error;
+    /**
+     * `error.code: brand_not_found`: `X-Hermoso-User` (or the profile this key is pinned to) names a profile this key cannot act on. `GET /v1/brands` lists the valid ids.
+     */
+    404: Error;
+    /**
+     * Rate limited. `Retry-After` says how long to wait.
+     */
+    429: Error;
+};
+
+export type DeleteWorkspaceError = DeleteWorkspaceErrors[keyof DeleteWorkspaceErrors];
+
+export type DeleteWorkspaceResponses = {
+    /**
+     * Success
+     */
+    200: WorkspaceDeletion;
+};
+
+export type DeleteWorkspaceResponse = DeleteWorkspaceResponses[keyof DeleteWorkspaceResponses];
+
+export type GetWorkspaceData = {
+    body?: never;
+    headers?: {
+        /**
+         * Which profile to act on, when the account holds more than one: an `id` from `GET /v1/brands`. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 `brand_not_found`, never an empty result.
+         */
+        'X-Hermoso-User'?: string;
+    };
+    path: {
+        workspace_id: string;
+    };
+    query?: never;
+    url: '/v1/workspaces/{workspace_id}';
+};
+
+export type GetWorkspaceErrors = {
+    /**
+     * Invalid request.
+     */
+    400: Error;
+    /**
+     * Missing, invalid or revoked key — or a channel that is not connected, in which case `error.connector` names it and `error.type` is `connector_error`.
+     */
+    401: Error;
+    /**
+     * `error.code: brand_not_found`: `X-Hermoso-User` (or the profile this key is pinned to) names a profile this key cannot act on. `GET /v1/brands` lists the valid ids.
+     */
+    404: Error;
+    /**
+     * Rate limited. `Retry-After` says how long to wait.
+     */
+    429: Error;
+};
+
+export type GetWorkspaceError = GetWorkspaceErrors[keyof GetWorkspaceErrors];
+
+export type GetWorkspaceResponses = {
+    /**
+     * Success
+     */
+    200: Workspace;
+};
+
+export type GetWorkspaceResponse = GetWorkspaceResponses[keyof GetWorkspaceResponses];
+
+export type RenameWorkspaceData = {
+    body: WorkspaceWrite;
+    headers?: {
+        /**
+         * Which profile to act on, when the account holds more than one: an `id` from `GET /v1/brands`. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 `brand_not_found`, never an empty result.
+         */
+        'X-Hermoso-User'?: string;
+    };
+    path: {
+        workspace_id: string;
+    };
+    query?: never;
+    url: '/v1/workspaces/{workspace_id}';
+};
+
+export type RenameWorkspaceErrors = {
+    /**
+     * Invalid request.
+     */
+    400: Error;
+    /**
+     * Missing, invalid or revoked key — or a channel that is not connected, in which case `error.connector` names it and `error.type` is `connector_error`.
+     */
+    401: Error;
+    /**
+     * `error.code: brand_not_found`: `X-Hermoso-User` (or the profile this key is pinned to) names a profile this key cannot act on. `GET /v1/brands` lists the valid ids.
+     */
+    404: Error;
+    /**
+     * Rate limited. `Retry-After` says how long to wait.
+     */
+    429: Error;
+};
+
+export type RenameWorkspaceError = RenameWorkspaceErrors[keyof RenameWorkspaceErrors];
+
+export type RenameWorkspaceResponses = {
+    /**
+     * Success
+     */
+    200: Workspace;
+};
+
+export type RenameWorkspaceResponse = RenameWorkspaceResponses[keyof RenameWorkspaceResponses];
+
+export type ListAdChangesData = {
+    body?: never;
+    headers?: {
+        /**
+         * Which profile to act on, when the account holds more than one: an `id` from `GET /v1/brands`. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 `brand_not_found`, never an empty result.
+         */
+        'X-Hermoso-User'?: string;
+    };
+    path?: never;
+    query?: {
+        /**
+         * staged (default), confirmed, failed, discarded or all.
+         */
+        status?: string;
+        /**
+         * Only this ad platform's changes, e.g. meta, google_ads, tiktok_ads.
+         */
+        platform?: string;
+    };
+    url: '/v1/ads/changes';
+};
+
+export type ListAdChangesErrors = {
+    /**
+     * Invalid request.
+     */
+    400: Error;
+    /**
+     * Missing, invalid or revoked key — or a channel that is not connected, in which case `error.connector` names it and `error.type` is `connector_error`.
+     */
+    401: Error;
+    /**
+     * `error.code: brand_not_found`: `X-Hermoso-User` (or the profile this key is pinned to) names a profile this key cannot act on. `GET /v1/brands` lists the valid ids.
+     */
+    404: Error;
+    /**
+     * Rate limited. `Retry-After` says how long to wait.
+     */
+    429: Error;
+};
+
+export type ListAdChangesError = ListAdChangesErrors[keyof ListAdChangesErrors];
+
+export type ListAdChangesResponses = {
+    /**
+     * Success
+     */
+    200: AdChangeList;
+};
+
+export type ListAdChangesResponse = ListAdChangesResponses[keyof ListAdChangesResponses];
+
+export type StageAdChangeData = {
+    body: AdChangeStage;
+    headers?: {
+        /**
+         * Which profile to act on, when the account holds more than one: an `id` from `GET /v1/brands`. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 `brand_not_found`, never an empty result.
+         */
+        'X-Hermoso-User'?: string;
+    };
+    path?: never;
+    query?: never;
+    url: '/v1/ads/changes';
+};
+
+export type StageAdChangeErrors = {
+    /**
+     * Invalid request.
+     */
+    400: Error;
+    /**
+     * Missing, invalid or revoked key — or a channel that is not connected, in which case `error.connector` names it and `error.type` is `connector_error`.
+     */
+    401: Error;
+    /**
+     * `error.code: brand_not_found`: `X-Hermoso-User` (or the profile this key is pinned to) names a profile this key cannot act on. `GET /v1/brands` lists the valid ids.
+     */
+    404: Error;
+    /**
+     * Rate limited. `Retry-After` says how long to wait.
+     */
+    429: Error;
+};
+
+export type StageAdChangeError = StageAdChangeErrors[keyof StageAdChangeErrors];
+
+export type StageAdChangeResponses = {
+    /**
+     * Success
+     */
+    200: AdChange;
+};
+
+export type StageAdChangeResponse = StageAdChangeResponses[keyof StageAdChangeResponses];
+
+export type DiscardAdChangeData = {
+    body?: never;
+    headers?: {
+        /**
+         * Which profile to act on, when the account holds more than one: an `id` from `GET /v1/brands`. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 `brand_not_found`, never an empty result.
+         */
+        'X-Hermoso-User'?: string;
+    };
+    path: {
+        change_id: string;
+    };
+    query?: never;
+    url: '/v1/ads/changes/{change_id}';
+};
+
+export type DiscardAdChangeErrors = {
+    /**
+     * Invalid request.
+     */
+    400: Error;
+    /**
+     * Missing, invalid or revoked key — or a channel that is not connected, in which case `error.connector` names it and `error.type` is `connector_error`.
+     */
+    401: Error;
+    /**
+     * `error.code: brand_not_found`: `X-Hermoso-User` (or the profile this key is pinned to) names a profile this key cannot act on. `GET /v1/brands` lists the valid ids.
+     */
+    404: Error;
+    /**
+     * Rate limited. `Retry-After` says how long to wait.
+     */
+    429: Error;
+};
+
+export type DiscardAdChangeError = DiscardAdChangeErrors[keyof DiscardAdChangeErrors];
+
+export type DiscardAdChangeResponses = {
+    /**
+     * Success
+     */
+    200: AdChange;
+};
+
+export type DiscardAdChangeResponse = DiscardAdChangeResponses[keyof DiscardAdChangeResponses];
+
+export type GetAdChangeData = {
+    body?: never;
+    headers?: {
+        /**
+         * Which profile to act on, when the account holds more than one: an `id` from `GET /v1/brands`. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 `brand_not_found`, never an empty result.
+         */
+        'X-Hermoso-User'?: string;
+    };
+    path: {
+        change_id: string;
+    };
+    query?: never;
+    url: '/v1/ads/changes/{change_id}';
+};
+
+export type GetAdChangeErrors = {
+    /**
+     * Invalid request.
+     */
+    400: Error;
+    /**
+     * Missing, invalid or revoked key — or a channel that is not connected, in which case `error.connector` names it and `error.type` is `connector_error`.
+     */
+    401: Error;
+    /**
+     * `error.code: brand_not_found`: `X-Hermoso-User` (or the profile this key is pinned to) names a profile this key cannot act on. `GET /v1/brands` lists the valid ids.
+     */
+    404: Error;
+    /**
+     * Rate limited. `Retry-After` says how long to wait.
+     */
+    429: Error;
+};
+
+export type GetAdChangeError = GetAdChangeErrors[keyof GetAdChangeErrors];
+
+export type GetAdChangeResponses = {
+    /**
+     * Success
+     */
+    200: AdChange;
+};
+
+export type GetAdChangeResponse = GetAdChangeResponses[keyof GetAdChangeResponses];
+
+export type ConfirmAdChangeData = {
+    body: AdChangeConfirm;
+    headers?: {
+        /**
+         * Which profile to act on, when the account holds more than one: an `id` from `GET /v1/brands`. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 `brand_not_found`, never an empty result.
+         */
+        'X-Hermoso-User'?: string;
+    };
+    path: {
+        change_id: string;
+    };
+    query?: never;
+    url: '/v1/ads/changes/{change_id}/confirm';
+};
+
+export type ConfirmAdChangeErrors = {
+    /**
+     * Invalid request.
+     */
+    400: Error;
+    /**
+     * Missing, invalid or revoked key — or a channel that is not connected, in which case `error.connector` names it and `error.type` is `connector_error`.
+     */
+    401: Error;
+    /**
+     * `error.code: brand_not_found`: `X-Hermoso-User` (or the profile this key is pinned to) names a profile this key cannot act on. `GET /v1/brands` lists the valid ids.
+     */
+    404: Error;
+    /**
+     * Rate limited. `Retry-After` says how long to wait.
+     */
+    429: Error;
+};
+
+export type ConfirmAdChangeError = ConfirmAdChangeErrors[keyof ConfirmAdChangeErrors];
+
+export type ConfirmAdChangeResponses = {
+    /**
+     * Success
+     */
+    200: AdChange;
+};
+
+export type ConfirmAdChangeResponse = ConfirmAdChangeResponses[keyof ConfirmAdChangeResponses];
+
+export type GetUsageData = {
+    body?: never;
+    headers?: {
+        /**
+         * Which profile to act on, when the account holds more than one: an `id` from `GET /v1/brands`. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 `brand_not_found`, never an empty result.
+         */
+        'X-Hermoso-User'?: string;
+    };
+    path?: never;
+    query?: {
+        month?: string;
+        from?: string;
+        to?: string;
+        /**
+         * brand (default), day or member.
+         */
+        group_by?: string;
+        brand_id?: string;
+        external_id?: string;
+        /**
+         * calls or sms.
+         */
+        kind?: string;
+        csv?: boolean;
+    };
+    url: '/v1/usage';
+};
+
+export type GetUsageErrors = {
+    /**
+     * Invalid request.
+     */
+    400: Error;
+    /**
+     * Missing, invalid or revoked key — or a channel that is not connected, in which case `error.connector` names it and `error.type` is `connector_error`.
+     */
+    401: Error;
+    /**
+     * `error.code: brand_not_found`: `X-Hermoso-User` (or the profile this key is pinned to) names a profile this key cannot act on. `GET /v1/brands` lists the valid ids.
+     */
+    404: Error;
+    /**
+     * Rate limited. `Retry-After` says how long to wait.
+     */
+    429: Error;
+};
+
+export type GetUsageError = GetUsageErrors[keyof GetUsageErrors];
+
+export type GetUsageResponses = {
+    /**
+     * Success
+     */
+    200: UsageStatement;
+};
+
+export type GetUsageResponse = GetUsageResponses[keyof GetUsageResponses];
+
+export type GetUsageCallsData = {
+    body?: never;
+    headers?: {
+        /**
+         * Which profile to act on, when the account holds more than one: an `id` from `GET /v1/brands`. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 `brand_not_found`, never an empty result.
+         */
+        'X-Hermoso-User'?: string;
+    };
+    path?: never;
+    query?: {
+        month?: string;
+        from?: string;
+        to?: string;
+        brand_id?: string;
+    };
+    url: '/v1/usage/calls';
+};
+
+export type GetUsageCallsErrors = {
+    /**
+     * Invalid request.
+     */
+    400: Error;
+    /**
+     * Missing, invalid or revoked key — or a channel that is not connected, in which case `error.connector` names it and `error.type` is `connector_error`.
+     */
+    401: Error;
+    /**
+     * `error.code: brand_not_found`: `X-Hermoso-User` (or the profile this key is pinned to) names a profile this key cannot act on. `GET /v1/brands` lists the valid ids.
+     */
+    404: Error;
+    /**
+     * Rate limited. `Retry-After` says how long to wait.
+     */
+    429: Error;
+};
+
+export type GetUsageCallsError = GetUsageCallsErrors[keyof GetUsageCallsErrors];
+
+export type GetUsageCallsResponses = {
+    /**
+     * Success
+     */
+    200: UsageStatement;
+};
+
+export type GetUsageCallsResponse = GetUsageCallsResponses[keyof GetUsageCallsResponses];
+
+export type GetUsageSmsData = {
+    body?: never;
+    headers?: {
+        /**
+         * Which profile to act on, when the account holds more than one: an `id` from `GET /v1/brands`. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 `brand_not_found`, never an empty result.
+         */
+        'X-Hermoso-User'?: string;
+    };
+    path?: never;
+    query?: {
+        month?: string;
+        from?: string;
+        to?: string;
+        brand_id?: string;
+    };
+    url: '/v1/usage/sms';
+};
+
+export type GetUsageSmsErrors = {
+    /**
+     * Invalid request.
+     */
+    400: Error;
+    /**
+     * Missing, invalid or revoked key — or a channel that is not connected, in which case `error.connector` names it and `error.type` is `connector_error`.
+     */
+    401: Error;
+    /**
+     * `error.code: brand_not_found`: `X-Hermoso-User` (or the profile this key is pinned to) names a profile this key cannot act on. `GET /v1/brands` lists the valid ids.
+     */
+    404: Error;
+    /**
+     * Rate limited. `Retry-After` says how long to wait.
+     */
+    429: Error;
+};
+
+export type GetUsageSmsError = GetUsageSmsErrors[keyof GetUsageSmsErrors];
+
+export type GetUsageSmsResponses = {
+    /**
+     * Success
+     */
+    200: UsageStatement;
+};
+
+export type GetUsageSmsResponse = GetUsageSmsResponses[keyof GetUsageSmsResponses];
+
+export type ListWorkspaceBillingData = {
+    body?: never;
+    headers?: {
+        /**
+         * Which profile to act on, when the account holds more than one: an `id` from `GET /v1/brands`. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 `brand_not_found`, never an empty result.
+         */
+        'X-Hermoso-User'?: string;
+    };
+    path?: never;
+    query?: never;
+    url: '/v1/billing/workspaces';
+};
+
+export type ListWorkspaceBillingErrors = {
+    /**
+     * Invalid request.
+     */
+    400: Error;
+    /**
+     * Missing, invalid or revoked key — or a channel that is not connected, in which case `error.connector` names it and `error.type` is `connector_error`.
+     */
+    401: Error;
+    /**
+     * `error.code: brand_not_found`: `X-Hermoso-User` (or the profile this key is pinned to) names a profile this key cannot act on. `GET /v1/brands` lists the valid ids.
+     */
+    404: Error;
+    /**
+     * Rate limited. `Retry-After` says how long to wait.
+     */
+    429: Error;
+};
+
+export type ListWorkspaceBillingError = ListWorkspaceBillingErrors[keyof ListWorkspaceBillingErrors];
+
+export type ListWorkspaceBillingResponses = {
+    /**
+     * Success
+     */
+    200: WorkspaceBillingList;
+};
+
+export type ListWorkspaceBillingResponse = ListWorkspaceBillingResponses[keyof ListWorkspaceBillingResponses];
+
+export type UpdateWorkspaceBillingData = {
+    body: WorkspaceBillingUpdate;
+    headers?: {
+        /**
+         * Which profile to act on, when the account holds more than one: an `id` from `GET /v1/brands`. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 `brand_not_found`, never an empty result.
+         */
+        'X-Hermoso-User'?: string;
+    };
+    path: {
+        workspace_id: string;
+    };
+    query?: never;
+    url: '/v1/workspaces/{workspace_id}/billing';
+};
+
+export type UpdateWorkspaceBillingErrors = {
+    /**
+     * Invalid request.
+     */
+    400: Error;
+    /**
+     * Missing, invalid or revoked key — or a channel that is not connected, in which case `error.connector` names it and `error.type` is `connector_error`.
+     */
+    401: Error;
+    /**
+     * `error.code: brand_not_found`: `X-Hermoso-User` (or the profile this key is pinned to) names a profile this key cannot act on. `GET /v1/brands` lists the valid ids.
+     */
+    404: Error;
+    /**
+     * Rate limited. `Retry-After` says how long to wait.
+     */
+    429: Error;
+};
+
+export type UpdateWorkspaceBillingError = UpdateWorkspaceBillingErrors[keyof UpdateWorkspaceBillingErrors];
+
+export type UpdateWorkspaceBillingResponses = {
+    /**
+     * Success
+     */
+    200: WorkspaceBilling;
+};
+
+export type UpdateWorkspaceBillingResponse = UpdateWorkspaceBillingResponses[keyof UpdateWorkspaceBillingResponses];
+
+export type CreateWorkspaceCheckoutLinkData = {
+    body: WorkspaceCheckoutLinkCreate;
+    headers?: {
+        /**
+         * Which profile to act on, when the account holds more than one: an `id` from `GET /v1/brands`. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 `brand_not_found`, never an empty result.
+         */
+        'X-Hermoso-User'?: string;
+    };
+    path: {
+        workspace_id: string;
+    };
+    query?: never;
+    url: '/v1/workspaces/{workspace_id}/checkout-links';
+};
+
+export type CreateWorkspaceCheckoutLinkErrors = {
+    /**
+     * Invalid request.
+     */
+    400: Error;
+    /**
+     * Missing, invalid or revoked key — or a channel that is not connected, in which case `error.connector` names it and `error.type` is `connector_error`.
+     */
+    401: Error;
+    /**
+     * `error.code: brand_not_found`: `X-Hermoso-User` (or the profile this key is pinned to) names a profile this key cannot act on. `GET /v1/brands` lists the valid ids.
+     */
+    404: Error;
+    /**
+     * Rate limited. `Retry-After` says how long to wait.
+     */
+    429: Error;
+};
+
+export type CreateWorkspaceCheckoutLinkError = CreateWorkspaceCheckoutLinkErrors[keyof CreateWorkspaceCheckoutLinkErrors];
+
+export type CreateWorkspaceCheckoutLinkResponses = {
+    /**
+     * Success
+     */
+    200: WorkspaceCheckoutLink;
+};
+
+export type CreateWorkspaceCheckoutLinkResponse = CreateWorkspaceCheckoutLinkResponses[keyof CreateWorkspaceCheckoutLinkResponses];
+
+export type ListInvoicesData = {
+    body?: never;
+    headers?: {
+        /**
+         * Which profile to act on, when the account holds more than one: an `id` from `GET /v1/brands`. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 `brand_not_found`, never an empty result.
+         */
+        'X-Hermoso-User'?: string;
+    };
+    path?: never;
+    query?: {
+        brand_id?: string;
+        limit?: number;
+    };
+    url: '/v1/billing/invoices';
+};
+
+export type ListInvoicesErrors = {
+    /**
+     * Invalid request.
+     */
+    400: Error;
+    /**
+     * Missing, invalid or revoked key — or a channel that is not connected, in which case `error.connector` names it and `error.type` is `connector_error`.
+     */
+    401: Error;
+    /**
+     * `error.code: brand_not_found`: `X-Hermoso-User` (or the profile this key is pinned to) names a profile this key cannot act on. `GET /v1/brands` lists the valid ids.
+     */
+    404: Error;
+    /**
+     * Rate limited. `Retry-After` says how long to wait.
+     */
+    429: Error;
+};
+
+export type ListInvoicesError = ListInvoicesErrors[keyof ListInvoicesErrors];
+
+export type ListInvoicesResponses = {
+    /**
+     * Success
+     */
+    200: InvoiceList;
+};
+
+export type ListInvoicesResponse = ListInvoicesResponses[keyof ListInvoicesResponses];
+
+export type PreviewTopUpTaxData = {
+    body: TaxPreviewRequest;
+    headers?: {
+        /**
+         * Which profile to act on, when the account holds more than one: an `id` from `GET /v1/brands`. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 `brand_not_found`, never an empty result.
+         */
+        'X-Hermoso-User'?: string;
+    };
+    path?: never;
+    query?: never;
+    url: '/v1/balance/top-ups/preview';
+};
+
+export type PreviewTopUpTaxErrors = {
+    /**
+     * Invalid request.
+     */
+    400: Error;
+    /**
+     * Missing, invalid or revoked key — or a channel that is not connected, in which case `error.connector` names it and `error.type` is `connector_error`.
+     */
+    401: Error;
+    /**
+     * `error.code: brand_not_found`: `X-Hermoso-User` (or the profile this key is pinned to) names a profile this key cannot act on. `GET /v1/brands` lists the valid ids.
+     */
+    404: Error;
+    /**
+     * Rate limited. `Retry-After` says how long to wait.
+     */
+    429: Error;
+};
+
+export type PreviewTopUpTaxError = PreviewTopUpTaxErrors[keyof PreviewTopUpTaxErrors];
+
+export type PreviewTopUpTaxResponses = {
+    /**
+     * Success
+     */
+    200: TaxPreview;
+};
+
+export type PreviewTopUpTaxResponse = PreviewTopUpTaxResponses[keyof PreviewTopUpTaxResponses];
+
+export type GetLedgerBalancesData = {
+    body?: never;
+    headers?: {
+        /**
+         * Which profile to act on, when the account holds more than one: an `id` from `GET /v1/brands`. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 `brand_not_found`, never an empty result.
+         */
+        'X-Hermoso-User'?: string;
+    };
+    path?: never;
+    query?: {
+        campaign_id?: string;
+        participant_id?: string;
+    };
+    url: '/v1/ledger/balances';
+};
+
+export type GetLedgerBalancesErrors = {
+    /**
+     * Invalid request.
+     */
+    400: Error;
+    /**
+     * Missing, invalid or revoked key — or a channel that is not connected, in which case `error.connector` names it and `error.type` is `connector_error`.
+     */
+    401: Error;
+    /**
+     * `error.code: brand_not_found`: `X-Hermoso-User` (or the profile this key is pinned to) names a profile this key cannot act on. `GET /v1/brands` lists the valid ids.
+     */
+    404: Error;
+    /**
+     * Rate limited. `Retry-After` says how long to wait.
+     */
+    429: Error;
+};
+
+export type GetLedgerBalancesError = GetLedgerBalancesErrors[keyof GetLedgerBalancesErrors];
+
+export type GetLedgerBalancesResponses = {
+    /**
+     * Success
+     */
+    200: LedgerBalances;
+};
+
+export type GetLedgerBalancesResponse = GetLedgerBalancesResponses[keyof GetLedgerBalancesResponses];
+
+export type ListLedgerEntriesData = {
+    body?: never;
+    headers?: {
+        /**
+         * Which profile to act on, when the account holds more than one: an `id` from `GET /v1/brands`. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 `brand_not_found`, never an empty result.
+         */
+        'X-Hermoso-User'?: string;
+    };
+    path?: never;
+    query?: {
+        /**
+         * Required.
+         */
+        campaign_id?: string;
+        participant_id?: string;
+        kind?: string;
+        limit?: number;
+        offset?: number;
+    };
+    url: '/v1/ledger/entries';
+};
+
+export type ListLedgerEntriesErrors = {
+    /**
+     * Invalid request.
+     */
+    400: Error;
+    /**
+     * Missing, invalid or revoked key — or a channel that is not connected, in which case `error.connector` names it and `error.type` is `connector_error`.
+     */
+    401: Error;
+    /**
+     * `error.code: brand_not_found`: `X-Hermoso-User` (or the profile this key is pinned to) names a profile this key cannot act on. `GET /v1/brands` lists the valid ids.
+     */
+    404: Error;
+    /**
+     * Rate limited. `Retry-After` says how long to wait.
+     */
+    429: Error;
+};
+
+export type ListLedgerEntriesError = ListLedgerEntriesErrors[keyof ListLedgerEntriesErrors];
+
+export type ListLedgerEntriesResponses = {
+    /**
+     * Success
+     */
+    200: LedgerEntries;
+};
+
+export type ListLedgerEntriesResponse = ListLedgerEntriesResponses[keyof ListLedgerEntriesResponses];
+
+export type ListTransfersData = {
+    body?: never;
+    headers?: {
+        /**
+         * Which profile to act on, when the account holds more than one: an `id` from `GET /v1/brands`. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 `brand_not_found`, never an empty result.
+         */
+        'X-Hermoso-User'?: string;
+    };
+    path?: never;
+    query?: {
+        campaign_id?: string;
+        participant_id?: string;
+    };
+    url: '/v1/transfers';
+};
+
+export type ListTransfersErrors = {
+    /**
+     * Invalid request.
+     */
+    400: Error;
+    /**
+     * Missing, invalid or revoked key — or a channel that is not connected, in which case `error.connector` names it and `error.type` is `connector_error`.
+     */
+    401: Error;
+    /**
+     * `error.code: brand_not_found`: `X-Hermoso-User` (or the profile this key is pinned to) names a profile this key cannot act on. `GET /v1/brands` lists the valid ids.
+     */
+    404: Error;
+    /**
+     * Rate limited. `Retry-After` says how long to wait.
+     */
+    429: Error;
+};
+
+export type ListTransfersError = ListTransfersErrors[keyof ListTransfersErrors];
+
+export type ListTransfersResponses = {
+    /**
+     * Success
+     */
+    200: TransferList;
+};
+
+export type ListTransfersResponse = ListTransfersResponses[keyof ListTransfersResponses];
+
+export type GetTransferData = {
+    body?: never;
+    headers?: {
+        /**
+         * Which profile to act on, when the account holds more than one: an `id` from `GET /v1/brands`. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 `brand_not_found`, never an empty result.
+         */
+        'X-Hermoso-User'?: string;
+    };
+    path: {
+        transfer_id: string;
+    };
+    query?: never;
+    url: '/v1/transfers/{transfer_id}';
+};
+
+export type GetTransferErrors = {
+    /**
+     * Invalid request.
+     */
+    400: Error;
+    /**
+     * Missing, invalid or revoked key — or a channel that is not connected, in which case `error.connector` names it and `error.type` is `connector_error`.
+     */
+    401: Error;
+    /**
+     * `error.code: brand_not_found`: `X-Hermoso-User` (or the profile this key is pinned to) names a profile this key cannot act on. `GET /v1/brands` lists the valid ids.
+     */
+    404: Error;
+    /**
+     * Rate limited. `Retry-After` says how long to wait.
+     */
+    429: Error;
+};
+
+export type GetTransferError = GetTransferErrors[keyof GetTransferErrors];
+
+export type GetTransferResponses = {
+    /**
+     * Success
+     */
+    200: Transfer;
+};
+
+export type GetTransferResponse = GetTransferResponses[keyof GetTransferResponses];
+
+export type GetAnalyticsDashboardData = {
+    body?: never;
+    headers?: {
+        /**
+         * Which profile to act on, when the account holds more than one: an `id` from `GET /v1/brands`. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 `brand_not_found`, never an empty result.
+         */
+        'X-Hermoso-User'?: string;
+    };
+    path?: never;
+    query?: {
+        /**
+         * last_7_days (default), last_30_days, last_90_days, this_week or this_month.
+         */
+        period?: string;
+        /**
+         * Instead of period: the last N days, 1-365.
+         */
+        days?: number;
+        /**
+         * Instead of period: YYYY-MM-DD, with `to`.
+         */
+        from?: string;
+        /**
+         * YYYY-MM-DD, inclusive.
+         */
+        to?: string;
+        /**
+         * One channel.
+         */
+        channel?: string;
+        /**
+         * One account: handle, Page name or id.
+         */
+        account?: string;
+        /**
+         * Top posts per channel, 0-20. Default 3.
+         */
+        top_posts?: number;
+        /**
+         * Most recent posts of the window, 0-50. Default 5.
+         */
+        recent_posts?: number;
+        /**
+         * IANA zone for the days. Default: the account’s.
+         */
+        timezone?: string;
+    };
+    url: '/v1/analytics/dashboard';
+};
+
+export type GetAnalyticsDashboardErrors = {
+    /**
+     * Invalid request.
+     */
+    400: Error;
+    /**
+     * Missing, invalid or revoked key — or a channel that is not connected, in which case `error.connector` names it and `error.type` is `connector_error`.
+     */
+    401: Error;
+    /**
+     * `error.code: brand_not_found`: `X-Hermoso-User` (or the profile this key is pinned to) names a profile this key cannot act on. `GET /v1/brands` lists the valid ids.
+     */
+    404: Error;
+    /**
+     * Rate limited. `Retry-After` says how long to wait.
+     */
+    429: Error;
+};
+
+export type GetAnalyticsDashboardError = GetAnalyticsDashboardErrors[keyof GetAnalyticsDashboardErrors];
+
+export type GetAnalyticsDashboardResponses = {
+    /**
+     * Success
+     */
+    200: AnalyticsDashboard;
+};
+
+export type GetAnalyticsDashboardResponse = GetAnalyticsDashboardResponses[keyof GetAnalyticsDashboardResponses];
+
+export type GetAnalyticsDeltaData = {
+    body?: never;
+    headers?: {
+        /**
+         * Which profile to act on, when the account holds more than one: an `id` from `GET /v1/brands`. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 `brand_not_found`, never an empty result.
+         */
+        'X-Hermoso-User'?: string;
+    };
+    path?: never;
+    query?: {
+        /**
+         * The cursor a previous call returned.
+         */
+        cursor?: string;
+        /**
+         * 1-500. Default 100.
+         */
+        limit?: number;
+        /**
+         * One channel.
+         */
+        channel?: string;
+        /**
+         * Page through everything held instead of starting at now.
+         */
+        from_start?: boolean;
+    };
+    url: '/v1/analytics/delta';
+};
+
+export type GetAnalyticsDeltaErrors = {
+    /**
+     * Invalid request.
+     */
+    400: Error;
+    /**
+     * Missing, invalid or revoked key — or a channel that is not connected, in which case `error.connector` names it and `error.type` is `connector_error`.
+     */
+    401: Error;
+    /**
+     * `error.code: brand_not_found`: `X-Hermoso-User` (or the profile this key is pinned to) names a profile this key cannot act on. `GET /v1/brands` lists the valid ids.
+     */
+    404: Error;
+    /**
+     * Rate limited. `Retry-After` says how long to wait.
+     */
+    429: Error;
+};
+
+export type GetAnalyticsDeltaError = GetAnalyticsDeltaErrors[keyof GetAnalyticsDeltaErrors];
+
+export type GetAnalyticsDeltaResponses = {
+    /**
+     * Success
+     */
+    200: AnalyticsDelta;
+};
+
+export type GetAnalyticsDeltaResponse = GetAnalyticsDeltaResponses[keyof GetAnalyticsDeltaResponses];
+
+export type ListTrackingWindowsData = {
+    body?: never;
+    headers?: {
+        /**
+         * Which profile to act on, when the account holds more than one: an `id` from `GET /v1/brands`. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 `brand_not_found`, never an empty result.
+         */
+        'X-Hermoso-User'?: string;
+    };
+    path?: never;
+    query?: {
+        /**
+         * open, completed or cancelled.
+         */
+        status?: string;
+        /**
+         * 1-200. Default 50.
+         */
+        limit?: number;
+    };
+    url: '/v1/analytics/tracking';
+};
+
+export type ListTrackingWindowsErrors = {
+    /**
+     * Invalid request.
+     */
+    400: Error;
+    /**
+     * Missing, invalid or revoked key — or a channel that is not connected, in which case `error.connector` names it and `error.type` is `connector_error`.
+     */
+    401: Error;
+    /**
+     * `error.code: brand_not_found`: `X-Hermoso-User` (or the profile this key is pinned to) names a profile this key cannot act on. `GET /v1/brands` lists the valid ids.
+     */
+    404: Error;
+    /**
+     * Rate limited. `Retry-After` says how long to wait.
+     */
+    429: Error;
+};
+
+export type ListTrackingWindowsError = ListTrackingWindowsErrors[keyof ListTrackingWindowsErrors];
+
+export type ListTrackingWindowsResponses = {
+    /**
+     * Success
+     */
+    200: TrackingWindowList;
+};
+
+export type ListTrackingWindowsResponse = ListTrackingWindowsResponses[keyof ListTrackingWindowsResponses];
+
+export type OpenTrackingWindowData = {
+    body: TrackingWindowOpen;
+    headers?: {
+        /**
+         * Which profile to act on, when the account holds more than one: an `id` from `GET /v1/brands`. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 `brand_not_found`, never an empty result.
+         */
+        'X-Hermoso-User'?: string;
+    };
+    path?: never;
+    query?: never;
+    url: '/v1/analytics/tracking';
+};
+
+export type OpenTrackingWindowErrors = {
+    /**
+     * Invalid request.
+     */
+    400: Error;
+    /**
+     * Missing, invalid or revoked key — or a channel that is not connected, in which case `error.connector` names it and `error.type` is `connector_error`.
+     */
+    401: Error;
+    /**
+     * `error.code: brand_not_found`: `X-Hermoso-User` (or the profile this key is pinned to) names a profile this key cannot act on. `GET /v1/brands` lists the valid ids.
+     */
+    404: Error;
+    /**
+     * Rate limited. `Retry-After` says how long to wait.
+     */
+    429: Error;
+};
+
+export type OpenTrackingWindowError = OpenTrackingWindowErrors[keyof OpenTrackingWindowErrors];
+
+export type OpenTrackingWindowResponses = {
+    /**
+     * Success
+     */
+    200: TrackingWindow;
+};
+
+export type OpenTrackingWindowResponse = OpenTrackingWindowResponses[keyof OpenTrackingWindowResponses];
+
+export type CancelTrackingWindowData = {
+    body?: never;
+    headers?: {
+        /**
+         * Which profile to act on, when the account holds more than one: an `id` from `GET /v1/brands`. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 `brand_not_found`, never an empty result.
+         */
+        'X-Hermoso-User'?: string;
+    };
+    path: {
+        window_id: string;
+    };
+    query?: never;
+    url: '/v1/analytics/tracking/{window_id}';
+};
+
+export type CancelTrackingWindowErrors = {
+    /**
+     * Invalid request.
+     */
+    400: Error;
+    /**
+     * Missing, invalid or revoked key — or a channel that is not connected, in which case `error.connector` names it and `error.type` is `connector_error`.
+     */
+    401: Error;
+    /**
+     * `error.code: brand_not_found`: `X-Hermoso-User` (or the profile this key is pinned to) names a profile this key cannot act on. `GET /v1/brands` lists the valid ids.
+     */
+    404: Error;
+    /**
+     * Rate limited. `Retry-After` says how long to wait.
+     */
+    429: Error;
+};
+
+export type CancelTrackingWindowError = CancelTrackingWindowErrors[keyof CancelTrackingWindowErrors];
+
+export type CancelTrackingWindowResponses = {
+    /**
+     * Success
+     */
+    200: TrackingWindow;
+};
+
+export type CancelTrackingWindowResponse = CancelTrackingWindowResponses[keyof CancelTrackingWindowResponses];
+
+export type GetTrackingWindowData = {
+    body?: never;
+    headers?: {
+        /**
+         * Which profile to act on, when the account holds more than one: an `id` from `GET /v1/brands`. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 `brand_not_found`, never an empty result.
+         */
+        'X-Hermoso-User'?: string;
+    };
+    path: {
+        window_id: string;
+    };
+    query?: never;
+    url: '/v1/analytics/tracking/{window_id}';
+};
+
+export type GetTrackingWindowErrors = {
+    /**
+     * Invalid request.
+     */
+    400: Error;
+    /**
+     * Missing, invalid or revoked key — or a channel that is not connected, in which case `error.connector` names it and `error.type` is `connector_error`.
+     */
+    401: Error;
+    /**
+     * `error.code: brand_not_found`: `X-Hermoso-User` (or the profile this key is pinned to) names a profile this key cannot act on. `GET /v1/brands` lists the valid ids.
+     */
+    404: Error;
+    /**
+     * Rate limited. `Retry-After` says how long to wait.
+     */
+    429: Error;
+};
+
+export type GetTrackingWindowError = GetTrackingWindowErrors[keyof GetTrackingWindowErrors];
+
+export type GetTrackingWindowResponses = {
+    /**
+     * Success
+     */
+    200: TrackingWindow;
+};
+
+export type GetTrackingWindowResponse = GetTrackingWindowResponses[keyof GetTrackingWindowResponses];
+
+export type QueryMetricsData = {
+    body?: never;
+    headers?: {
+        /**
+         * Which profile to act on, when the account holds more than one: an `id` from `GET /v1/brands`. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 `brand_not_found`, never an empty result.
+         */
+        'X-Hermoso-User'?: string;
+    };
+    path?: never;
+    query?: {
+        /**
+         * posts (default), accounts or inbox.
+         */
+        entity?: string;
+        /**
+         * posts: comma-separated posts, measured, reach, engagement, engagementRate. Default all.
+         */
+        metrics?: string;
+        /**
+         * Comma-separated (posts) or one value (accounts, inbox).
+         */
+        group_by?: string;
+        /**
+         * total (default), day, week or month.
+         */
+        granularity?: string;
+        /**
+         * The last N days. Default 30.
+         */
+        days?: number;
+        /**
+         * YYYY-MM-DD, with to_date.
+         */
+        from_date?: string;
+        /**
+         * YYYY-MM-DD.
+         */
+        to_date?: string;
+        /**
+         * One channel.
+         */
+        channel?: string;
+        /**
+         * One account.
+         */
+        account?: string;
+        /**
+         * posts: posts-desc, reach-desc, engagement-desc, engagementRate-desc, period-asc.
+         */
+        sort?: string;
+        /**
+         * posts: 1-1000. Default 100.
+         */
+        limit?: number;
+        /**
+         * IANA zone for days and periods.
+         */
+        timezone?: string;
+    };
+    url: '/v1/metrics';
+};
+
+export type QueryMetricsErrors = {
+    /**
+     * Invalid request.
+     */
+    400: Error;
+    /**
+     * Missing, invalid or revoked key — or a channel that is not connected, in which case `error.connector` names it and `error.type` is `connector_error`.
+     */
+    401: Error;
+    /**
+     * `error.code: brand_not_found`: `X-Hermoso-User` (or the profile this key is pinned to) names a profile this key cannot act on. `GET /v1/brands` lists the valid ids.
+     */
+    404: Error;
+    /**
+     * Rate limited. `Retry-After` says how long to wait.
+     */
+    429: Error;
+};
+
+export type QueryMetricsError = QueryMetricsErrors[keyof QueryMetricsErrors];
+
+export type QueryMetricsResponses = {
+    /**
+     * Success
+     */
+    200: MetricsResult;
+};
+
+export type QueryMetricsResponse = QueryMetricsResponses[keyof QueryMetricsResponses];
+
+export type GetMetricsCatalogData = {
+    body?: never;
+    headers?: {
+        /**
+         * Which profile to act on, when the account holds more than one: an `id` from `GET /v1/brands`. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 `brand_not_found`, never an empty result.
+         */
+        'X-Hermoso-User'?: string;
+    };
+    path?: never;
+    query?: never;
+    url: '/v1/metrics/catalog';
+};
+
+export type GetMetricsCatalogErrors = {
+    /**
+     * Invalid request.
+     */
+    400: Error;
+    /**
+     * Missing, invalid or revoked key — or a channel that is not connected, in which case `error.connector` names it and `error.type` is `connector_error`.
+     */
+    401: Error;
+    /**
+     * `error.code: brand_not_found`: `X-Hermoso-User` (or the profile this key is pinned to) names a profile this key cannot act on. `GET /v1/brands` lists the valid ids.
+     */
+    404: Error;
+    /**
+     * Rate limited. `Retry-After` says how long to wait.
+     */
+    429: Error;
+};
+
+export type GetMetricsCatalogError = GetMetricsCatalogErrors[keyof GetMetricsCatalogErrors];
+
+export type GetMetricsCatalogResponses = {
+    /**
+     * Success
+     */
+    200: MetricsCatalog;
+};
+
+export type GetMetricsCatalogResponse = GetMetricsCatalogResponses[keyof GetMetricsCatalogResponses];
 
 export type GetTagData = {
     body?: never;

@@ -40,6 +40,9 @@ module Hermoso
 
     attr_accessor :account
 
+    # Your own customer id, when the link was created with one.
+    attr_accessor :external_id
+
     # True for Facebook/Instagram (meta) and LinkedIn: choose which Pages the brand may use with list_connector_accounts + set_connector_accounts before posting.
     attr_accessor :account_selection_required
 
@@ -82,6 +85,7 @@ module Hermoso
         :'expires_at' => :'expires_at',
         :'connected_at' => :'connected_at',
         :'account' => :'account',
+        :'external_id' => :'external_id',
         :'account_selection_required' => :'account_selection_required',
         :'error' => :'error'
       }
@@ -112,6 +116,7 @@ module Hermoso
         :'expires_at' => :'Time',
         :'connected_at' => :'Time',
         :'account' => :'ConnectLinkAccount',
+        :'external_id' => :'String',
         :'account_selection_required' => :'Boolean',
         :'error' => :'ConnectLinkError'
       }
@@ -197,6 +202,10 @@ module Hermoso
         self.account = attributes[:'account']
       end
 
+      if attributes.key?(:'external_id')
+        self.external_id = attributes[:'external_id']
+      end
+
       if attributes.key?(:'account_selection_required')
         self.account_selection_required = attributes[:'account_selection_required']
       end
@@ -258,6 +267,7 @@ module Hermoso
           expires_at == o.expires_at &&
           connected_at == o.connected_at &&
           account == o.account &&
+          external_id == o.external_id &&
           account_selection_required == o.account_selection_required &&
           error == o.error
     end
@@ -271,7 +281,7 @@ module Hermoso
     # Calculates hash code according to all attributes.
     # @return [Integer] Hash code
     def hash
-      [object, id, url, provider, brand, status, redirect_url, state, created_at, expires_at, connected_at, account, account_selection_required, error].hash
+      [object, id, url, provider, brand, status, redirect_url, state, created_at, expires_at, connected_at, account, external_id, account_selection_required, error].hash
     end
 
     # Builds the object from hash

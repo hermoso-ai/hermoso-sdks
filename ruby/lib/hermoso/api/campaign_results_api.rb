@@ -77,6 +77,66 @@ module Hermoso
       return data, status_code, headers
     end
 
+    # List your result metrics and formulas
+    # Every metric key the brand uploaded (with its label and kind: count, money, percent or ratio), then every formula: the built-in ones (cac_percent, cost_per_sale, cost_per_qualified_lead, lead_to_sale, qualified_rate) and the brand’s own, plus the conversion events that count as campaign results.
+    # @param [Hash] opts the optional parameters
+    # @option opts [String] :x_hermoso_user Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result.
+    # @return [CampaignResultMetrics]
+    def list_campaign_result_metrics(opts = {})
+      data, _status_code, _headers = list_campaign_result_metrics_with_http_info(opts)
+      data
+    end
+
+    # List your result metrics and formulas
+    # Every metric key the brand uploaded (with its label and kind: count, money, percent or ratio), then every formula: the built-in ones (cac_percent, cost_per_sale, cost_per_qualified_lead, lead_to_sale, qualified_rate) and the brand’s own, plus the conversion events that count as campaign results.
+    # @param [Hash] opts the optional parameters
+    # @option opts [String] :x_hermoso_user Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result.
+    # @return [Array<(CampaignResultMetrics, Integer, Hash)>] CampaignResultMetrics data, response status code and response headers
+    def list_campaign_result_metrics_with_http_info(opts = {})
+      if @api_client.config.debugging
+        @api_client.config.logger.debug 'Calling API: CampaignResultsApi.list_campaign_result_metrics ...'
+      end
+      # resource path
+      local_var_path = '/v1/campaign-results/metrics'
+
+      # query parameters
+      query_params = opts[:query_params] || {}
+
+      # header parameters
+      header_params = opts[:header_params] || {}
+      # HTTP header 'Accept' (if needed)
+      header_params['Accept'] = @api_client.select_header_accept(['application/json']) unless header_params['Accept']
+      header_params[:'X-Hermoso-User'] = opts[:'x_hermoso_user'] if !opts[:'x_hermoso_user'].nil?
+
+      # form parameters
+      form_params = opts[:form_params] || {}
+
+      # http body (model)
+      post_body = opts[:debug_body]
+
+      # return_type
+      return_type = opts[:debug_return_type] || 'CampaignResultMetrics'
+
+      # auth_names
+      auth_names = opts[:debug_auth_names] || ['bearerAuth']
+
+      new_options = opts.merge(
+        :operation => :"CampaignResultsApi.list_campaign_result_metrics",
+        :header_params => header_params,
+        :query_params => query_params,
+        :form_params => form_params,
+        :body => post_body,
+        :auth_names => auth_names,
+        :return_type => return_type
+      )
+
+      data, status_code, headers = @api_client.call_api(:GET, local_var_path, new_options)
+      if @api_client.config.debugging
+        @api_client.config.logger.debug "API called: CampaignResultsApi#list_campaign_result_metrics\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
+      end
+      return data, status_code, headers
+    end
+
     # List uploaded results
     # @param [Hash] opts the optional parameters
     # @option opts [String] :from 
@@ -137,6 +197,83 @@ module Hermoso
       data, status_code, headers = @api_client.call_api(:GET, local_var_path, new_options)
       if @api_client.config.debugging
         @api_client.config.logger.debug "API called: CampaignResultsApi#list_campaign_results\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
+      end
+      return data, status_code, headers
+    end
+
+    # Name a result metric or define a formula
+    # Sets a metric key’s `label` and `kind` (count, money with its `currency`, percent or ratio), and optionally a `formula` with + - * / and parentheses over spend, impressions, clicks, sales, revenue, leads, qualified_leads, profit and any uploaded metric key. `formula: null` removes it. A formula is parsed, never run as code; division by zero gives null. Every formula shows per campaign in GET /v1/campaign-profit.
+    # @param key [String] 
+    # @param campaign_result_metric [CampaignResultMetric] 
+    # @param [Hash] opts the optional parameters
+    # @option opts [String] :x_hermoso_user Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result.
+    # @return [CampaignResultMetrics]
+    def set_campaign_result_metric(key, campaign_result_metric, opts = {})
+      data, _status_code, _headers = set_campaign_result_metric_with_http_info(key, campaign_result_metric, opts)
+      data
+    end
+
+    # Name a result metric or define a formula
+    # Sets a metric key’s &#x60;label&#x60; and &#x60;kind&#x60; (count, money with its &#x60;currency&#x60;, percent or ratio), and optionally a &#x60;formula&#x60; with + - * / and parentheses over spend, impressions, clicks, sales, revenue, leads, qualified_leads, profit and any uploaded metric key. &#x60;formula: null&#x60; removes it. A formula is parsed, never run as code; division by zero gives null. Every formula shows per campaign in GET /v1/campaign-profit.
+    # @param key [String] 
+    # @param campaign_result_metric [CampaignResultMetric] 
+    # @param [Hash] opts the optional parameters
+    # @option opts [String] :x_hermoso_user Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result.
+    # @return [Array<(CampaignResultMetrics, Integer, Hash)>] CampaignResultMetrics data, response status code and response headers
+    def set_campaign_result_metric_with_http_info(key, campaign_result_metric, opts = {})
+      if @api_client.config.debugging
+        @api_client.config.logger.debug 'Calling API: CampaignResultsApi.set_campaign_result_metric ...'
+      end
+      # verify the required parameter 'key' is set
+      if @api_client.config.client_side_validation && key.nil?
+        fail ArgumentError, "Missing the required parameter 'key' when calling CampaignResultsApi.set_campaign_result_metric"
+      end
+      # verify the required parameter 'campaign_result_metric' is set
+      if @api_client.config.client_side_validation && campaign_result_metric.nil?
+        fail ArgumentError, "Missing the required parameter 'campaign_result_metric' when calling CampaignResultsApi.set_campaign_result_metric"
+      end
+      # resource path
+      local_var_path = '/v1/campaign-results/metrics/{key}'.sub('{key}', CGI.escape(key.to_s))
+
+      # query parameters
+      query_params = opts[:query_params] || {}
+
+      # header parameters
+      header_params = opts[:header_params] || {}
+      # HTTP header 'Accept' (if needed)
+      header_params['Accept'] = @api_client.select_header_accept(['application/json']) unless header_params['Accept']
+      # HTTP header 'Content-Type'
+      content_type = @api_client.select_header_content_type(['application/json'])
+      if !content_type.nil?
+          header_params['Content-Type'] = content_type
+      end
+      header_params[:'X-Hermoso-User'] = opts[:'x_hermoso_user'] if !opts[:'x_hermoso_user'].nil?
+
+      # form parameters
+      form_params = opts[:form_params] || {}
+
+      # http body (model)
+      post_body = opts[:debug_body] || @api_client.object_to_http_body(campaign_result_metric)
+
+      # return_type
+      return_type = opts[:debug_return_type] || 'CampaignResultMetrics'
+
+      # auth_names
+      auth_names = opts[:debug_auth_names] || ['bearerAuth']
+
+      new_options = opts.merge(
+        :operation => :"CampaignResultsApi.set_campaign_result_metric",
+        :header_params => header_params,
+        :query_params => query_params,
+        :form_params => form_params,
+        :body => post_body,
+        :auth_names => auth_names,
+        :return_type => return_type
+      )
+
+      data, status_code, headers = @api_client.call_api(:PUT, local_var_path, new_options)
+      if @api_client.config.debugging
+        @api_client.config.logger.debug "API called: CampaignResultsApi#set_campaign_result_metric\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
       end
       return data, status_code, headers
     end

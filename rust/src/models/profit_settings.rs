@@ -21,6 +21,10 @@ pub struct ProfitSettings {
     pub cost_per_order: Option<f64>,
     #[serde(rename = "campaign_margins", skip_serializing_if = "Option::is_none")]
     pub campaign_margins: Option<std::collections::HashMap<String, f64>>,
+    #[serde(rename = "result_events", skip_serializing_if = "Option::is_none")]
+    pub result_events: Option<Vec<String>>,
+    #[serde(rename = "metrics", skip_serializing_if = "Option::is_none")]
+    pub metrics: Option<std::collections::HashMap<String, std::collections::HashMap<String, serde_json::Value>>>,
     #[serde(rename = "note", skip_serializing_if = "Option::is_none")]
     pub note: Option<String>,
 }
@@ -32,6 +36,8 @@ impl ProfitSettings {
             margin_percent: None,
             cost_per_order: None,
             campaign_margins: None,
+            result_events: None,
+            metrics: None,
             note: None,
         }
     }

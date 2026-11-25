@@ -876,8 +876,18 @@ public class PostsApi {
     @javax.annotation.Nullable
     String channel = apiRequest.channel();
     @javax.annotation.Nullable
+    String search = apiRequest.search();
+    @javax.annotation.Nullable
+    String label = apiRequest.label();
+    @javax.annotation.Nullable
+    String externalId = apiRequest.externalId();
+    @javax.annotation.Nullable
+    String from = apiRequest.from();
+    @javax.annotation.Nullable
+    String to = apiRequest.to();
+    @javax.annotation.Nullable
     String xHermosoUser = apiRequest.xHermosoUser();
-    return listPosts(limit, startingAfter, status, channel, xHermosoUser, headers);
+    return listPosts(limit, startingAfter, status, channel, search, label, externalId, from, to, xHermosoUser, headers);
   }
 
   /**
@@ -904,8 +914,13 @@ public class PostsApi {
     String startingAfter = apiRequest.startingAfter();
     String status = apiRequest.status();
     String channel = apiRequest.channel();
+    String search = apiRequest.search();
+    String label = apiRequest.label();
+    String externalId = apiRequest.externalId();
+    String from = apiRequest.from();
+    String to = apiRequest.to();
     String xHermosoUser = apiRequest.xHermosoUser();
-    return listPostsWithHttpInfo(limit, startingAfter, status, channel, xHermosoUser, headers);
+    return listPostsWithHttpInfo(limit, startingAfter, status, channel, search, label, externalId, from, to, xHermosoUser, headers);
   }
 
   /**
@@ -915,12 +930,17 @@ public class PostsApi {
    * @param startingAfter A post id from a previous page; returns the page after it. An unknown cursor is an error, never a silent restart. (optional)
    * @param status Filter: scheduled, processing, published, partially_published, failed, indeterminate. &#x60;indeterminate&#x60; means a restart interrupted the send and we cannot say whether it published. (optional)
    * @param channel Filter to posts that include this channel. (optional)
+   * @param search Filter to posts whose caption, title, labels or external_id contain this text (case-insensitive). (optional)
+   * @param label Filter to posts carrying ALL of these labels (comma-separated). (optional)
+   * @param externalId Filter to the post(s) with this external_id. (optional)
+   * @param from Only posts scheduled or published at or after this ISO date/time. (optional)
+   * @param to Only posts scheduled or published at or before this ISO date/time. (optional)
    * @param xHermosoUser Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result. (optional)
    * @return PostList
    * @throws ApiException if fails to make API call
    */
-  public PostList listPosts(@javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String startingAfter, @javax.annotation.Nullable String status, @javax.annotation.Nullable String channel, @javax.annotation.Nullable String xHermosoUser) throws ApiException {
-    return listPosts(limit, startingAfter, status, channel, xHermosoUser, null);
+  public PostList listPosts(@javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String startingAfter, @javax.annotation.Nullable String status, @javax.annotation.Nullable String channel, @javax.annotation.Nullable String search, @javax.annotation.Nullable String label, @javax.annotation.Nullable String externalId, @javax.annotation.Nullable String from, @javax.annotation.Nullable String to, @javax.annotation.Nullable String xHermosoUser) throws ApiException {
+    return listPosts(limit, startingAfter, status, channel, search, label, externalId, from, to, xHermosoUser, null);
   }
 
   /**
@@ -930,13 +950,18 @@ public class PostsApi {
    * @param startingAfter A post id from a previous page; returns the page after it. An unknown cursor is an error, never a silent restart. (optional)
    * @param status Filter: scheduled, processing, published, partially_published, failed, indeterminate. &#x60;indeterminate&#x60; means a restart interrupted the send and we cannot say whether it published. (optional)
    * @param channel Filter to posts that include this channel. (optional)
+   * @param search Filter to posts whose caption, title, labels or external_id contain this text (case-insensitive). (optional)
+   * @param label Filter to posts carrying ALL of these labels (comma-separated). (optional)
+   * @param externalId Filter to the post(s) with this external_id. (optional)
+   * @param from Only posts scheduled or published at or after this ISO date/time. (optional)
+   * @param to Only posts scheduled or published at or before this ISO date/time. (optional)
    * @param xHermosoUser Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result. (optional)
    * @param headers Optional headers to include in the request
    * @return PostList
    * @throws ApiException if fails to make API call
    */
-  public PostList listPosts(@javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String startingAfter, @javax.annotation.Nullable String status, @javax.annotation.Nullable String channel, @javax.annotation.Nullable String xHermosoUser, Map<String, String> headers) throws ApiException {
-    ApiResponse<PostList> localVarResponse = listPostsWithHttpInfo(limit, startingAfter, status, channel, xHermosoUser, headers);
+  public PostList listPosts(@javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String startingAfter, @javax.annotation.Nullable String status, @javax.annotation.Nullable String channel, @javax.annotation.Nullable String search, @javax.annotation.Nullable String label, @javax.annotation.Nullable String externalId, @javax.annotation.Nullable String from, @javax.annotation.Nullable String to, @javax.annotation.Nullable String xHermosoUser, Map<String, String> headers) throws ApiException {
+    ApiResponse<PostList> localVarResponse = listPostsWithHttpInfo(limit, startingAfter, status, channel, search, label, externalId, from, to, xHermosoUser, headers);
     return localVarResponse.getData();
   }
 
@@ -947,12 +972,17 @@ public class PostsApi {
    * @param startingAfter A post id from a previous page; returns the page after it. An unknown cursor is an error, never a silent restart. (optional)
    * @param status Filter: scheduled, processing, published, partially_published, failed, indeterminate. &#x60;indeterminate&#x60; means a restart interrupted the send and we cannot say whether it published. (optional)
    * @param channel Filter to posts that include this channel. (optional)
+   * @param search Filter to posts whose caption, title, labels or external_id contain this text (case-insensitive). (optional)
+   * @param label Filter to posts carrying ALL of these labels (comma-separated). (optional)
+   * @param externalId Filter to the post(s) with this external_id. (optional)
+   * @param from Only posts scheduled or published at or after this ISO date/time. (optional)
+   * @param to Only posts scheduled or published at or before this ISO date/time. (optional)
    * @param xHermosoUser Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result. (optional)
    * @return ApiResponse&lt;PostList&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<PostList> listPostsWithHttpInfo(@javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String startingAfter, @javax.annotation.Nullable String status, @javax.annotation.Nullable String channel, @javax.annotation.Nullable String xHermosoUser) throws ApiException {
-    return listPostsWithHttpInfo(limit, startingAfter, status, channel, xHermosoUser, null);
+  public ApiResponse<PostList> listPostsWithHttpInfo(@javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String startingAfter, @javax.annotation.Nullable String status, @javax.annotation.Nullable String channel, @javax.annotation.Nullable String search, @javax.annotation.Nullable String label, @javax.annotation.Nullable String externalId, @javax.annotation.Nullable String from, @javax.annotation.Nullable String to, @javax.annotation.Nullable String xHermosoUser) throws ApiException {
+    return listPostsWithHttpInfo(limit, startingAfter, status, channel, search, label, externalId, from, to, xHermosoUser, null);
   }
 
   /**
@@ -962,13 +992,18 @@ public class PostsApi {
    * @param startingAfter A post id from a previous page; returns the page after it. An unknown cursor is an error, never a silent restart. (optional)
    * @param status Filter: scheduled, processing, published, partially_published, failed, indeterminate. &#x60;indeterminate&#x60; means a restart interrupted the send and we cannot say whether it published. (optional)
    * @param channel Filter to posts that include this channel. (optional)
+   * @param search Filter to posts whose caption, title, labels or external_id contain this text (case-insensitive). (optional)
+   * @param label Filter to posts carrying ALL of these labels (comma-separated). (optional)
+   * @param externalId Filter to the post(s) with this external_id. (optional)
+   * @param from Only posts scheduled or published at or after this ISO date/time. (optional)
+   * @param to Only posts scheduled or published at or before this ISO date/time. (optional)
    * @param xHermosoUser Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result. (optional)
    * @param headers Optional headers to include in the request
    * @return ApiResponse&lt;PostList&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<PostList> listPostsWithHttpInfo(@javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String startingAfter, @javax.annotation.Nullable String status, @javax.annotation.Nullable String channel, @javax.annotation.Nullable String xHermosoUser, Map<String, String> headers) throws ApiException {
-    HttpRequest.Builder localVarRequestBuilder = listPostsRequestBuilder(limit, startingAfter, status, channel, xHermosoUser, headers);
+  public ApiResponse<PostList> listPostsWithHttpInfo(@javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String startingAfter, @javax.annotation.Nullable String status, @javax.annotation.Nullable String channel, @javax.annotation.Nullable String search, @javax.annotation.Nullable String label, @javax.annotation.Nullable String externalId, @javax.annotation.Nullable String from, @javax.annotation.Nullable String to, @javax.annotation.Nullable String xHermosoUser, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = listPostsRequestBuilder(limit, startingAfter, status, channel, search, label, externalId, from, to, xHermosoUser, headers);
     try {
       HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
           localVarRequestBuilder.build(),
@@ -1015,7 +1050,7 @@ public class PostsApi {
     }
   }
 
-  private HttpRequest.Builder listPostsRequestBuilder(@javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String startingAfter, @javax.annotation.Nullable String status, @javax.annotation.Nullable String channel, @javax.annotation.Nullable String xHermosoUser, Map<String, String> headers) throws ApiException {
+  private HttpRequest.Builder listPostsRequestBuilder(@javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String startingAfter, @javax.annotation.Nullable String status, @javax.annotation.Nullable String channel, @javax.annotation.Nullable String search, @javax.annotation.Nullable String label, @javax.annotation.Nullable String externalId, @javax.annotation.Nullable String from, @javax.annotation.Nullable String to, @javax.annotation.Nullable String xHermosoUser, Map<String, String> headers) throws ApiException {
 
     HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
 
@@ -1032,6 +1067,16 @@ public class PostsApi {
     localVarQueryParams.addAll(ApiClient.parameterToPairs("status", status));
     localVarQueryParameterBaseName = "channel";
     localVarQueryParams.addAll(ApiClient.parameterToPairs("channel", channel));
+    localVarQueryParameterBaseName = "search";
+    localVarQueryParams.addAll(ApiClient.parameterToPairs("search", search));
+    localVarQueryParameterBaseName = "label";
+    localVarQueryParams.addAll(ApiClient.parameterToPairs("label", label));
+    localVarQueryParameterBaseName = "external_id";
+    localVarQueryParams.addAll(ApiClient.parameterToPairs("external_id", externalId));
+    localVarQueryParameterBaseName = "from";
+    localVarQueryParams.addAll(ApiClient.parameterToPairs("from", from));
+    localVarQueryParameterBaseName = "to";
+    localVarQueryParams.addAll(ApiClient.parameterToPairs("to", to));
 
     if (!localVarQueryParams.isEmpty() || localVarQueryStringJoiner.length() != 0) {
       StringJoiner queryJoiner = new StringJoiner("&");
@@ -1072,6 +1117,16 @@ public class PostsApi {
     @javax.annotation.Nullable
     private String channel; // Filter to posts that include this channel. (optional)
     @javax.annotation.Nullable
+    private String search; // Filter to posts whose caption, title, labels or external_id contain this text (case-insensitive). (optional)
+    @javax.annotation.Nullable
+    private String label; // Filter to posts carrying ALL of these labels (comma-separated). (optional)
+    @javax.annotation.Nullable
+    private String externalId; // Filter to the post(s) with this external_id. (optional)
+    @javax.annotation.Nullable
+    private String from; // Only posts scheduled or published at or after this ISO date/time. (optional)
+    @javax.annotation.Nullable
+    private String to; // Only posts scheduled or published at or before this ISO date/time. (optional)
+    @javax.annotation.Nullable
     private String xHermosoUser; // Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result. (optional)
 
     private APIListPostsRequest(Builder builder) {
@@ -1079,6 +1134,11 @@ public class PostsApi {
       this.startingAfter = builder.startingAfter;
       this.status = builder.status;
       this.channel = builder.channel;
+      this.search = builder.search;
+      this.label = builder.label;
+      this.externalId = builder.externalId;
+      this.from = builder.from;
+      this.to = builder.to;
       this.xHermosoUser = builder.xHermosoUser;
     }
     @javax.annotation.Nullable
@@ -1098,6 +1158,26 @@ public class PostsApi {
       return channel;
     }
     @javax.annotation.Nullable
+    public String search() {
+      return search;
+    }
+    @javax.annotation.Nullable
+    public String label() {
+      return label;
+    }
+    @javax.annotation.Nullable
+    public String externalId() {
+      return externalId;
+    }
+    @javax.annotation.Nullable
+    public String from() {
+      return from;
+    }
+    @javax.annotation.Nullable
+    public String to() {
+      return to;
+    }
+    @javax.annotation.Nullable
     public String xHermosoUser() {
       return xHermosoUser;
     }
@@ -1110,6 +1190,11 @@ public class PostsApi {
       private String startingAfter;
       private String status;
       private String channel;
+      private String search;
+      private String label;
+      private String externalId;
+      private String from;
+      private String to;
       private String xHermosoUser;
 
       public Builder limit(@javax.annotation.Nullable Integer limit) {
@@ -1126,6 +1211,26 @@ public class PostsApi {
       }
       public Builder channel(@javax.annotation.Nullable String channel) {
         this.channel = channel;
+        return this;
+      }
+      public Builder search(@javax.annotation.Nullable String search) {
+        this.search = search;
+        return this;
+      }
+      public Builder label(@javax.annotation.Nullable String label) {
+        this.label = label;
+        return this;
+      }
+      public Builder externalId(@javax.annotation.Nullable String externalId) {
+        this.externalId = externalId;
+        return this;
+      }
+      public Builder from(@javax.annotation.Nullable String from) {
+        this.from = from;
+        return this;
+      }
+      public Builder to(@javax.annotation.Nullable String to) {
+        this.to = to;
         return this;
       }
       public Builder xHermosoUser(@javax.annotation.Nullable String xHermosoUser) {

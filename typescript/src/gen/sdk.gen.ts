@@ -2,7 +2,7 @@
 
 import { client } from './client.gen.js';
 import type { Client, ClientMeta, Options as Options2, RequestResult, TDataShape } from './client/index.js';
-import type { CallToolData, CallToolErrors, CallToolResponses, CancelJobData, CancelJobErrors, CancelJobResponses, ClaimSignupData, ClaimSignupErrors, ClaimSignupResponses, CreateConnectLinkData, CreateConnectLinkErrors, CreateConnectLinkResponses, CreateConversionDestinationData, CreateConversionDestinationErrors, CreateConversionDestinationResponses, CreateEditData, CreateEditErrors, CreateEditResponses, CreateGenerationData, CreateGenerationErrors, CreateGenerationResponses, CreateMediaData, CreateMediaErrors, CreateMediaResponses, CreatePostData, CreatePostErrors, CreatePostResponses, CreateRecastData, CreateRecastErrors, CreateRecastResponses, CreateSignupData, CreateSignupErrors, CreateSignupResponses, DeleteConnectionData, DeleteConnectionErrors, DeleteConnectionResponses, DeleteConversionDestinationData, DeleteConversionDestinationErrors, DeleteConversionDestinationResponses, DeletePostData, DeletePostErrors, DeletePostResponses, GetBestTimeData, GetBestTimeErrors, GetBestTimeResponses, GetCampaignProfitData, GetCampaignProfitErrors, GetCampaignProfitResponses, GetConnectLinkData, GetConnectLinkErrors, GetConnectLinkResponses, GetConnectRedirectsData, GetConnectRedirectsErrors, GetConnectRedirectsResponses, GetContactEmailData, GetContactEmailErrors, GetContactEmailResponses, GetContentDecayData, GetContentDecayErrors, GetContentDecayResponses, GetConversionAccuracyData, GetConversionAccuracyErrors, GetConversionAccuracyResponses, GetConversionEventData, GetConversionEventErrors, GetConversionEventResponses, GetConversionJourneyData, GetConversionJourneyErrors, GetConversionJourneyResponses, GetConversionLtvData, GetConversionLtvErrors, GetConversionLtvResponses, GetCreditsData, GetCreditsErrors, GetCreditsResponses, GetFollowerHistoryData, GetFollowerHistoryErrors, GetFollowerHistoryResponses, GetInboxStatsData, GetInboxStatsErrors, GetInboxStatsResponses, GetJobData, GetJobErrors, GetJobResponses, GetMediaContentData, GetMediaContentErrors, GetMediaContentResponses, GetPostData, GetPostErrors, GetPostingFrequencyData, GetPostingFrequencyErrors, GetPostingFrequencyResponses, GetPostResponses, GetProfitSettingsData, GetProfitSettingsErrors, GetProfitSettingsResponses, GetTagData, GetTagErrors, GetTagReportData, GetTagReportErrors, GetTagReportResponses, GetTagResponses, GetToolData, GetToolErrors, GetToolResponses, InstallTagData, InstallTagErrors, InstallTagResponses, ListBrandsData, ListBrandsErrors, ListBrandsResponses, ListCampaignResultsData, ListCampaignResultsErrors, ListCampaignResultsResponses, ListChannelsData, ListChannelsErrors, ListChannelsResponses, ListConnectionsData, ListConnectionsErrors, ListConnectionsResponses, ListConversionCustomersData, ListConversionCustomersErrors, ListConversionCustomersResponses, ListConversionDestinationsData, ListConversionDestinationsErrors, ListConversionDestinationsResponses, ListConversionEventsData, ListConversionEventsErrors, ListConversionEventsResponses, ListConversionPathsData, ListConversionPathsErrors, ListConversionPathsResponses, ListJobsData, ListJobsErrors, ListJobsResponses, ListLibraryData, ListLibraryErrors, ListLibraryResponses, ListModelsData, ListModelsErrors, ListModelsResponses, ListPostsData, ListPostsErrors, ListPostsResponses, ListTagAudiencesData, ListTagAudiencesErrors, ListTagAudiencesResponses, ListTagEventsData, ListTagEventsErrors, ListTagEventsResponses, ListToolsData, ListToolsErrors, ListToolsResponses, QuoteCloneData, QuoteCloneErrors, QuoteCloneResponses, QuoteGenerationData, QuoteGenerationErrors, QuoteGenerationResponses, ResendEmailVerificationData, ResendEmailVerificationErrors, ResendEmailVerificationResponses, RetractConversionEventData, RetractConversionEventErrors, RetractConversionEventResponses, RevokeConnectLinkData, RevokeConnectLinkErrors, RevokeConnectLinkResponses, SendConversionEventsData, SendConversionEventsErrors, SendConversionEventsResponses, SendTagEventsData, SendTagEventsErrors, SendTagEventsResponses, SetConnectRedirectsData, SetConnectRedirectsErrors, SetConnectRedirectsResponses, SetProfitSettingsData, SetProfitSettingsErrors, SetProfitSettingsResponses, TagAudiencesData, TagAudiencesErrors, TagAudiencesResponses, UpdateConversionEventData, UpdateConversionEventErrors, UpdateConversionEventResponses, UpdatePostData, UpdatePostErrors, UpdatePostResponses, UpdateTagData, UpdateTagErrors, UpdateTagResponses, UploadCampaignResultsData, UploadCampaignResultsErrors, UploadCampaignResultsResponses } from './types.gen.js';
+import type { ActivateAutomationData, ActivateAutomationErrors, ActivateAutomationResponses, CallToolData, CallToolErrors, CallToolResponses, CancelJobData, CancelJobErrors, CancelJobResponses, CancelTrackingWindowData, CancelTrackingWindowErrors, CancelTrackingWindowResponses, ClaimSignupData, ClaimSignupErrors, ClaimSignupResponses, ConfirmAdChangeData, ConfirmAdChangeErrors, ConfirmAdChangeResponses, CreateAccountGroupData, CreateAccountGroupErrors, CreateAccountGroupResponses, CreateAutomationTemplateData, CreateAutomationTemplateErrors, CreateAutomationTemplateResponses, CreateBoostAutomationData, CreateBoostAutomationErrors, CreateBoostAutomationResponses, CreateConnectLinkData, CreateConnectLinkErrors, CreateConnectLinkResponses, CreateConversionDestinationData, CreateConversionDestinationErrors, CreateConversionDestinationResponses, CreateCustomDomainData, CreateCustomDomainErrors, CreateCustomDomainResponses, CreateEditData, CreateEditErrors, CreateEditResponses, CreateGenerationData, CreateGenerationErrors, CreateGenerationResponses, CreateHandoffData, CreateHandoffErrors, CreateHandoffResponses, CreateInviteTokenData, CreateInviteTokenErrors, CreateInviteTokenResponses, CreateMediaData, CreateMediaErrors, CreateMediaResponses, CreateOAuthAppData, CreateOAuthAppErrors, CreateOAuthAppResponses, CreatePostData, CreatePostErrors, CreatePostResponses, CreateRecastData, CreateRecastErrors, CreateRecastResponses, CreateSignupData, CreateSignupErrors, CreateSignupResponses, CreateWorkspaceCheckoutLinkData, CreateWorkspaceCheckoutLinkErrors, CreateWorkspaceCheckoutLinkResponses, CreateWorkspaceData, CreateWorkspaceErrors, CreateWorkspaceResponses, DeleteAccountGroupData, DeleteAccountGroupErrors, DeleteAccountGroupResponses, DeleteAutomationData, DeleteAutomationErrors, DeleteAutomationResponses, DeleteConnectionData, DeleteConnectionErrors, DeleteConnectionResponses, DeleteConversionDestinationData, DeleteConversionDestinationErrors, DeleteConversionDestinationResponses, DeleteCustomDomainData, DeleteCustomDomainErrors, DeleteCustomDomainResponses, DeleteOAuthAppData, DeleteOAuthAppErrors, DeleteOAuthAppResponses, DeletePostData, DeletePostErrors, DeletePostResponses, DeleteWorkspaceData, DeleteWorkspaceErrors, DeleteWorkspaceResponses, DiscardAdChangeData, DiscardAdChangeErrors, DiscardAdChangeResponses, GetAdChangeData, GetAdChangeErrors, GetAdChangeResponses, GetAnalyticsDashboardData, GetAnalyticsDashboardErrors, GetAnalyticsDashboardResponses, GetAnalyticsDeltaData, GetAnalyticsDeltaErrors, GetAnalyticsDeltaResponses, GetAutomationControlsData, GetAutomationControlsErrors, GetAutomationControlsResponses, GetAutomationData, GetAutomationErrors, GetAutomationResponses, GetAutomationTestSampleData, GetAutomationTestSampleErrors, GetAutomationTestSampleResponses, GetBestTimeData, GetBestTimeErrors, GetBestTimeResponses, GetCampaignProfitData, GetCampaignProfitErrors, GetCampaignProfitResponses, GetConnectLinkData, GetConnectLinkErrors, GetConnectLinkResponses, GetConnectRedirectsData, GetConnectRedirectsErrors, GetConnectRedirectsResponses, GetContactEmailData, GetContactEmailErrors, GetContactEmailResponses, GetContentDecayData, GetContentDecayErrors, GetContentDecayResponses, GetConversionAccuracyData, GetConversionAccuracyErrors, GetConversionAccuracyResponses, GetConversionEventData, GetConversionEventErrors, GetConversionEventResponses, GetConversionJourneyData, GetConversionJourneyErrors, GetConversionJourneyResponses, GetConversionLtvData, GetConversionLtvErrors, GetConversionLtvResponses, GetCreditsData, GetCreditsErrors, GetCreditsResponses, GetCurrentUserData, GetCurrentUserErrors, GetCurrentUserResponses, GetCustomDomainData, GetCustomDomainErrors, GetCustomDomainResponses, GetExternalIdData, GetExternalIdErrors, GetExternalIdResponses, GetFollowerHistoryData, GetFollowerHistoryErrors, GetFollowerHistoryResponses, GetHandoffData, GetHandoffErrors, GetHandoffResponses, GetInboxStatsData, GetInboxStatsErrors, GetInboxStatsResponses, GetJobData, GetJobErrors, GetJobResponses, GetLedgerBalancesData, GetLedgerBalancesErrors, GetLedgerBalancesResponses, GetMediaContentData, GetMediaContentErrors, GetMediaContentResponses, GetMetricsCatalogData, GetMetricsCatalogErrors, GetMetricsCatalogResponses, GetOAuthAppData, GetOAuthAppErrors, GetOAuthAppResponses, GetPostData, GetPostErrors, GetPostingFrequencyData, GetPostingFrequencyErrors, GetPostingFrequencyResponses, GetPostResponses, GetProfitSettingsData, GetProfitSettingsErrors, GetProfitSettingsResponses, GetTagData, GetTagErrors, GetTagReportData, GetTagReportErrors, GetTagReportResponses, GetTagResponses, GetToolData, GetToolErrors, GetToolResponses, GetTrackingWindowData, GetTrackingWindowErrors, GetTrackingWindowResponses, GetTransferData, GetTransferErrors, GetTransferResponses, GetUsageCallsData, GetUsageCallsErrors, GetUsageCallsResponses, GetUsageData, GetUsageErrors, GetUsageResponses, GetUsageSmsData, GetUsageSmsErrors, GetUsageSmsResponses, GetWelcomeScreenData, GetWelcomeScreenErrors, GetWelcomeScreenResponses, GetWorkspaceData, GetWorkspaceErrors, GetWorkspaceResponses, InstallAutomationTemplateData, InstallAutomationTemplateErrors, InstallAutomationTemplateResponses, InstallSharedAutomationTemplateData, InstallSharedAutomationTemplateErrors, InstallSharedAutomationTemplateResponses, InstallTagData, InstallTagErrors, InstallTagResponses, ListAccountGroupsData, ListAccountGroupsErrors, ListAccountGroupsResponses, ListActivityLogsData, ListActivityLogsErrors, ListActivityLogsResponses, ListAdChangesData, ListAdChangesErrors, ListAdChangesResponses, ListAutomationRunsData, ListAutomationRunsErrors, ListAutomationRunsResponses, ListAutomationsData, ListAutomationsErrors, ListAutomationsResponses, ListAutomationTemplatesData, ListAutomationTemplatesErrors, ListAutomationTemplatesResponses, ListBrandsData, ListBrandsErrors, ListBrandsResponses, ListCampaignResultMetricsData, ListCampaignResultMetricsErrors, ListCampaignResultMetricsResponses, ListCampaignResultsData, ListCampaignResultsErrors, ListCampaignResultsResponses, ListChangelogData, ListChangelogErrors, ListChangelogResponses, ListChannelsData, ListChannelsErrors, ListChannelsResponses, ListConnectedAppsData, ListConnectedAppsErrors, ListConnectedAppsResponses, ListConnectionsData, ListConnectionsErrors, ListConnectionsResponses, ListConversionCustomersData, ListConversionCustomersErrors, ListConversionCustomersResponses, ListConversionDestinationsData, ListConversionDestinationsErrors, ListConversionDestinationsResponses, ListConversionEventsData, ListConversionEventsErrors, ListConversionEventsResponses, ListConversionPathsData, ListConversionPathsErrors, ListConversionPathsResponses, ListCustomDomainsData, ListCustomDomainsErrors, ListCustomDomainsResponses, ListInvoicesData, ListInvoicesErrors, ListInvoicesResponses, ListJobsData, ListJobsErrors, ListJobsResponses, ListLedgerEntriesData, ListLedgerEntriesErrors, ListLedgerEntriesResponses, ListLibraryData, ListLibraryErrors, ListLibraryResponses, ListModelsData, ListModelsErrors, ListModelsResponses, ListOAuthAppsData, ListOAuthAppsErrors, ListOAuthAppsResponses, ListPostsData, ListPostsErrors, ListPostsResponses, ListTagAudiencesData, ListTagAudiencesErrors, ListTagAudiencesResponses, ListTagEventsData, ListTagEventsErrors, ListTagEventsResponses, ListToolsData, ListToolsErrors, ListToolsResponses, ListTrackingWindowsData, ListTrackingWindowsErrors, ListTrackingWindowsResponses, ListTransfersData, ListTransfersErrors, ListTransfersResponses, ListUsersData, ListUsersErrors, ListUsersResponses, ListWorkspaceBillingData, ListWorkspaceBillingErrors, ListWorkspaceBillingResponses, ListWorkspacesData, ListWorkspacesErrors, ListWorkspacesResponses, OpenTrackingWindowData, OpenTrackingWindowErrors, OpenTrackingWindowResponses, PauseAutomationData, PauseAutomationErrors, PauseAutomationResponses, PreviewTopUpTaxData, PreviewTopUpTaxErrors, PreviewTopUpTaxResponses, QueryMetricsData, QueryMetricsErrors, QueryMetricsResponses, QuoteCloneData, QuoteCloneErrors, QuoteCloneResponses, QuoteGenerationData, QuoteGenerationErrors, QuoteGenerationResponses, RemoveUserData, RemoveUserErrors, RemoveUserResponses, RenameWorkspaceData, RenameWorkspaceErrors, RenameWorkspaceResponses, ResendEmailVerificationData, ResendEmailVerificationErrors, ResendEmailVerificationResponses, RetractConversionEventData, RetractConversionEventErrors, RetractConversionEventResponses, RevokeConnectedAppData, RevokeConnectedAppErrors, RevokeConnectedAppResponses, RevokeConnectLinkData, RevokeConnectLinkErrors, RevokeConnectLinkResponses, SaveWelcomeScreenData, SaveWelcomeScreenErrors, SaveWelcomeScreenResponses, SendConversionEventsData, SendConversionEventsErrors, SendConversionEventsResponses, SendTagEventsData, SendTagEventsErrors, SendTagEventsResponses, SetCampaignResultMetricData, SetCampaignResultMetricErrors, SetCampaignResultMetricResponses, SetConnectRedirectsData, SetConnectRedirectsErrors, SetConnectRedirectsResponses, SetProfitSettingsData, SetProfitSettingsErrors, SetProfitSettingsResponses, StageAdChangeData, StageAdChangeErrors, StageAdChangeResponses, TagAudiencesData, TagAudiencesErrors, TagAudiencesResponses, TestAutomationData, TestAutomationErrors, TestAutomationResponses, TestOAuthAppData, TestOAuthAppErrors, TestOAuthAppResponses, UpdateAccountGroupData, UpdateAccountGroupErrors, UpdateAccountGroupResponses, UpdateAdAccountAutomationControlsData, UpdateAdAccountAutomationControlsErrors, UpdateAdAccountAutomationControlsResponses, UpdateAutomationControlsData, UpdateAutomationControlsErrors, UpdateAutomationControlsResponses, UpdateAutomationData, UpdateAutomationErrors, UpdateAutomationResponses, UpdateConversionEventData, UpdateConversionEventErrors, UpdateConversionEventResponses, UpdateCustomDomainData, UpdateCustomDomainErrors, UpdateCustomDomainResponses, UpdateOAuthAppData, UpdateOAuthAppErrors, UpdateOAuthAppResponses, UpdatePostData, UpdatePostErrors, UpdatePostResponses, UpdateTagData, UpdateTagErrors, UpdateTagResponses, UpdateUserData, UpdateUserErrors, UpdateUserResponses, UpdateWorkspaceBillingData, UpdateWorkspaceBillingErrors, UpdateWorkspaceBillingResponses, UploadCampaignResultsData, UploadCampaignResultsErrors, UploadCampaignResultsResponses, VerifyCustomDomainData, VerifyCustomDomainErrors, VerifyCustomDomainResponses } from './types.gen.js';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean, TResponse = unknown> = Options2<TData, ThrowOnError, TResponse> & {
     /**
@@ -399,7 +399,7 @@ export const setConnectRedirects = <ThrowOnError extends boolean = false>(option
  *
  * A short-lived hosted link that lets someone with NO Hermoso login connect their own account (Facebook and Instagram, Instagram, TikTok, YouTube, LinkedIn, X, Pinterest, Threads, Google Business Profile and the ad platforms) to the brand named by `X-Hermoso-User`. Hand `url` to your customer. They see a short page from Hermoso, accept Hermoso’s Terms and Privacy Policy, sign in on the platform’s own consent screen, and land on your `redirect_url` with `connect_status` (success | cancelled | error), `provider`, `brand`, `link_id`, `account`, `error_code` and your `state` added to its query string (a same-named parameter of yours is overwritten).
  *
- * THE PLATFORM’S CONSENT SCREEN SHOWS HERMOSO’S NAME, because the connection is made with Hermoso’s app on that platform.
+ * THE PLATFORM’S CONSENT SCREEN SHOWS HERMOSO’S NAME, because the connection is made with Hermoso’s app on that platform, unless you saved your own app for it (manage_oauth_apps): then it shows yours. WHITE LABEL: the page your customer sees carries your saved welcome screen (name, logo, colours; connect_welcome_screen) when it is on by default or `welcome` is true, and the link opens on your own connect domain once one is active (manage_connect_domains). `external_id` maps your own customer id to this brand, found again with manage_external_ids.
  *
  * A link connects ONE provider to ONE brand. It can be retried after a cancel until it expires, and is spent once an account connects. Know when it connects from the `account.connected` webhook event (connect a webhook on the brand and include the `connections` group) or by polling GET /v1/connect-links/{id}. Facebook and LinkedIn then need the Pages chosen: call list_connector_accounts and set_connector_accounts through /v1/tools (the link’s creator owns that choice). Accounts that connect with a pasted key (Bluesky, Telegram) are connected with POST /v1/tools/connect_connector instead.
  */
@@ -659,6 +659,32 @@ export const setProfitSettings = <ThrowOnError extends boolean = false>(options:
 });
 
 /**
+ * List your result metrics and formulas
+ *
+ * Every metric key the brand uploaded (with its label and kind: count, money, percent or ratio), then every formula: the built-in ones (cac_percent, cost_per_sale, cost_per_qualified_lead, lead_to_sale, qualified_rate) and the brand’s own, plus the conversion events that count as campaign results.
+ */
+export const listCampaignResultMetrics = <ThrowOnError extends boolean = false>(options?: Options<ListCampaignResultMetricsData, ThrowOnError>): RequestResult<ListCampaignResultMetricsResponses, ListCampaignResultMetricsErrors, ThrowOnError> => (options?.client ?? client).get<ListCampaignResultMetricsResponses, ListCampaignResultMetricsErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/campaign-results/metrics',
+    ...options
+});
+
+/**
+ * Name a result metric or define a formula
+ *
+ * Sets a metric key’s `label` and `kind` (count, money with its `currency`, percent or ratio), and optionally a `formula` with + - * / and parentheses over spend, impressions, clicks, sales, revenue, leads, qualified_leads, profit and any uploaded metric key. `formula: null` removes it. A formula is parsed, never run as code; division by zero gives null. Every formula shows per campaign in GET /v1/campaign-profit.
+ */
+export const setCampaignResultMetric = <ThrowOnError extends boolean = false>(options: Options<SetCampaignResultMetricData, ThrowOnError>): RequestResult<SetCampaignResultMetricResponses, SetCampaignResultMetricErrors, ThrowOnError> => (options.client ?? client).put<SetCampaignResultMetricResponses, SetCampaignResultMetricErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/campaign-results/metrics/{key}',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
  * Profit per campaign
  *
  * Each campaign’s spend read live from every connected ad platform, joined to the brand’s sales from ONE source per campaign (uploaded results, else conversion events credited by `model`, else Shopify / Stripe orders matched by utm_campaign). Money stays per currency; a platform that could not be read is listed in `unreadable`, never shown as zero. At most 92 days.
@@ -666,6 +692,941 @@ export const setProfitSettings = <ThrowOnError extends boolean = false>(options:
 export const getCampaignProfit = <ThrowOnError extends boolean = false>(options?: Options<GetCampaignProfitData, ThrowOnError>): RequestResult<GetCampaignProfitResponses, GetCampaignProfitErrors, ThrowOnError> => (options?.client ?? client).get<GetCampaignProfitResponses, GetCampaignProfitErrors, ThrowOnError>({
     security: [{ scheme: 'bearer', type: 'http' }],
     url: '/v1/campaign-profit',
+    ...options
+});
+
+/**
+ * List the people on this profile
+ *
+ * Everyone invited to the profile this key acts on: email, role (`admin`, `member`, `billing_admin` = billing manager, `viewer` = read-only), the areas turned off for them, and whether they accepted. Also returns the role and area catalogue. Admins only: anyone else is refused 403 `team_role`.
+ */
+export const listUsers = <ThrowOnError extends boolean = false>(options?: Options<ListUsersData, ThrowOnError>): RequestResult<ListUsersResponses, ListUsersErrors, ThrowOnError> => (options?.client ?? client).get<ListUsersResponses, ListUsersErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/users',
+    ...options
+});
+
+/**
+ * Retrieve the current user
+ *
+ * Who this key acts as, and their role and turned-off areas on the profile it acts on (`owner` on the account’s own profiles).
+ */
+export const getCurrentUser = <ThrowOnError extends boolean = false>(options?: Options<GetCurrentUserData, ThrowOnError>): RequestResult<GetCurrentUserResponses, GetCurrentUserErrors, ThrowOnError> => (options?.client ?? client).get<GetCurrentUserResponses, GetCurrentUserErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/users/me',
+    ...options
+});
+
+/**
+ * Invite someone to this profile
+ *
+ * Invites one email address to the profile this key acts on, with a role and optional turned-off areas. `send_email: false` returns a one-time `invite_url` instead of emailing it; the invite is single-use and expires after 14 days. Inviting someone who is already an active member changes nothing (use PATCH /v1/users/{email}). Admins only.
+ */
+export const createInviteToken = <ThrowOnError extends boolean = false>(options: Options<CreateInviteTokenData, ThrowOnError>): RequestResult<CreateInviteTokenResponses, CreateInviteTokenErrors, ThrowOnError> => (options.client ?? client).post<CreateInviteTokenResponses, CreateInviteTokenErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/invite/tokens',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Remove a person from this profile
+ *
+ * Their access ends at once, and every connection they made on this profile is disconnected with them; posts queued through their accounts will not go out (`connections_disconnected`, `scheduled_posts_not_going_out`). Admins only.
+ */
+export const removeUser = <ThrowOnError extends boolean = false>(options: Options<RemoveUserData, ThrowOnError>): RequestResult<RemoveUserResponses, RemoveUserErrors, ThrowOnError> => (options.client ?? client).delete<RemoveUserResponses, RemoveUserErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/users/{email}',
+    ...options
+});
+
+/**
+ * Change a person’s role or areas
+ *
+ * Sets the role, and optionally replaces the list of turned-off areas (omit `disabled_areas` to keep it; `[]` turns every area back on). Enforced on every surface at once. The answer is read back from the team list, never echoed from the request. Admins only.
+ */
+export const updateUser = <ThrowOnError extends boolean = false>(options: Options<UpdateUserData, ThrowOnError>): RequestResult<UpdateUserResponses, UpdateUserErrors, ThrowOnError> => (options.client ?? client).patch<UpdateUserResponses, UpdateUserErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/users/{email}',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * List automations
+ *
+ * Every automation on the brand, whatever runs it: Meta, Google Ads and TikTok ad rules, boost automations, alert channels, comment-to-DM automations and the autopilot refill, one shape. An engine that could not be read is listed in `unread`, never shown as empty.
+ */
+export const listAutomations = <ThrowOnError extends boolean = false>(options?: Options<ListAutomationsData, ThrowOnError>): RequestResult<ListAutomationsResponses, ListAutomationsErrors, ThrowOnError> => (options?.client ?? client).get<ListAutomationsResponses, ListAutomationsErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/automations',
+    ...options
+});
+
+/**
+ * Get automation controls
+ *
+ * The team switch for every ad automation, and each ad account's own switch and daily raise limit.
+ */
+export const getAutomationControls = <ThrowOnError extends boolean = false>(options?: Options<GetAutomationControlsData, ThrowOnError>): RequestResult<GetAutomationControlsResponses, GetAutomationControlsErrors, ThrowOnError> => (options?.client ?? client).get<GetAutomationControlsResponses, GetAutomationControlsErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/automations/controls',
+    ...options
+});
+
+/**
+ * Turn every ad automation off or on
+ *
+ * `paused: true` stops every ad rule on the account (Meta and TikTok rules are switched off on the platform and remembered; Google Ads rules skip their runs). `paused: false` resumes exactly those; when any can raise spend, `confirm: true` is required. The account owner or an admin only.
+ */
+export const updateAutomationControls = <ThrowOnError extends boolean = false>(options: Options<UpdateAutomationControlsData, ThrowOnError>): RequestResult<UpdateAutomationControlsResponses, UpdateAutomationControlsErrors, ThrowOnError> => (options.client ?? client).patch<UpdateAutomationControlsResponses, UpdateAutomationControlsErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/automations/controls',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Update one ad account's controls
+ *
+ * Switch ad rules off or on for one ad account, set its daily raise limit (the most rules may add to budgets there in a day; null removes it; loosening needs `confirm: true`), or both.
+ */
+export const updateAdAccountAutomationControls = <ThrowOnError extends boolean = false>(options: Options<UpdateAdAccountAutomationControlsData, ThrowOnError>): RequestResult<UpdateAdAccountAutomationControlsResponses, UpdateAdAccountAutomationControlsErrors, ThrowOnError> => (options.client ?? client).patch<UpdateAdAccountAutomationControlsResponses, UpdateAdAccountAutomationControlsErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/automations/controls/ad-accounts',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * List automation templates
+ *
+ * Your templates and Hermoso's ready-made ones.
+ */
+export const listAutomationTemplates = <ThrowOnError extends boolean = false>(options?: Options<ListAutomationTemplatesData, ThrowOnError>): RequestResult<ListAutomationTemplatesResponses, ListAutomationTemplatesErrors, ThrowOnError> => (options?.client ?? client).get<ListAutomationTemplatesResponses, ListAutomationTemplatesErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/automations/templates',
+    ...options
+});
+
+/**
+ * Create an automation template
+ *
+ * Up to 20 automation definitions (`automations: [{engine, body}]`) or `from` ({automation_ids} | {template_id} | {share_token}). The ad account each runs on becomes an input; campaign and ad ids are dropped. `share: true` adds a link token.
+ */
+export const createAutomationTemplate = <ThrowOnError extends boolean = false>(options: Options<CreateAutomationTemplateData, ThrowOnError>): RequestResult<CreateAutomationTemplateResponses, CreateAutomationTemplateErrors, ThrowOnError> => (options.client ?? client).post<CreateAutomationTemplateResponses, CreateAutomationTemplateErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/automations/templates',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Install an automation template
+ *
+ * Fills the template's inputs and creates each automation in this brand, switched OFF.
+ */
+export const installAutomationTemplate = <ThrowOnError extends boolean = false>(options: Options<InstallAutomationTemplateData, ThrowOnError>): RequestResult<InstallAutomationTemplateResponses, InstallAutomationTemplateErrors, ThrowOnError> => (options.client ?? client).post<InstallAutomationTemplateResponses, InstallAutomationTemplateErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/automations/templates/{template_id}/install',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Install a shared automation template
+ *
+ * The same as an install, from a template another team shared by link.
+ */
+export const installSharedAutomationTemplate = <ThrowOnError extends boolean = false>(options: Options<InstallSharedAutomationTemplateData, ThrowOnError>): RequestResult<InstallSharedAutomationTemplateResponses, InstallSharedAutomationTemplateErrors, ThrowOnError> => (options.client ?? client).post<InstallSharedAutomationTemplateResponses, InstallSharedAutomationTemplateErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/automations/templates/shared/{share_token}/install',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Create a boost automation
+ *
+ * Every day or week, boost the brand's best organic Facebook or Instagram posts from a Meta ad account it shares. Created OFF; switching it on needs `confirm: true` after its spend ceiling was shown.
+ */
+export const createBoostAutomation = <ThrowOnError extends boolean = false>(options: Options<CreateBoostAutomationData, ThrowOnError>): RequestResult<CreateBoostAutomationResponses, CreateBoostAutomationErrors, ThrowOnError> => (options.client ?? client).post<CreateBoostAutomationResponses, CreateBoostAutomationErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/automations/boost',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Delete an automation
+ *
+ * Cannot be undone: `confirm=true` is required.
+ */
+export const deleteAutomation = <ThrowOnError extends boolean = false>(options: Options<DeleteAutomationData, ThrowOnError>): RequestResult<DeleteAutomationResponses, DeleteAutomationErrors, ThrowOnError> => (options.client ?? client).delete<DeleteAutomationResponses, DeleteAutomationErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/automations/{automation_id}',
+    ...options
+});
+
+/**
+ * Get an automation
+ *
+ * Its settings exactly as the engine that runs it holds them.
+ */
+export const getAutomation = <ThrowOnError extends boolean = false>(options: Options<GetAutomationData, ThrowOnError>): RequestResult<GetAutomationResponses, GetAutomationErrors, ThrowOnError> => (options.client ?? client).get<GetAutomationResponses, GetAutomationErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/automations/{automation_id}',
+    ...options
+});
+
+/**
+ * Edit an automation
+ *
+ * `changes`: the fields to change, as that engine takes them.
+ */
+export const updateAutomation = <ThrowOnError extends boolean = false>(options: Options<UpdateAutomationData, ThrowOnError>): RequestResult<UpdateAutomationResponses, UpdateAutomationErrors, ThrowOnError> => (options.client ?? client).patch<UpdateAutomationResponses, UpdateAutomationErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/automations/{automation_id}',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Turn an automation on
+ *
+ * Through the engine's own gate: an ad rule that can raise spend needs `confirm` and `confirm_scope`; a boost automation needs `confirm`. Without them, the answer says what to show the person.
+ */
+export const activateAutomation = <ThrowOnError extends boolean = false>(options: Options<ActivateAutomationData, ThrowOnError>): RequestResult<ActivateAutomationResponses, ActivateAutomationErrors, ThrowOnError> => (options.client ?? client).post<ActivateAutomationResponses, ActivateAutomationErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/automations/{automation_id}/activate',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Turn an automation off
+ *
+ * Never gated.
+ */
+export const pauseAutomation = <ThrowOnError extends boolean = false>(options: Options<PauseAutomationData, ThrowOnError>): RequestResult<PauseAutomationResponses, PauseAutomationErrors, ThrowOnError> => (options.client ?? client).post<PauseAutomationResponses, PauseAutomationErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/automations/{automation_id}/pause',
+    ...options
+});
+
+/**
+ * List an automation's runs
+ *
+ * What it did, newest first, from the engine's own history.
+ */
+export const listAutomationRuns = <ThrowOnError extends boolean = false>(options: Options<ListAutomationRunsData, ThrowOnError>): RequestResult<ListAutomationRunsResponses, ListAutomationRunsErrors, ThrowOnError> => (options.client ?? client).get<ListAutomationRunsResponses, ListAutomationRunsErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/automations/{automation_id}/runs',
+    ...options
+});
+
+/**
+ * Test an automation on a sample
+ *
+ * Whether it would run on a sample, what it matched and the steps it would take. Nothing is sent, written or spent.
+ */
+export const testAutomation = <ThrowOnError extends boolean = false>(options: Options<TestAutomationData, ThrowOnError>): RequestResult<TestAutomationResponses, TestAutomationErrors, ThrowOnError> => (options.client ?? client).post<TestAutomationResponses, TestAutomationErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/automations/{automation_id}/test',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Get a sample test body
+ *
+ * A body to start a test from.
+ */
+export const getAutomationTestSample = <ThrowOnError extends boolean = false>(options: Options<GetAutomationTestSampleData, ThrowOnError>): RequestResult<GetAutomationTestSampleResponses, GetAutomationTestSampleErrors, ThrowOnError> => (options.client ?? client).get<GetAutomationTestSampleResponses, GetAutomationTestSampleErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/automations/{automation_id}/test/sample',
+    ...options
+});
+
+/**
+ * List your OAuth apps
+ *
+ * Your own app per platform (client id, status ok / unchecked / invalid, the connections running on it, the redirect addresses it must allow). The secret is never returned. `platforms` lists the platforms that take one.
+ */
+export const listOAuthApps = <ThrowOnError extends boolean = false>(options?: Options<ListOAuthAppsData, ThrowOnError>): RequestResult<ListOAuthAppsResponses, ListOAuthAppsErrors, ThrowOnError> => (options?.client ?? client).get<ListOAuthAppsResponses, ListOAuthAppsErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/connect/oauth-apps',
+    ...options
+});
+
+/**
+ * Add an OAuth app
+ *
+ * Saves your app’s client id and secret for a platform; every connect and token refresh for that platform on this account then runs on it, so the consent screen shows your app. The keys are checked with the platform first: rejected keys answer 400 and are not saved; keys it could not check are saved as `unchecked`. One app per platform. Existing connections made with Hermoso’s app must be reconnected, so with any present the answer is `needs_confirm` until `confirm` is true.
+ */
+export const createOAuthApp = <ThrowOnError extends boolean = false>(options: Options<CreateOAuthAppData, ThrowOnError>): RequestResult<CreateOAuthAppResponses, CreateOAuthAppErrors, ThrowOnError> => (options.client ?? client).post<CreateOAuthAppResponses, CreateOAuthAppErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/connect/oauth-apps',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Remove an OAuth app
+ *
+ * The connections on it stop refreshing and must be connected again, so without `confirm=true` this only says what would happen.
+ */
+export const deleteOAuthApp = <ThrowOnError extends boolean = false>(options: Options<DeleteOAuthAppData, ThrowOnError>): RequestResult<DeleteOAuthAppResponses, DeleteOAuthAppErrors, ThrowOnError> => (options.client ?? client).delete<DeleteOAuthAppResponses, DeleteOAuthAppErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/connect/oauth-apps/{app_id}',
+    ...options
+});
+
+/**
+ * Get an OAuth app
+ */
+export const getOAuthApp = <ThrowOnError extends boolean = false>(options: Options<GetOAuthAppData, ThrowOnError>): RequestResult<GetOAuthAppResponses, GetOAuthAppErrors, ThrowOnError> => (options.client ?? client).get<GetOAuthAppResponses, GetOAuthAppErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/connect/oauth-apps/{app_id}',
+    ...options
+});
+
+/**
+ * Update an OAuth app
+ *
+ * Renames it, rotates its secret (checked with the platform first; every connection on it keeps working) or sets a Facebook app’s WhatsApp signup configuration id. The client id cannot change.
+ */
+export const updateOAuthApp = <ThrowOnError extends boolean = false>(options: Options<UpdateOAuthAppData, ThrowOnError>): RequestResult<UpdateOAuthAppResponses, UpdateOAuthAppErrors, ThrowOnError> => (options.client ?? client).patch<UpdateOAuthAppResponses, UpdateOAuthAppErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/connect/oauth-apps/{app_id}',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Check an OAuth app’s keys
+ */
+export const testOAuthApp = <ThrowOnError extends boolean = false>(options: Options<TestOAuthAppData, ThrowOnError>): RequestResult<TestOAuthAppResponses, TestOAuthAppErrors, ThrowOnError> => (options.client ?? client).post<TestOAuthAppResponses, TestOAuthAppErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/connect/oauth-apps/{app_id}/test',
+    ...options
+});
+
+/**
+ * Get the saved welcome screen
+ */
+export const getWelcomeScreen = <ThrowOnError extends boolean = false>(options?: Options<GetWelcomeScreenData, ThrowOnError>): RequestResult<GetWelcomeScreenResponses, GetWelcomeScreenErrors, ThrowOnError> => (options?.client ?? client).get<GetWelcomeScreenResponses, GetWelcomeScreenErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/connect/welcome-screen',
+    ...options
+});
+
+/**
+ * Save the welcome screen
+ *
+ * Replaces it (a field left out is cleared). Your name, square logo, headline, message and colours on the page your customer opens from a connect link; a theme whose text or button would not be readable is refused.
+ */
+export const saveWelcomeScreen = <ThrowOnError extends boolean = false>(options: Options<SaveWelcomeScreenData, ThrowOnError>): RequestResult<SaveWelcomeScreenResponses, SaveWelcomeScreenErrors, ThrowOnError> => (options.client ?? client).put<SaveWelcomeScreenResponses, SaveWelcomeScreenErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/connect/welcome-screen',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * List your connect domains
+ */
+export const listCustomDomains = <ThrowOnError extends boolean = false>(options?: Options<ListCustomDomainsData, ThrowOnError>): RequestResult<ListCustomDomainsResponses, ListCustomDomainsErrors, ThrowOnError> => (options?.client ?? client).get<ListCustomDomainsResponses, ListCustomDomainsErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/connect/custom-domains',
+    ...options
+});
+
+/**
+ * Add a connect domain
+ *
+ * A subdomain you control (connect.yourbrand.com). The answer lists the CNAME and TXT records to add; it turns active by itself once they resolve and the certificate is issued, and new connect links then open on it.
+ */
+export const createCustomDomain = <ThrowOnError extends boolean = false>(options: Options<CreateCustomDomainData, ThrowOnError>): RequestResult<CreateCustomDomainResponses, CreateCustomDomainErrors, ThrowOnError> => (options.client ?? client).post<CreateCustomDomainResponses, CreateCustomDomainErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/connect/custom-domains',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Remove a connect domain
+ *
+ * It stops serving connect pages at once, including links already sent on it, so without `confirm=true` this only says what would happen.
+ */
+export const deleteCustomDomain = <ThrowOnError extends boolean = false>(options: Options<DeleteCustomDomainData, ThrowOnError>): RequestResult<DeleteCustomDomainResponses, DeleteCustomDomainErrors, ThrowOnError> => (options.client ?? client).delete<DeleteCustomDomainResponses, DeleteCustomDomainErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/connect/custom-domains/{domain_id}',
+    ...options
+});
+
+/**
+ * Get a connect domain
+ */
+export const getCustomDomain = <ThrowOnError extends boolean = false>(options: Options<GetCustomDomainData, ThrowOnError>): RequestResult<GetCustomDomainResponses, GetCustomDomainErrors, ThrowOnError> => (options.client ?? client).get<GetCustomDomainResponses, GetCustomDomainErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/connect/custom-domains/{domain_id}',
+    ...options
+});
+
+/**
+ * Turn a connect domain on or off
+ */
+export const updateCustomDomain = <ThrowOnError extends boolean = false>(options: Options<UpdateCustomDomainData, ThrowOnError>): RequestResult<UpdateCustomDomainResponses, UpdateCustomDomainErrors, ThrowOnError> => (options.client ?? client).patch<UpdateCustomDomainResponses, UpdateCustomDomainErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/connect/custom-domains/{domain_id}',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Check a connect domain’s DNS records now
+ */
+export const verifyCustomDomain = <ThrowOnError extends boolean = false>(options: Options<VerifyCustomDomainData, ThrowOnError>): RequestResult<VerifyCustomDomainResponses, VerifyCustomDomainErrors, ThrowOnError> => (options.client ?? client).post<VerifyCustomDomainResponses, VerifyCustomDomainErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/connect/custom-domains/{domain_id}/verify',
+    ...options
+});
+
+/**
+ * Find a brand by your own customer id
+ *
+ * The brand mapped to your external id (set when you create a connect link with `external_id`) and what is connected on it.
+ */
+export const getExternalId = <ThrowOnError extends boolean = false>(options: Options<GetExternalIdData, ThrowOnError>): RequestResult<GetExternalIdResponses, GetExternalIdErrors, ThrowOnError> => (options.client ?? client).get<GetExternalIdResponses, GetExternalIdErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/connect/external-ids/{external_id}',
+    ...options
+});
+
+/**
+ * Start a phone handoff
+ *
+ * A short link and its QR code (SVG) a phone opens to finish connecting `provider` to this brand there. Valid 30 minutes.
+ */
+export const createHandoff = <ThrowOnError extends boolean = false>(options: Options<CreateHandoffData, ThrowOnError>): RequestResult<CreateHandoffResponses, CreateHandoffErrors, ThrowOnError> => (options.client ?? client).post<CreateHandoffResponses, CreateHandoffErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/connect/handoffs',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Get a phone handoff
+ */
+export const getHandoff = <ThrowOnError extends boolean = false>(options: Options<GetHandoffData, ThrowOnError>): RequestResult<GetHandoffResponses, GetHandoffErrors, ThrowOnError> => (options.client ?? client).get<GetHandoffResponses, GetHandoffErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/connect/handoffs/{handoff_id}',
+    ...options
+});
+
+/**
+ * List API changelog entries
+ *
+ * The API changelog, newest first. No key needed. Each entry carries `changes`, the deterministic diff of the public surface (the /v1 operations added, removed or changed, and the agent tools added or removed), and `impact` computed from it: `action_required` when something an integration may call is gone or moved, `additive` when only new things appeared. A deploy that changes the API adds an entry by itself. Page with `before` set to the previous page’s `next_cursor`.
+ */
+export const listChangelog = <ThrowOnError extends boolean = false>(options?: Options<ListChangelogData, ThrowOnError>): RequestResult<ListChangelogResponses, ListChangelogErrors, ThrowOnError> => (options?.client ?? client).get<ListChangelogResponses, ListChangelogErrors, ThrowOnError>({ url: '/v1/changelog', ...options });
+
+/**
+ * List activity logs
+ *
+ * One 90-day log: `api_request` (every request this account’s keys made: method, path, status, latency, key, profile, request id; never a body or a query string), `publishing` (posts published, failed, scheduled, cancelled), `webhooks` (alert deliveries) and `connections` (connected accounts and the ones that need reconnecting). `all` merges them, newest first. A source that could not be read is named in `unreadable`, never returned as empty.
+ */
+export const listActivityLogs = <ThrowOnError extends boolean = false>(options?: Options<ListActivityLogsData, ThrowOnError>): RequestResult<ListActivityLogsResponses, ListActivityLogsErrors, ThrowOnError> => (options?.client ?? client).get<ListActivityLogsResponses, ListActivityLogsErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/logs',
+    ...options
+});
+
+/**
+ * List connected apps
+ *
+ * The AI assistants and MCP clients signed in to this account that still hold a live token: name, the host they connected from, when they were authorised and last used, and how many tokens they hold. Needs a whole-account admin key that is not itself one of these apps’ tokens (an app cannot list its siblings): anything else is refused 403.
+ */
+export const listConnectedApps = <ThrowOnError extends boolean = false>(options?: Options<ListConnectedAppsData, ThrowOnError>): RequestResult<ListConnectedAppsResponses, ListConnectedAppsErrors, ThrowOnError> => (options?.client ?? client).get<ListConnectedAppsResponses, ListConnectedAppsErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/me/connected-apps',
+    ...options
+});
+
+/**
+ * Revoke a connected app
+ *
+ * Ends every token the app holds, so it stops working at once and has to be authorised again. Read back from the key store. Same credential rule as the list.
+ */
+export const revokeConnectedApp = <ThrowOnError extends boolean = false>(options: Options<RevokeConnectedAppData, ThrowOnError>): RequestResult<RevokeConnectedAppResponses, RevokeConnectedAppErrors, ThrowOnError> => (options.client ?? client).delete<RevokeConnectedAppResponses, RevokeConnectedAppErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/me/connected-apps/{app_id}',
+    ...options
+});
+
+/**
+ * List account groups
+ *
+ * The named groups of this profile’s connected accounts. A group belongs to one profile (a post goes to one profile).
+ */
+export const listAccountGroups = <ThrowOnError extends boolean = false>(options?: Options<ListAccountGroupsData, ThrowOnError>): RequestResult<ListAccountGroupsResponses, ListAccountGroupsErrors, ThrowOnError> => (options?.client ?? client).get<ListAccountGroupsResponses, ListAccountGroupsErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/account-groups',
+    ...options
+});
+
+/**
+ * Create an account group
+ *
+ * A name (unique on the profile) and `members`, each `{channel, account}`: `channel` is a channel POST /v1/posts takes, `account` names one account of a channel that holds several (omit it for the channel’s own account). Pass `account_group` (its id or name) to POST /v1/posts to post to all of them; each account is checked when the post is scheduled.
+ */
+export const createAccountGroup = <ThrowOnError extends boolean = false>(options: Options<CreateAccountGroupData, ThrowOnError>): RequestResult<CreateAccountGroupResponses, CreateAccountGroupErrors, ThrowOnError> => (options.client ?? client).post<CreateAccountGroupResponses, CreateAccountGroupErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/account-groups',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Delete an account group
+ *
+ * The accounts themselves are untouched, and posts already scheduled keep their channels.
+ */
+export const deleteAccountGroup = <ThrowOnError extends boolean = false>(options: Options<DeleteAccountGroupData, ThrowOnError>): RequestResult<DeleteAccountGroupResponses, DeleteAccountGroupErrors, ThrowOnError> => (options.client ?? client).delete<DeleteAccountGroupResponses, DeleteAccountGroupErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/account-groups/{group_id}',
+    ...options
+});
+
+/**
+ * Update an account group
+ *
+ * Rename it, replace its members, or both.
+ */
+export const updateAccountGroup = <ThrowOnError extends boolean = false>(options: Options<UpdateAccountGroupData, ThrowOnError>): RequestResult<UpdateAccountGroupResponses, UpdateAccountGroupErrors, ThrowOnError> => (options.client ?? client).put<UpdateAccountGroupResponses, UpdateAccountGroupErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/account-groups/{group_id}',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * List workspaces (profiles)
+ *
+ * Every profile on this account (a brand, client or creator, each with its own details, Library, memory and connections), plus the profiles other accounts share with you. A workspace here IS a profile: they share one bill and one credit balance.
+ */
+export const listWorkspaces = <ThrowOnError extends boolean = false>(options?: Options<ListWorkspacesData, ThrowOnError>): RequestResult<ListWorkspacesResponses, ListWorkspacesErrors, ThrowOnError> => (options?.client ?? client).get<ListWorkspacesResponses, ListWorkspacesErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/workspaces',
+    ...options
+});
+
+/**
+ * Create a workspace
+ *
+ * Adds a profile to this account. It does not switch the key to it: send `X-Hermoso-User: <id>` to act in it.
+ */
+export const createWorkspace = <ThrowOnError extends boolean = false>(options: Options<CreateWorkspaceData, ThrowOnError>): RequestResult<CreateWorkspaceResponses, CreateWorkspaceErrors, ThrowOnError> => (options.client ?? client).post<CreateWorkspaceResponses, CreateWorkspaceErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/workspaces',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Delete a workspace
+ *
+ * Permanently deletes the profile and everything in it. Without `confirm=true`, `confirm_name` (its exact name) and, when it has connected accounts, `confirm_connectors` (their number), it answers with the inventory of what would be lost and deletes nothing.
+ */
+export const deleteWorkspace = <ThrowOnError extends boolean = false>(options: Options<DeleteWorkspaceData, ThrowOnError>): RequestResult<DeleteWorkspaceResponses, DeleteWorkspaceErrors, ThrowOnError> => (options.client ?? client).delete<DeleteWorkspaceResponses, DeleteWorkspaceErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/workspaces/{workspace_id}',
+    ...options
+});
+
+/**
+ * Retrieve a workspace
+ *
+ * One profile by id.
+ */
+export const getWorkspace = <ThrowOnError extends boolean = false>(options: Options<GetWorkspaceData, ThrowOnError>): RequestResult<GetWorkspaceResponses, GetWorkspaceErrors, ThrowOnError> => (options.client ?? client).get<GetWorkspaceResponses, GetWorkspaceErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/workspaces/{workspace_id}',
+    ...options
+});
+
+/**
+ * Rename a workspace
+ *
+ * Renames one of this account’s own profiles (the brand name it is shown and written under).
+ */
+export const renameWorkspace = <ThrowOnError extends boolean = false>(options: Options<RenameWorkspaceData, ThrowOnError>): RequestResult<RenameWorkspaceResponses, RenameWorkspaceErrors, ThrowOnError> => (options.client ?? client).patch<RenameWorkspaceResponses, RenameWorkspaceErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/workspaces/{workspace_id}',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * List staged ad changes
+ *
+ * The ad changes waiting for confirmation (status `staged`, the default), or confirmed / failed / discarded / all, newest first, without their arguments. A confirmed or failed change stays listed for 7 days.
+ */
+export const listAdChanges = <ThrowOnError extends boolean = false>(options?: Options<ListAdChangesData, ThrowOnError>): RequestResult<ListAdChangesResponses, ListAdChangesErrors, ThrowOnError> => (options?.client ?? client).get<ListAdChangesResponses, ListAdChangesErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/ads/changes',
+    ...options
+});
+
+/**
+ * Stage an ad change
+ *
+ * Stores an ad write (any ads tool listed at GET /v1/tools that writes to an ad account) with its arguments, without running it. Nothing reaches the ad platform until the change is confirmed. A dry run cannot be staged; the same call staged twice returns the first.
+ */
+export const stageAdChange = <ThrowOnError extends boolean = false>(options: Options<StageAdChangeData, ThrowOnError>): RequestResult<StageAdChangeResponses, StageAdChangeErrors, ThrowOnError> => (options.client ?? client).post<StageAdChangeResponses, StageAdChangeErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/ads/changes',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Discard a staged ad change
+ *
+ * Nothing was sent to the ad platform, so there is nothing to undo. A confirmed or failed change cannot be discarded.
+ */
+export const discardAdChange = <ThrowOnError extends boolean = false>(options: Options<DiscardAdChangeData, ThrowOnError>): RequestResult<DiscardAdChangeResponses, DiscardAdChangeErrors, ThrowOnError> => (options.client ?? client).delete<DiscardAdChangeResponses, DiscardAdChangeErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/ads/changes/{change_id}',
+    ...options
+});
+
+/**
+ * Retrieve one staged ad change
+ *
+ * The exact call, what it changes (`after`), the values it had when staged (`before`, read from Meta or Google Ads where possible) and, once decided, the platform’s answer.
+ */
+export const getAdChange = <ThrowOnError extends boolean = false>(options: Options<GetAdChangeData, ThrowOnError>): RequestResult<GetAdChangeResponses, GetAdChangeErrors, ThrowOnError> => (options.client ?? client).get<GetAdChangeResponses, GetAdChangeErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/ads/changes/{change_id}',
+    ...options
+});
+
+/**
+ * Confirm a staged ad change
+ *
+ * Runs the staged call through the same checks a direct call makes. It can start or raise ad spend, so `confirm: true` is required; without it the change is described and nothing runs. A change runs at most once; one the platform refuses is marked `failed` with the platform’s words.
+ */
+export const confirmAdChange = <ThrowOnError extends boolean = false>(options: Options<ConfirmAdChangeData, ThrowOnError>): RequestResult<ConfirmAdChangeResponses, ConfirmAdChangeErrors, ThrowOnError> => (options.client ?? client).post<ConfirmAdChangeResponses, ConfirmAdChangeErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/ads/changes/{change_id}/confirm',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Usage by brand (the statement)
+ *
+ * Credits and dollars spent per brand for a month (`month=YYYY-MM`, UTC) or a range (`from`, `to`, at most 366 days; default the last 30 days), grouped by brand, day or member. Filter to one brand (`brand_id`), to your own client id (`external_id`) or to calls or SMS (`kind`). `csv=true` adds the statement as CSV, the file an agency rebills from. A one-brand key and a teammate see their own brand.
+ */
+export const getUsage = <ThrowOnError extends boolean = false>(options?: Options<GetUsageData, ThrowOnError>): RequestResult<GetUsageResponses, GetUsageErrors, ThrowOnError> => (options?.client ?? client).get<GetUsageResponses, GetUsageErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/usage',
+    ...options
+});
+
+/**
+ * Calling usage
+ *
+ * The usage statement for phone calls only (voice agents, placed and received calls), per brand.
+ */
+export const getUsageCalls = <ThrowOnError extends boolean = false>(options?: Options<GetUsageCallsData, ThrowOnError>): RequestResult<GetUsageCallsResponses, GetUsageCallsErrors, ThrowOnError> => (options?.client ?? client).get<GetUsageCallsResponses, GetUsageCallsErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/usage/calls',
+    ...options
+});
+
+/**
+ * SMS usage
+ *
+ * The usage statement for SMS, MMS and RCS only, per brand.
+ */
+export const getUsageSms = <ThrowOnError extends boolean = false>(options?: Options<GetUsageSmsData, ThrowOnError>): RequestResult<GetUsageSmsResponses, GetUsageSmsErrors, ThrowOnError> => (options?.client ?? client).get<GetUsageSmsResponses, GetUsageSmsErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/usage/sms',
+    ...options
+});
+
+/**
+ * Billing of every workspace (brand)
+ *
+ * Each brand: whether it shares the account’s balance or is billed separately (its own balance, plan and Stripe customer), its balance when separate, and your external id for it.
+ */
+export const listWorkspaceBilling = <ThrowOnError extends boolean = false>(options?: Options<ListWorkspaceBillingData, ThrowOnError>): RequestResult<ListWorkspaceBillingResponses, ListWorkspaceBillingErrors, ThrowOnError> => (options?.client ?? client).get<ListWorkspaceBillingResponses, ListWorkspaceBillingErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/billing/workspaces',
+    ...options
+});
+
+/**
+ * Bill a workspace separately
+ *
+ * `billed_separately` true makes the brand pay from its own balance (account holder only; it changes who pays, so `confirm: true` is required, and without it the change is described and nothing changes); false puts it back on the account’s balance, keeping its own balance for later.
+ */
+export const updateWorkspaceBilling = <ThrowOnError extends boolean = false>(options: Options<UpdateWorkspaceBillingData, ThrowOnError>): RequestResult<UpdateWorkspaceBillingResponses, UpdateWorkspaceBillingErrors, ThrowOnError> => (options.client ?? client).patch<UpdateWorkspaceBillingResponses, UpdateWorkspaceBillingErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/workspaces/{workspace_id}/billing',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * A payment link that funds a workspace
+ *
+ * A hosted Stripe Checkout link (a credit pack by id, or a monthly plan) that pays into a separately billed brand’s own balance. Anyone with the link can pay; nothing is charged until they do. Admins and billing managers of the brand.
+ */
+export const createWorkspaceCheckoutLink = <ThrowOnError extends boolean = false>(options: Options<CreateWorkspaceCheckoutLinkData, ThrowOnError>): RequestResult<CreateWorkspaceCheckoutLinkResponses, CreateWorkspaceCheckoutLinkErrors, ThrowOnError> => (options.client ?? client).post<CreateWorkspaceCheckoutLinkResponses, CreateWorkspaceCheckoutLinkErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/workspaces/{workspace_id}/checkout-links',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Invoices and receipts
+ *
+ * The account’s invoices and payment receipts, or one separately billed brand’s (`brand_id`), newest first, each with its hosted page and PDF links.
+ */
+export const listInvoices = <ThrowOnError extends boolean = false>(options?: Options<ListInvoicesData, ThrowOnError>): RequestResult<ListInvoicesResponses, ListInvoicesErrors, ThrowOnError> => (options?.client ?? client).get<ListInvoicesResponses, ListInvoicesErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/billing/invoices',
+    ...options
+});
+
+/**
+ * Preview what a purchase charges
+ *
+ * Subtotal, tax and total for a credit pack or a plan before buying. No tax is added at checkout today, so the total is the price. Nothing is bought.
+ */
+export const previewTopUpTax = <ThrowOnError extends boolean = false>(options: Options<PreviewTopUpTaxData, ThrowOnError>): RequestResult<PreviewTopUpTaxResponses, PreviewTopUpTaxErrors, ThrowOnError> => (options.client ?? client).post<PreviewTopUpTaxResponses, PreviewTopUpTaxErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/balance/top-ups/preview',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Creator campaign money balances
+ *
+ * Per campaign and per creator: accruing (earned, in its hold), payable, owed (in a payout not yet settled), paid and owed back, plus each campaign’s funds.
+ */
+export const getLedgerBalances = <ThrowOnError extends boolean = false>(options?: Options<GetLedgerBalancesData, ThrowOnError>): RequestResult<GetLedgerBalancesResponses, GetLedgerBalancesErrors, ThrowOnError> => (options?.client ?? client).get<GetLedgerBalancesResponses, GetLedgerBalancesErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/ledger/balances',
+    ...options
+});
+
+/**
+ * Creator campaign money entries
+ *
+ * Every money event of one campaign, newest first: accrual, adjustment, hold_release, settlement, reversal, clawback, recovery, fee, funding. Page with `offset` = the previous page’s `next_offset`.
+ */
+export const listLedgerEntries = <ThrowOnError extends boolean = false>(options?: Options<ListLedgerEntriesData, ThrowOnError>): RequestResult<ListLedgerEntriesResponses, ListLedgerEntriesErrors, ThrowOnError> => (options?.client ?? client).get<ListLedgerEntriesResponses, ListLedgerEntriesErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/ledger/entries',
+    ...options
+});
+
+/**
+ * Creator transfers
+ *
+ * Every creator payout transfer, newest first, with its Stripe transfer id, amount and status.
+ */
+export const listTransfers = <ThrowOnError extends boolean = false>(options?: Options<ListTransfersData, ThrowOnError>): RequestResult<ListTransfersResponses, ListTransfersErrors, ThrowOnError> => (options?.client ?? client).get<ListTransfersResponses, ListTransfersErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/transfers',
+    ...options
+});
+
+/**
+ * One creator transfer
+ *
+ * One creator payout transfer by its Stripe transfer id.
+ */
+export const getTransfer = <ThrowOnError extends boolean = false>(options: Options<GetTransferData, ThrowOnError>): RequestResult<GetTransferResponses, GetTransferErrors, ThrowOnError> => (options.client ?? client).get<GetTransferResponses, GetTransferErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/transfers/{transfer_id}',
+    ...options
+});
+
+/**
+ * Analytics dashboard with the previous period
+ *
+ * One read across the brand’s connected channels: per channel, posts, reach (each platform’s own unit), engagement, engagement rate and follower change, each as `current`, `previous`, `change` and `pct`, plus a day-by-day series, top posts and recent posts. The previous window is the same number of days immediately before (`this_week` compares week to date with last week to the same weekday). Reach is never added across platforms, a missing number is null with `why`, and YouTube carries no totals or changes (its API policy). Numbers belong to the day a post was published. Free.
+ */
+export const getAnalyticsDashboard = <ThrowOnError extends boolean = false>(options?: Options<GetAnalyticsDashboardData, ThrowOnError>): RequestResult<GetAnalyticsDashboardResponses, GetAnalyticsDashboardErrors, ThrowOnError> => (options?.client ?? client).get<GetAnalyticsDashboardResponses, GetAnalyticsDashboardErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/analytics/dashboard',
+    ...options
+});
+
+/**
+ * Post readings recorded since a cursor
+ *
+ * A cursor feed of every post reading recorded since `cursor`, across all of the brand’s posts. Call FIRST with no cursor: no rows and the current cursor. Store it, then pass it back to receive only what was recorded after; `has_more` says another page follows. `from_start=true` pages through every reading held instead. Free.
+ */
+export const getAnalyticsDelta = <ThrowOnError extends boolean = false>(options?: Options<GetAnalyticsDeltaData, ThrowOnError>): RequestResult<GetAnalyticsDeltaResponses, GetAnalyticsDeltaErrors, ThrowOnError> => (options?.client ?? client).get<GetAnalyticsDeltaResponses, GetAnalyticsDeltaErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/analytics/delta',
+    ...options
+});
+
+/**
+ * List tracking windows
+ *
+ * The brand’s tracking windows, newest first, each with its latest numbers. Free.
+ */
+export const listTrackingWindows = <ThrowOnError extends boolean = false>(options?: Options<ListTrackingWindowsData, ThrowOnError>): RequestResult<ListTrackingWindowsResponses, ListTrackingWindowsErrors, ThrowOnError> => (options?.client ?? client).get<ListTrackingWindowsResponses, ListTrackingWindowsErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/analytics/tracking',
+    ...options
+});
+
+/**
+ * Open a tracking window
+ *
+ * Watch a post once a day for `tracking_days` (1-90, default 30), then a final reading and the `post.tracking_completed` event. `post_id`: a post the brand published, read through its own connection, free. `url`: any public TikTok, Instagram, YouTube, Facebook, X or Threads post, one data lookup per reading: without `confirm: true` nothing is opened and the answer is the quote (`needs_confirm`). A post already tracked returns its open window (`existing: true`).
+ */
+export const openTrackingWindow = <ThrowOnError extends boolean = false>(options: Options<OpenTrackingWindowData, ThrowOnError>): RequestResult<OpenTrackingWindowResponses, OpenTrackingWindowErrors, ThrowOnError> => (options.client ?? client).post<OpenTrackingWindowResponses, OpenTrackingWindowErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/analytics/tracking',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Cancel a tracking window
+ *
+ * Stops the window: no final reading, no event, no further charges. A finished window keeps its status.
+ */
+export const cancelTrackingWindow = <ThrowOnError extends boolean = false>(options: Options<CancelTrackingWindowData, ThrowOnError>): RequestResult<CancelTrackingWindowResponses, CancelTrackingWindowErrors, ThrowOnError> => (options.client ?? client).delete<CancelTrackingWindowResponses, CancelTrackingWindowErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/analytics/tracking/{window_id}',
+    ...options
+});
+
+/**
+ * Retrieve a tracking window
+ *
+ * One window with its latest numbers; a finished one carries `final_read_at` and `completion_reason`.
+ */
+export const getTrackingWindow = <ThrowOnError extends boolean = false>(options: Options<GetTrackingWindowData, ThrowOnError>): RequestResult<GetTrackingWindowResponses, GetTrackingWindowErrors, ThrowOnError> => (options.client ?? client).get<GetTrackingWindowResponses, GetTrackingWindowErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/analytics/tracking/{window_id}',
+    ...options
+});
+
+/**
+ * Query metrics
+ *
+ * `entity` posts (posts, measured, reach, engagement, engagement_rate of posts published in the window; `group_by` channel, account, media, hour, dayOfWeek, post), accounts (followers and follower change per account; `group_by` account, channel or none) or inbox (received, sent, response times; `group_by` none or channel), at `granularity` total, day, week or month. Reach and engagement are never added across platforms: a grouping that would pool them is split by channel and `notes` says so. Free.
+ */
+export const queryMetrics = <ThrowOnError extends boolean = false>(options?: Options<QueryMetricsData, ThrowOnError>): RequestResult<QueryMetricsResponses, QueryMetricsErrors, ThrowOnError> => (options?.client ?? client).get<QueryMetricsResponses, QueryMetricsErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/metrics',
+    ...options
+});
+
+/**
+ * Metrics catalog
+ *
+ * Every metric, unit, grouping, granularity and limit of `GET /v1/metrics`, and each channel’s own metric names. Read once and cache it. Free.
+ */
+export const getMetricsCatalog = <ThrowOnError extends boolean = false>(options?: Options<GetMetricsCatalogData, ThrowOnError>): RequestResult<GetMetricsCatalogResponses, GetMetricsCatalogErrors, ThrowOnError> => (options?.client ?? client).get<GetMetricsCatalogResponses, GetMetricsCatalogErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/metrics/catalog',
     ...options
 });
 

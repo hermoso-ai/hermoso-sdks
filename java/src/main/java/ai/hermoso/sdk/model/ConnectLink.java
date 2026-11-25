@@ -48,6 +48,7 @@ import ai.hermoso.sdk.ApiClient;
   ConnectLink.JSON_PROPERTY_EXPIRES_AT,
   ConnectLink.JSON_PROPERTY_CONNECTED_AT,
   ConnectLink.JSON_PROPERTY_ACCOUNT,
+  ConnectLink.JSON_PROPERTY_EXTERNAL_ID,
   ConnectLink.JSON_PROPERTY_ACCOUNT_SELECTION_REQUIRED,
   ConnectLink.JSON_PROPERTY_ERROR
 })
@@ -182,6 +183,10 @@ public class ConnectLink {
   public static final String JSON_PROPERTY_ACCOUNT = "account";
   @javax.annotation.Nullable
   private ConnectLinkAccount account;
+
+  public static final String JSON_PROPERTY_EXTERNAL_ID = "external_id";
+  @javax.annotation.Nullable
+  private String externalId;
 
   public static final String JSON_PROPERTY_ACCOUNT_SELECTION_REQUIRED = "account_selection_required";
   @javax.annotation.Nullable
@@ -482,6 +487,30 @@ public class ConnectLink {
   }
 
 
+  public ConnectLink externalId(@javax.annotation.Nullable String externalId) {
+    this.externalId = externalId;
+    return this;
+  }
+
+  /**
+   * Your own customer id, when the link was created with one.
+   * @return externalId
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_EXTERNAL_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public String getExternalId() {
+    return externalId;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_EXTERNAL_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setExternalId(@javax.annotation.Nullable String externalId) {
+    this.externalId = externalId;
+  }
+
+
   public ConnectLink accountSelectionRequired(@javax.annotation.Nullable Boolean accountSelectionRequired) {
     this.accountSelectionRequired = accountSelectionRequired;
     return this;
@@ -554,13 +583,14 @@ public class ConnectLink {
         Objects.equals(this.expiresAt, connectLink.expiresAt) &&
         Objects.equals(this.connectedAt, connectLink.connectedAt) &&
         Objects.equals(this.account, connectLink.account) &&
+        Objects.equals(this.externalId, connectLink.externalId) &&
         Objects.equals(this.accountSelectionRequired, connectLink.accountSelectionRequired) &&
         Objects.equals(this.error, connectLink.error);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(_object, id, url, provider, brand, status, redirectUrl, state, createdAt, expiresAt, connectedAt, account, accountSelectionRequired, error);
+    return Objects.hash(_object, id, url, provider, brand, status, redirectUrl, state, createdAt, expiresAt, connectedAt, account, externalId, accountSelectionRequired, error);
   }
 
   @Override
@@ -579,6 +609,7 @@ public class ConnectLink {
     sb.append("    expiresAt: ").append(toIndentedString(expiresAt)).append("\n");
     sb.append("    connectedAt: ").append(toIndentedString(connectedAt)).append("\n");
     sb.append("    account: ").append(toIndentedString(account)).append("\n");
+    sb.append("    externalId: ").append(toIndentedString(externalId)).append("\n");
     sb.append("    accountSelectionRequired: ").append(toIndentedString(accountSelectionRequired)).append("\n");
     sb.append("    error: ").append(toIndentedString(error)).append("\n");
     sb.append("}");
@@ -683,6 +714,11 @@ public class ConnectLink {
     // add `account` to the URL query string
     if (getAccount() != null) {
       joiner.add(getAccount().toUrlQueryString(prefix + "account" + suffix));
+    }
+
+    // add `external_id` to the URL query string
+    if (getExternalId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sexternal_id%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getExternalId()))));
     }
 
     // add `account_selection_required` to the URL query string

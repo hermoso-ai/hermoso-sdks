@@ -50,6 +50,18 @@ pub struct PostCreate {
     /// Per-channel publish metadata (YouTube description, tags, categoryId, madeForKids, notifySubscribers, paidProductPlacement, brandPartner and a captionTrack {url|text, language, name} uploaded right after the video; X thread parts, Instagram alt text, and so on).
     #[serde(rename = "options", skip_serializing_if = "Option::is_none")]
     pub options: Option<std::collections::HashMap<String, serde_json::Value>>,
+    /// Your own labels for finding the post again (up to 10, 40 characters each). Never published. GET /v1/posts?label= filters on them.
+    #[serde(rename = "labels", skip_serializing_if = "Option::is_none")]
+    pub labels: Option<Vec<String>>,
+    /// Your own id for the post (up to 128 characters), e.g. a CRM or sheet row id. GET /v1/posts?external_id= finds it, also after it publishes.
+    #[serde(rename = "external_id", skip_serializing_if = "Option::is_none")]
+    pub external_id: Option<String>,
+    /// Your own key/value notes stored with the post: strings, numbers, booleans or null, up to 20 keys and 4 KB. Refused, never trimmed, when over.
+    #[serde(rename = "metadata", skip_serializing_if = "Option::is_none")]
+    pub metadata: Option<std::collections::HashMap<String, serde_json::Value>>,
+    /// Run every check a create runs and store nothing. Answers 200 with {ok, channels, media, pipeline, note}: lengths per channel (with X’s weighted count), each media URL identified and measured from its bytes, and the exact refusal a create would get.
+    #[serde(rename = "dry_run", skip_serializing_if = "Option::is_none")]
+    pub dry_run: Option<bool>,
     /// A comment the account posts on its own post right after it publishes: Facebook Pages, Instagram, and LinkedIn company Pages (LinkedIn needs its comments authorization, provider linkedin_community). Up to 2,000 characters, refused (never cut) when longer. Other channels publish the post without it and say so on their result. A comment that fails never undoes the post; its outcome is reported on the channel’s result.
     #[serde(rename = "first_comment", skip_serializing_if = "Option::is_none")]
     pub first_comment: Option<String>,
@@ -71,6 +83,10 @@ impl PostCreate {
             captions_by_channel: None,
             targets: None,
             options: None,
+            labels: None,
+            external_id: None,
+            metadata: None,
+            dry_run: None,
             first_comment: None,
         }
     }

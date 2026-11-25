@@ -16,6 +16,14 @@ namespace Hermoso.Sdk.Generated.Models
         public IDictionary<string, object> AdditionalData { get; set; }
         /// <summary>Default 60, at most 2880 (48 hours).</summary>
         public int? ExpiresInMinutes { get; set; }
+        /// <summary>Your own id for this customer (letters, digits, - _ . : @, up to 128). It is mapped to this brand and returned on the link.</summary>
+#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
+#nullable enable
+        public string? ExternalId { get; set; }
+#nullable restore
+#else
+        public string ExternalId { get; set; }
+#endif
         /// <summary>Which platform: meta (Facebook and Instagram), instagram (an Instagram account on its own login), tiktok, youtube, linkedin, linkedin_community (comments as a LinkedIn Page), x, pinterest, threads, google_business, and the ad platforms. An unsupported one is refused with the list.</summary>
 #if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
 #nullable enable
@@ -40,6 +48,8 @@ namespace Hermoso.Sdk.Generated.Models
 #else
         public string State { get; set; }
 #endif
+        /// <summary>true shows your saved welcome screen on this link, false shows the plain page; omitted follows the screen’s showByDefault.</summary>
+        public bool? Welcome { get; set; }
         /// <summary>
         /// Instantiates a new <see cref="global::Hermoso.Sdk.Generated.Models.ConnectLinkCreate"/> and sets the default values.
         /// </summary>
@@ -66,9 +76,11 @@ namespace Hermoso.Sdk.Generated.Models
             return new Dictionary<string, Action<IParseNode>>
             {
                 { "expires_in_minutes", n => { ExpiresInMinutes = n.GetIntValue(); } },
+                { "external_id", n => { ExternalId = n.GetStringValue(); } },
                 { "provider", n => { Provider = n.GetStringValue(); } },
                 { "redirect_url", n => { RedirectUrl = n.GetStringValue(); } },
                 { "state", n => { State = n.GetStringValue(); } },
+                { "welcome", n => { Welcome = n.GetBoolValue(); } },
             };
         }
         /// <summary>
@@ -79,9 +91,11 @@ namespace Hermoso.Sdk.Generated.Models
         {
             if(ReferenceEquals(writer, null)) throw new ArgumentNullException(nameof(writer));
             writer.WriteIntValue("expires_in_minutes", ExpiresInMinutes);
+            writer.WriteStringValue("external_id", ExternalId);
             writer.WriteStringValue("provider", Provider);
             writer.WriteStringValue("redirect_url", RedirectUrl);
             writer.WriteStringValue("state", State);
+            writer.WriteBoolValue("welcome", Welcome);
             writer.WriteAdditionalData(AdditionalData);
         }
     }

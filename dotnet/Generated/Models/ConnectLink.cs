@@ -46,6 +46,14 @@ namespace Hermoso.Sdk.Generated.Models
 #endif
         /// <summary>The expires_at property</summary>
         public DateTimeOffset? ExpiresAt { get; set; }
+        /// <summary>Your own customer id, when the link was created with one.</summary>
+#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
+#nullable enable
+        public string? ExternalId { get; set; }
+#nullable restore
+#else
+        public string ExternalId { get; set; }
+#endif
         /// <summary>The id property</summary>
 #if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
 #nullable enable
@@ -122,6 +130,7 @@ namespace Hermoso.Sdk.Generated.Models
                 { "created_at", n => { CreatedAt = n.GetDateTimeOffsetValue(); } },
                 { "error", n => { Error = n.GetObjectValue<global::Hermoso.Sdk.Generated.Models.ConnectLink_error>(global::Hermoso.Sdk.Generated.Models.ConnectLink_error.CreateFromDiscriminatorValue); } },
                 { "expires_at", n => { ExpiresAt = n.GetDateTimeOffsetValue(); } },
+                { "external_id", n => { ExternalId = n.GetStringValue(); } },
                 { "id", n => { Id = n.GetStringValue(); } },
                 { "object", n => { Object = n.GetEnumValue<global::Hermoso.Sdk.Generated.Models.ConnectLink_object>(); } },
                 { "provider", n => { Provider = n.GetStringValue(); } },
@@ -145,6 +154,7 @@ namespace Hermoso.Sdk.Generated.Models
             writer.WriteDateTimeOffsetValue("created_at", CreatedAt);
             writer.WriteObjectValue<global::Hermoso.Sdk.Generated.Models.ConnectLink_error>("error", Error);
             writer.WriteDateTimeOffsetValue("expires_at", ExpiresAt);
+            writer.WriteStringValue("external_id", ExternalId);
             writer.WriteStringValue("id", Id);
             writer.WriteEnumValue<global::Hermoso.Sdk.Generated.Models.ConnectLink_object>("object", Object);
             writer.WriteStringValue("provider", Provider);

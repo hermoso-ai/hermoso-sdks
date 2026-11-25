@@ -52,6 +52,18 @@ module Hermoso
     # Per-channel publish metadata (YouTube description, tags, categoryId, madeForKids, notifySubscribers, paidProductPlacement, brandPartner and a captionTrack {url|text, language, name} uploaded right after the video; X thread parts, Instagram alt text, and so on).
     attr_accessor :options
 
+    # Your own labels for finding the post again (up to 10, 40 characters each). Never published. GET /v1/posts?label= filters on them.
+    attr_accessor :labels
+
+    # Your own id for the post (up to 128 characters), e.g. a CRM or sheet row id. GET /v1/posts?external_id= finds it, also after it publishes.
+    attr_accessor :external_id
+
+    # Your own key/value notes stored with the post: strings, numbers, booleans or null, up to 20 keys and 4 KB. Refused, never trimmed, when over.
+    attr_accessor :metadata
+
+    # Run every check a create runs and store nothing. Answers 200 with {ok, channels, media, pipeline, note}: lengths per channel (with X’s weighted count), each media URL identified and measured from its bytes, and the exact refusal a create would get.
+    attr_accessor :dry_run
+
     # A comment the account posts on its own post right after it publishes: Facebook Pages, Instagram, and LinkedIn company Pages (LinkedIn needs its comments authorization, provider linkedin_community). Up to 2,000 characters, refused (never cut) when longer. Other channels publish the post without it and say so on their result. A comment that fails never undoes the post; its outcome is reported on the channel’s result.
     attr_accessor :first_comment
 
@@ -71,6 +83,10 @@ module Hermoso
         :'captions_by_channel' => :'captions_by_channel',
         :'targets' => :'targets',
         :'options' => :'options',
+        :'labels' => :'labels',
+        :'external_id' => :'external_id',
+        :'metadata' => :'metadata',
+        :'dry_run' => :'dry_run',
         :'first_comment' => :'first_comment'
       }
     end
@@ -101,6 +117,10 @@ module Hermoso
         :'captions_by_channel' => :'Hash<String, String>',
         :'targets' => :'Hash<String, Object>',
         :'options' => :'Hash<String, Object>',
+        :'labels' => :'Array<String>',
+        :'external_id' => :'String',
+        :'metadata' => :'Hash<String, Object>',
+        :'dry_run' => :'Boolean',
         :'first_comment' => :'String'
       }
     end
@@ -203,6 +223,26 @@ module Hermoso
         end
       end
 
+      if attributes.key?(:'labels')
+        if (value = attributes[:'labels']).is_a?(Array)
+          self.labels = value
+        end
+      end
+
+      if attributes.key?(:'external_id')
+        self.external_id = attributes[:'external_id']
+      end
+
+      if attributes.key?(:'metadata')
+        if (value = attributes[:'metadata']).is_a?(Hash)
+          self.metadata = value
+        end
+      end
+
+      if attributes.key?(:'dry_run')
+        self.dry_run = attributes[:'dry_run']
+      end
+
       if attributes.key?(:'first_comment')
         self.first_comment = attributes[:'first_comment']
       end
@@ -256,6 +296,10 @@ module Hermoso
           captions_by_channel == o.captions_by_channel &&
           targets == o.targets &&
           options == o.options &&
+          labels == o.labels &&
+          external_id == o.external_id &&
+          metadata == o.metadata &&
+          dry_run == o.dry_run &&
           first_comment == o.first_comment
     end
 
@@ -268,7 +312,7 @@ module Hermoso
     # Calculates hash code according to all attributes.
     # @return [Integer] Hash code
     def hash
-      [channels, caption, title, link, media, scheduled_at, use_queue, timezone, visibility, visibility_by_channel, captions_by_channel, targets, options, first_comment].hash
+      [channels, caption, title, link, media, scheduled_at, use_queue, timezone, visibility, visibility_by_channel, captions_by_channel, targets, options, labels, external_id, metadata, dry_run, first_comment].hash
     end
 
     # Builds the object from hash

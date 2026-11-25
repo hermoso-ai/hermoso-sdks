@@ -14,6 +14,7 @@ import datetime
 if TYPE_CHECKING:
     from ..models.post_create_captions_by_channel import PostCreateCaptionsByChannel
     from ..models.post_create_media_item_type_1 import PostCreateMediaItemType1
+    from ..models.post_create_metadata import PostCreateMetadata
     from ..models.post_create_options import PostCreateOptions
     from ..models.post_create_targets import PostCreateTargets
     from ..models.post_create_visibility_by_channel import PostCreateVisibilityByChannel
@@ -50,6 +51,15 @@ class PostCreate:
         options (PostCreateOptions | Unset): Per-channel publish metadata (YouTube description, tags, categoryId,
             madeForKids, notifySubscribers, paidProductPlacement, brandPartner and a captionTrack {url|text, language, name}
             uploaded right after the video; X thread parts, Instagram alt text, and so on).
+        labels (list[str] | Unset): Your own labels for finding the post again (up to 10, 40 characters each). Never
+            published. GET /v1/posts?label= filters on them.
+        external_id (str | Unset): Your own id for the post (up to 128 characters), e.g. a CRM or sheet row id. GET
+            /v1/posts?external_id= finds it, also after it publishes.
+        metadata (PostCreateMetadata | Unset): Your own key/value notes stored with the post: strings, numbers, booleans
+            or null, up to 20 keys and 4 KB. Refused, never trimmed, when over.
+        dry_run (bool | Unset): Run every check a create runs and store nothing. Answers 200 with {ok, channels, media,
+            pipeline, note}: lengths per channel (with X’s weighted count), each media URL identified and measured from its
+            bytes, and the exact refusal a create would get.
         first_comment (str | Unset): A comment the account posts on its own post right after it publishes: Facebook
             Pages, Instagram, and LinkedIn company Pages (LinkedIn needs its comments authorization, provider
             linkedin_community). Up to 2,000 characters, refused (never cut) when longer. Other channels publish the post
@@ -70,6 +80,10 @@ class PostCreate:
     captions_by_channel: PostCreateCaptionsByChannel | Unset = UNSET
     targets: PostCreateTargets | Unset = UNSET
     options: PostCreateOptions | Unset = UNSET
+    labels: list[str] | Unset = UNSET
+    external_id: str | Unset = UNSET
+    metadata: PostCreateMetadata | Unset = UNSET
+    dry_run: bool | Unset = UNSET
     first_comment: str | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
@@ -121,6 +135,18 @@ class PostCreate:
         if not isinstance(self.options, Unset):
             options = self.options.to_dict()
 
+        labels: list[str] | Unset = UNSET
+        if not isinstance(self.labels, Unset):
+            labels = self.labels
+
+        external_id = self.external_id
+
+        metadata: dict[str, Any] | Unset = UNSET
+        if not isinstance(self.metadata, Unset):
+            metadata = self.metadata.to_dict()
+
+        dry_run = self.dry_run
+
         first_comment = self.first_comment
 
         field_dict: dict[str, Any] = {}
@@ -154,6 +180,14 @@ class PostCreate:
             field_dict["targets"] = targets
         if options is not UNSET:
             field_dict["options"] = options
+        if labels is not UNSET:
+            field_dict["labels"] = labels
+        if external_id is not UNSET:
+            field_dict["external_id"] = external_id
+        if metadata is not UNSET:
+            field_dict["metadata"] = metadata
+        if dry_run is not UNSET:
+            field_dict["dry_run"] = dry_run
         if first_comment is not UNSET:
             field_dict["first_comment"] = first_comment
 
@@ -163,6 +197,7 @@ class PostCreate:
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         from ..models.post_create_captions_by_channel import PostCreateCaptionsByChannel  # noqa: PLC0415
         from ..models.post_create_media_item_type_1 import PostCreateMediaItemType1  # noqa: PLC0415
+        from ..models.post_create_metadata import PostCreateMetadata  # noqa: PLC0415
         from ..models.post_create_options import PostCreateOptions  # noqa: PLC0415
         from ..models.post_create_targets import PostCreateTargets  # noqa: PLC0415
         from ..models.post_create_visibility_by_channel import (
@@ -244,6 +279,19 @@ class PostCreate:
         else:
             options = PostCreateOptions.from_dict(_options)
 
+        labels = cast(list[str], d.pop("labels", UNSET))
+
+        external_id = d.pop("external_id", UNSET)
+
+        _metadata = d.pop("metadata", UNSET)
+        metadata: PostCreateMetadata | Unset
+        if isinstance(_metadata, Unset):
+            metadata = UNSET
+        else:
+            metadata = PostCreateMetadata.from_dict(_metadata)
+
+        dry_run = d.pop("dry_run", UNSET)
+
         first_comment = d.pop("first_comment", UNSET)
 
         post_create = cls(
@@ -260,6 +308,10 @@ class PostCreate:
             captions_by_channel=captions_by_channel,
             targets=targets,
             options=options,
+            labels=labels,
+            external_id=external_id,
+            metadata=metadata,
+            dry_run=dry_run,
             first_comment=first_comment,
         )
 

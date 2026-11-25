@@ -23,6 +23,10 @@ module Hermoso
 
     attr_accessor :campaign_margins
 
+    attr_accessor :result_events
+
+    attr_accessor :metrics
+
     attr_accessor :note
 
     class EnumAttributeValidator
@@ -54,6 +58,8 @@ module Hermoso
         :'margin_percent' => :'margin_percent',
         :'cost_per_order' => :'cost_per_order',
         :'campaign_margins' => :'campaign_margins',
+        :'result_events' => :'result_events',
+        :'metrics' => :'metrics',
         :'note' => :'note'
       }
     end
@@ -75,6 +81,8 @@ module Hermoso
         :'margin_percent' => :'Float',
         :'cost_per_order' => :'Float',
         :'campaign_margins' => :'Hash<String, Float>',
+        :'result_events' => :'Array<String>',
+        :'metrics' => :'Hash<String, Hash<String, Object>>',
         :'note' => :'String'
       }
     end
@@ -129,6 +137,18 @@ module Hermoso
         end
       end
 
+      if attributes.key?(:'result_events')
+        if (value = attributes[:'result_events']).is_a?(Array)
+          self.result_events = value
+        end
+      end
+
+      if attributes.key?(:'metrics')
+        if (value = attributes[:'metrics']).is_a?(Hash)
+          self.metrics = value
+        end
+      end
+
       if attributes.key?(:'note')
         self.note = attributes[:'note']
       end
@@ -168,6 +188,8 @@ module Hermoso
           margin_percent == o.margin_percent &&
           cost_per_order == o.cost_per_order &&
           campaign_margins == o.campaign_margins &&
+          result_events == o.result_events &&
+          metrics == o.metrics &&
           note == o.note
     end
 
@@ -180,7 +202,7 @@ module Hermoso
     # Calculates hash code according to all attributes.
     # @return [Integer] Hash code
     def hash
-      [object, margin_percent, cost_per_order, campaign_margins, note].hash
+      [object, margin_percent, cost_per_order, campaign_margins, result_events, metrics, note].hash
     end
 
     # Builds the object from hash

@@ -102,7 +102,11 @@ def sync_detailed(
     to its query string (a same-named parameter of yours is overwritten).
 
     THE PLATFORM’S CONSENT SCREEN SHOWS HERMOSO’S NAME, because the connection is made with Hermoso’s
-    app on that platform.
+    app on that platform, unless you saved your own app for it (manage_oauth_apps): then it shows yours.
+    WHITE LABEL: the page your customer sees carries your saved welcome screen (name, logo, colours;
+    connect_welcome_screen) when it is on by default or `welcome` is true, and the link opens on your
+    own connect domain once one is active (manage_connect_domains). `external_id` maps your own customer
+    id to this brand, found again with manage_external_ids.
 
     A link connects ONE provider to ONE brand. It can be retried after a cancel until it expires, and is
     spent once an account connects. Know when it connects from the `account.connected` webhook event
@@ -156,7 +160,11 @@ def sync(
     to its query string (a same-named parameter of yours is overwritten).
 
     THE PLATFORM’S CONSENT SCREEN SHOWS HERMOSO’S NAME, because the connection is made with Hermoso’s
-    app on that platform.
+    app on that platform, unless you saved your own app for it (manage_oauth_apps): then it shows yours.
+    WHITE LABEL: the page your customer sees carries your saved welcome screen (name, logo, colours;
+    connect_welcome_screen) when it is on by default or `welcome` is true, and the link opens on your
+    own connect domain once one is active (manage_connect_domains). `external_id` maps your own customer
+    id to this brand, found again with manage_external_ids.
 
     A link connects ONE provider to ONE brand. It can be retried after a cancel until it expires, and is
     spent once an account connects. Know when it connects from the `account.connected` webhook event
@@ -205,7 +213,11 @@ async def asyncio_detailed(
     to its query string (a same-named parameter of yours is overwritten).
 
     THE PLATFORM’S CONSENT SCREEN SHOWS HERMOSO’S NAME, because the connection is made with Hermoso’s
-    app on that platform.
+    app on that platform, unless you saved your own app for it (manage_oauth_apps): then it shows yours.
+    WHITE LABEL: the page your customer sees carries your saved welcome screen (name, logo, colours;
+    connect_welcome_screen) when it is on by default or `welcome` is true, and the link opens on your
+    own connect domain once one is active (manage_connect_domains). `external_id` maps your own customer
+    id to this brand, found again with manage_external_ids.
 
     A link connects ONE provider to ONE brand. It can be retried after a cancel until it expires, and is
     spent once an account connects. Know when it connects from the `account.connected` webhook event
@@ -257,7 +269,11 @@ async def asyncio(
     to its query string (a same-named parameter of yours is overwritten).
 
     THE PLATFORM’S CONSENT SCREEN SHOWS HERMOSO’S NAME, because the connection is made with Hermoso’s
-    app on that platform.
+    app on that platform, unless you saved your own app for it (manage_oauth_apps): then it shows yours.
+    WHITE LABEL: the page your customer sees carries your saved welcome screen (name, logo, colours;
+    connect_welcome_screen) when it is on by default or `welcome` is true, and the link opens on your
+    own connect domain once one is active (manage_connect_domains). `external_id` maps your own customer
+    id to this brand, found again with manage_external_ids.
 
     A link connects ONE provider to ONE brand. It can be retried after a cancel until it expires, and is
     spent once an account connects. Know when it connects from the `account.connected` webhook event

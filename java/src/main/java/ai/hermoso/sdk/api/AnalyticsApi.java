@@ -18,12 +18,17 @@ import ai.hermoso.sdk.ApiResponse;
 import ai.hermoso.sdk.Configuration;
 import ai.hermoso.sdk.Pair;
 
+import ai.hermoso.sdk.model.AnalyticsDashboard;
+import ai.hermoso.sdk.model.AnalyticsDelta;
 import ai.hermoso.sdk.model.BestTime;
 import ai.hermoso.sdk.model.ContentDecay;
 import ai.hermoso.sdk.model.Error;
 import ai.hermoso.sdk.model.FollowerHistory;
 import ai.hermoso.sdk.model.InboxStats;
 import ai.hermoso.sdk.model.PostingFrequency;
+import ai.hermoso.sdk.model.TrackingWindow;
+import ai.hermoso.sdk.model.TrackingWindowList;
+import ai.hermoso.sdk.model.TrackingWindowOpen;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -165,6 +170,911 @@ public class AnalyticsApi {
       file.deleteOnExit(); // best effort cleanup
     }
     return file;
+  }
+
+  /**
+   * Cancel a tracking window
+   * Stops the window: no final reading, no event, no further charges. A finished window keeps its status.
+   * @param apiRequest {@link APICancelTrackingWindowRequest}
+   * @return TrackingWindow
+   * @throws ApiException if fails to make API call
+   */
+  public TrackingWindow cancelTrackingWindow(APICancelTrackingWindowRequest apiRequest) throws ApiException {
+    return cancelTrackingWindow(apiRequest, null);
+  }
+
+  /**
+   * Cancel a tracking window
+   * Stops the window: no final reading, no event, no further charges. A finished window keeps its status.
+   * @param apiRequest {@link APICancelTrackingWindowRequest}
+   * @param headers Optional headers to include in the request
+   * @return TrackingWindow
+   * @throws ApiException if fails to make API call
+   */
+  public TrackingWindow cancelTrackingWindow(APICancelTrackingWindowRequest apiRequest, Map<String, String> headers) throws ApiException {
+    @javax.annotation.Nonnull
+    String windowId = apiRequest.windowId();
+    @javax.annotation.Nullable
+    String xHermosoUser = apiRequest.xHermosoUser();
+    return cancelTrackingWindow(windowId, xHermosoUser, headers);
+  }
+
+  /**
+   * Cancel a tracking window
+   * Stops the window: no final reading, no event, no further charges. A finished window keeps its status.
+   * @param apiRequest {@link APICancelTrackingWindowRequest}
+   * @return ApiResponse&lt;TrackingWindow&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<TrackingWindow> cancelTrackingWindowWithHttpInfo(APICancelTrackingWindowRequest apiRequest) throws ApiException {
+    return cancelTrackingWindowWithHttpInfo(apiRequest, null);
+  }
+
+  /**
+   * Cancel a tracking window
+   * Stops the window: no final reading, no event, no further charges. A finished window keeps its status.
+   * @param apiRequest {@link APICancelTrackingWindowRequest}
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;TrackingWindow&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<TrackingWindow> cancelTrackingWindowWithHttpInfo(APICancelTrackingWindowRequest apiRequest, Map<String, String> headers) throws ApiException {
+    String windowId = apiRequest.windowId();
+    String xHermosoUser = apiRequest.xHermosoUser();
+    return cancelTrackingWindowWithHttpInfo(windowId, xHermosoUser, headers);
+  }
+
+  /**
+   * Cancel a tracking window
+   * Stops the window: no final reading, no event, no further charges. A finished window keeps its status.
+   * @param windowId  (required)
+   * @param xHermosoUser Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result. (optional)
+   * @return TrackingWindow
+   * @throws ApiException if fails to make API call
+   */
+  public TrackingWindow cancelTrackingWindow(@javax.annotation.Nonnull String windowId, @javax.annotation.Nullable String xHermosoUser) throws ApiException {
+    return cancelTrackingWindow(windowId, xHermosoUser, null);
+  }
+
+  /**
+   * Cancel a tracking window
+   * Stops the window: no final reading, no event, no further charges. A finished window keeps its status.
+   * @param windowId  (required)
+   * @param xHermosoUser Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result. (optional)
+   * @param headers Optional headers to include in the request
+   * @return TrackingWindow
+   * @throws ApiException if fails to make API call
+   */
+  public TrackingWindow cancelTrackingWindow(@javax.annotation.Nonnull String windowId, @javax.annotation.Nullable String xHermosoUser, Map<String, String> headers) throws ApiException {
+    ApiResponse<TrackingWindow> localVarResponse = cancelTrackingWindowWithHttpInfo(windowId, xHermosoUser, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Cancel a tracking window
+   * Stops the window: no final reading, no event, no further charges. A finished window keeps its status.
+   * @param windowId  (required)
+   * @param xHermosoUser Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result. (optional)
+   * @return ApiResponse&lt;TrackingWindow&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<TrackingWindow> cancelTrackingWindowWithHttpInfo(@javax.annotation.Nonnull String windowId, @javax.annotation.Nullable String xHermosoUser) throws ApiException {
+    return cancelTrackingWindowWithHttpInfo(windowId, xHermosoUser, null);
+  }
+
+  /**
+   * Cancel a tracking window
+   * Stops the window: no final reading, no event, no further charges. A finished window keeps its status.
+   * @param windowId  (required)
+   * @param xHermosoUser Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result. (optional)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;TrackingWindow&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<TrackingWindow> cancelTrackingWindowWithHttpInfo(@javax.annotation.Nonnull String windowId, @javax.annotation.Nullable String xHermosoUser, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = cancelTrackingWindowRequestBuilder(windowId, xHermosoUser, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("cancelTrackingWindow", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<TrackingWindow>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
+        }
+
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        TrackingWindow responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<TrackingWindow>() {});
+        
+
+        return new ApiResponse<TrackingWindow>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder cancelTrackingWindowRequestBuilder(@javax.annotation.Nonnull String windowId, @javax.annotation.Nullable String xHermosoUser, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'windowId' is set
+    if (windowId == null) {
+      throw new ApiException(400, "Missing the required parameter 'windowId' when calling cancelTrackingWindow");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/v1/analytics/tracking/{window_id}"
+        .replace("{window_id}", ApiClient.urlEncode(windowId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    if (xHermosoUser != null) {
+      localVarRequestBuilder.header("X-Hermoso-User", xHermosoUser.toString());
+    }
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    localVarRequestBuilder.method("DELETE", HttpRequest.BodyPublishers.noBody());
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+
+  public static final class APICancelTrackingWindowRequest {
+    @javax.annotation.Nonnull
+    private String windowId; //  (required)
+    @javax.annotation.Nullable
+    private String xHermosoUser; // Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result. (optional)
+
+    private APICancelTrackingWindowRequest(Builder builder) {
+      this.windowId = builder.windowId;
+      this.xHermosoUser = builder.xHermosoUser;
+    }
+    @javax.annotation.Nonnull
+    public String windowId() {
+      return windowId;
+    }
+    @javax.annotation.Nullable
+    public String xHermosoUser() {
+      return xHermosoUser;
+    }
+    public static Builder newBuilder() {
+      return new Builder();
+    }
+
+    public static class Builder {
+      private String windowId;
+      private String xHermosoUser;
+
+      public Builder windowId(@javax.annotation.Nonnull String windowId) {
+        this.windowId = windowId;
+        return this;
+      }
+      public Builder xHermosoUser(@javax.annotation.Nullable String xHermosoUser) {
+        this.xHermosoUser = xHermosoUser;
+        return this;
+      }
+      public APICancelTrackingWindowRequest build() {
+        return new APICancelTrackingWindowRequest(this);
+      }
+    }
+  }
+
+  /**
+   * Analytics dashboard with the previous period
+   * One read across the brand’s connected channels: per channel, posts, reach (each platform’s own unit), engagement, engagement rate and follower change, each as &#x60;current&#x60;, &#x60;previous&#x60;, &#x60;change&#x60; and &#x60;pct&#x60;, plus a day-by-day series, top posts and recent posts. The previous window is the same number of days immediately before (&#x60;this_week&#x60; compares week to date with last week to the same weekday). Reach is never added across platforms, a missing number is null with &#x60;why&#x60;, and YouTube carries no totals or changes (its API policy). Numbers belong to the day a post was published. Free.
+   * @param apiRequest {@link APIGetAnalyticsDashboardRequest}
+   * @return AnalyticsDashboard
+   * @throws ApiException if fails to make API call
+   */
+  public AnalyticsDashboard getAnalyticsDashboard(APIGetAnalyticsDashboardRequest apiRequest) throws ApiException {
+    return getAnalyticsDashboard(apiRequest, null);
+  }
+
+  /**
+   * Analytics dashboard with the previous period
+   * One read across the brand’s connected channels: per channel, posts, reach (each platform’s own unit), engagement, engagement rate and follower change, each as &#x60;current&#x60;, &#x60;previous&#x60;, &#x60;change&#x60; and &#x60;pct&#x60;, plus a day-by-day series, top posts and recent posts. The previous window is the same number of days immediately before (&#x60;this_week&#x60; compares week to date with last week to the same weekday). Reach is never added across platforms, a missing number is null with &#x60;why&#x60;, and YouTube carries no totals or changes (its API policy). Numbers belong to the day a post was published. Free.
+   * @param apiRequest {@link APIGetAnalyticsDashboardRequest}
+   * @param headers Optional headers to include in the request
+   * @return AnalyticsDashboard
+   * @throws ApiException if fails to make API call
+   */
+  public AnalyticsDashboard getAnalyticsDashboard(APIGetAnalyticsDashboardRequest apiRequest, Map<String, String> headers) throws ApiException {
+    @javax.annotation.Nullable
+    String period = apiRequest.period();
+    @javax.annotation.Nullable
+    Integer days = apiRequest.days();
+    @javax.annotation.Nullable
+    String from = apiRequest.from();
+    @javax.annotation.Nullable
+    String to = apiRequest.to();
+    @javax.annotation.Nullable
+    String channel = apiRequest.channel();
+    @javax.annotation.Nullable
+    String account = apiRequest.account();
+    @javax.annotation.Nullable
+    Integer topPosts = apiRequest.topPosts();
+    @javax.annotation.Nullable
+    Integer recentPosts = apiRequest.recentPosts();
+    @javax.annotation.Nullable
+    String timezone = apiRequest.timezone();
+    @javax.annotation.Nullable
+    String xHermosoUser = apiRequest.xHermosoUser();
+    return getAnalyticsDashboard(period, days, from, to, channel, account, topPosts, recentPosts, timezone, xHermosoUser, headers);
+  }
+
+  /**
+   * Analytics dashboard with the previous period
+   * One read across the brand’s connected channels: per channel, posts, reach (each platform’s own unit), engagement, engagement rate and follower change, each as &#x60;current&#x60;, &#x60;previous&#x60;, &#x60;change&#x60; and &#x60;pct&#x60;, plus a day-by-day series, top posts and recent posts. The previous window is the same number of days immediately before (&#x60;this_week&#x60; compares week to date with last week to the same weekday). Reach is never added across platforms, a missing number is null with &#x60;why&#x60;, and YouTube carries no totals or changes (its API policy). Numbers belong to the day a post was published. Free.
+   * @param apiRequest {@link APIGetAnalyticsDashboardRequest}
+   * @return ApiResponse&lt;AnalyticsDashboard&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<AnalyticsDashboard> getAnalyticsDashboardWithHttpInfo(APIGetAnalyticsDashboardRequest apiRequest) throws ApiException {
+    return getAnalyticsDashboardWithHttpInfo(apiRequest, null);
+  }
+
+  /**
+   * Analytics dashboard with the previous period
+   * One read across the brand’s connected channels: per channel, posts, reach (each platform’s own unit), engagement, engagement rate and follower change, each as &#x60;current&#x60;, &#x60;previous&#x60;, &#x60;change&#x60; and &#x60;pct&#x60;, plus a day-by-day series, top posts and recent posts. The previous window is the same number of days immediately before (&#x60;this_week&#x60; compares week to date with last week to the same weekday). Reach is never added across platforms, a missing number is null with &#x60;why&#x60;, and YouTube carries no totals or changes (its API policy). Numbers belong to the day a post was published. Free.
+   * @param apiRequest {@link APIGetAnalyticsDashboardRequest}
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;AnalyticsDashboard&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<AnalyticsDashboard> getAnalyticsDashboardWithHttpInfo(APIGetAnalyticsDashboardRequest apiRequest, Map<String, String> headers) throws ApiException {
+    String period = apiRequest.period();
+    Integer days = apiRequest.days();
+    String from = apiRequest.from();
+    String to = apiRequest.to();
+    String channel = apiRequest.channel();
+    String account = apiRequest.account();
+    Integer topPosts = apiRequest.topPosts();
+    Integer recentPosts = apiRequest.recentPosts();
+    String timezone = apiRequest.timezone();
+    String xHermosoUser = apiRequest.xHermosoUser();
+    return getAnalyticsDashboardWithHttpInfo(period, days, from, to, channel, account, topPosts, recentPosts, timezone, xHermosoUser, headers);
+  }
+
+  /**
+   * Analytics dashboard with the previous period
+   * One read across the brand’s connected channels: per channel, posts, reach (each platform’s own unit), engagement, engagement rate and follower change, each as &#x60;current&#x60;, &#x60;previous&#x60;, &#x60;change&#x60; and &#x60;pct&#x60;, plus a day-by-day series, top posts and recent posts. The previous window is the same number of days immediately before (&#x60;this_week&#x60; compares week to date with last week to the same weekday). Reach is never added across platforms, a missing number is null with &#x60;why&#x60;, and YouTube carries no totals or changes (its API policy). Numbers belong to the day a post was published. Free.
+   * @param period last_7_days (default), last_30_days, last_90_days, this_week or this_month. (optional)
+   * @param days Instead of period: the last N days, 1-365. (optional)
+   * @param from Instead of period: YYYY-MM-DD, with &#x60;to&#x60;. (optional)
+   * @param to YYYY-MM-DD, inclusive. (optional)
+   * @param channel One channel. (optional)
+   * @param account One account: handle, Page name or id. (optional)
+   * @param topPosts Top posts per channel, 0-20. Default 3. (optional)
+   * @param recentPosts Most recent posts of the window, 0-50. Default 5. (optional)
+   * @param timezone IANA zone for the days. Default: the account’s. (optional)
+   * @param xHermosoUser Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result. (optional)
+   * @return AnalyticsDashboard
+   * @throws ApiException if fails to make API call
+   */
+  public AnalyticsDashboard getAnalyticsDashboard(@javax.annotation.Nullable String period, @javax.annotation.Nullable Integer days, @javax.annotation.Nullable String from, @javax.annotation.Nullable String to, @javax.annotation.Nullable String channel, @javax.annotation.Nullable String account, @javax.annotation.Nullable Integer topPosts, @javax.annotation.Nullable Integer recentPosts, @javax.annotation.Nullable String timezone, @javax.annotation.Nullable String xHermosoUser) throws ApiException {
+    return getAnalyticsDashboard(period, days, from, to, channel, account, topPosts, recentPosts, timezone, xHermosoUser, null);
+  }
+
+  /**
+   * Analytics dashboard with the previous period
+   * One read across the brand’s connected channels: per channel, posts, reach (each platform’s own unit), engagement, engagement rate and follower change, each as &#x60;current&#x60;, &#x60;previous&#x60;, &#x60;change&#x60; and &#x60;pct&#x60;, plus a day-by-day series, top posts and recent posts. The previous window is the same number of days immediately before (&#x60;this_week&#x60; compares week to date with last week to the same weekday). Reach is never added across platforms, a missing number is null with &#x60;why&#x60;, and YouTube carries no totals or changes (its API policy). Numbers belong to the day a post was published. Free.
+   * @param period last_7_days (default), last_30_days, last_90_days, this_week or this_month. (optional)
+   * @param days Instead of period: the last N days, 1-365. (optional)
+   * @param from Instead of period: YYYY-MM-DD, with &#x60;to&#x60;. (optional)
+   * @param to YYYY-MM-DD, inclusive. (optional)
+   * @param channel One channel. (optional)
+   * @param account One account: handle, Page name or id. (optional)
+   * @param topPosts Top posts per channel, 0-20. Default 3. (optional)
+   * @param recentPosts Most recent posts of the window, 0-50. Default 5. (optional)
+   * @param timezone IANA zone for the days. Default: the account’s. (optional)
+   * @param xHermosoUser Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result. (optional)
+   * @param headers Optional headers to include in the request
+   * @return AnalyticsDashboard
+   * @throws ApiException if fails to make API call
+   */
+  public AnalyticsDashboard getAnalyticsDashboard(@javax.annotation.Nullable String period, @javax.annotation.Nullable Integer days, @javax.annotation.Nullable String from, @javax.annotation.Nullable String to, @javax.annotation.Nullable String channel, @javax.annotation.Nullable String account, @javax.annotation.Nullable Integer topPosts, @javax.annotation.Nullable Integer recentPosts, @javax.annotation.Nullable String timezone, @javax.annotation.Nullable String xHermosoUser, Map<String, String> headers) throws ApiException {
+    ApiResponse<AnalyticsDashboard> localVarResponse = getAnalyticsDashboardWithHttpInfo(period, days, from, to, channel, account, topPosts, recentPosts, timezone, xHermosoUser, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Analytics dashboard with the previous period
+   * One read across the brand’s connected channels: per channel, posts, reach (each platform’s own unit), engagement, engagement rate and follower change, each as &#x60;current&#x60;, &#x60;previous&#x60;, &#x60;change&#x60; and &#x60;pct&#x60;, plus a day-by-day series, top posts and recent posts. The previous window is the same number of days immediately before (&#x60;this_week&#x60; compares week to date with last week to the same weekday). Reach is never added across platforms, a missing number is null with &#x60;why&#x60;, and YouTube carries no totals or changes (its API policy). Numbers belong to the day a post was published. Free.
+   * @param period last_7_days (default), last_30_days, last_90_days, this_week or this_month. (optional)
+   * @param days Instead of period: the last N days, 1-365. (optional)
+   * @param from Instead of period: YYYY-MM-DD, with &#x60;to&#x60;. (optional)
+   * @param to YYYY-MM-DD, inclusive. (optional)
+   * @param channel One channel. (optional)
+   * @param account One account: handle, Page name or id. (optional)
+   * @param topPosts Top posts per channel, 0-20. Default 3. (optional)
+   * @param recentPosts Most recent posts of the window, 0-50. Default 5. (optional)
+   * @param timezone IANA zone for the days. Default: the account’s. (optional)
+   * @param xHermosoUser Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result. (optional)
+   * @return ApiResponse&lt;AnalyticsDashboard&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<AnalyticsDashboard> getAnalyticsDashboardWithHttpInfo(@javax.annotation.Nullable String period, @javax.annotation.Nullable Integer days, @javax.annotation.Nullable String from, @javax.annotation.Nullable String to, @javax.annotation.Nullable String channel, @javax.annotation.Nullable String account, @javax.annotation.Nullable Integer topPosts, @javax.annotation.Nullable Integer recentPosts, @javax.annotation.Nullable String timezone, @javax.annotation.Nullable String xHermosoUser) throws ApiException {
+    return getAnalyticsDashboardWithHttpInfo(period, days, from, to, channel, account, topPosts, recentPosts, timezone, xHermosoUser, null);
+  }
+
+  /**
+   * Analytics dashboard with the previous period
+   * One read across the brand’s connected channels: per channel, posts, reach (each platform’s own unit), engagement, engagement rate and follower change, each as &#x60;current&#x60;, &#x60;previous&#x60;, &#x60;change&#x60; and &#x60;pct&#x60;, plus a day-by-day series, top posts and recent posts. The previous window is the same number of days immediately before (&#x60;this_week&#x60; compares week to date with last week to the same weekday). Reach is never added across platforms, a missing number is null with &#x60;why&#x60;, and YouTube carries no totals or changes (its API policy). Numbers belong to the day a post was published. Free.
+   * @param period last_7_days (default), last_30_days, last_90_days, this_week or this_month. (optional)
+   * @param days Instead of period: the last N days, 1-365. (optional)
+   * @param from Instead of period: YYYY-MM-DD, with &#x60;to&#x60;. (optional)
+   * @param to YYYY-MM-DD, inclusive. (optional)
+   * @param channel One channel. (optional)
+   * @param account One account: handle, Page name or id. (optional)
+   * @param topPosts Top posts per channel, 0-20. Default 3. (optional)
+   * @param recentPosts Most recent posts of the window, 0-50. Default 5. (optional)
+   * @param timezone IANA zone for the days. Default: the account’s. (optional)
+   * @param xHermosoUser Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result. (optional)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;AnalyticsDashboard&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<AnalyticsDashboard> getAnalyticsDashboardWithHttpInfo(@javax.annotation.Nullable String period, @javax.annotation.Nullable Integer days, @javax.annotation.Nullable String from, @javax.annotation.Nullable String to, @javax.annotation.Nullable String channel, @javax.annotation.Nullable String account, @javax.annotation.Nullable Integer topPosts, @javax.annotation.Nullable Integer recentPosts, @javax.annotation.Nullable String timezone, @javax.annotation.Nullable String xHermosoUser, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = getAnalyticsDashboardRequestBuilder(period, days, from, to, channel, account, topPosts, recentPosts, timezone, xHermosoUser, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("getAnalyticsDashboard", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<AnalyticsDashboard>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
+        }
+
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        AnalyticsDashboard responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<AnalyticsDashboard>() {});
+        
+
+        return new ApiResponse<AnalyticsDashboard>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder getAnalyticsDashboardRequestBuilder(@javax.annotation.Nullable String period, @javax.annotation.Nullable Integer days, @javax.annotation.Nullable String from, @javax.annotation.Nullable String to, @javax.annotation.Nullable String channel, @javax.annotation.Nullable String account, @javax.annotation.Nullable Integer topPosts, @javax.annotation.Nullable Integer recentPosts, @javax.annotation.Nullable String timezone, @javax.annotation.Nullable String xHermosoUser, Map<String, String> headers) throws ApiException {
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/v1/analytics/dashboard";
+
+    List<Pair> localVarQueryParams = new ArrayList<>();
+    StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    String localVarQueryParameterBaseName;
+    localVarQueryParameterBaseName = "period";
+    localVarQueryParams.addAll(ApiClient.parameterToPairs("period", period));
+    localVarQueryParameterBaseName = "days";
+    localVarQueryParams.addAll(ApiClient.parameterToPairs("days", days));
+    localVarQueryParameterBaseName = "from";
+    localVarQueryParams.addAll(ApiClient.parameterToPairs("from", from));
+    localVarQueryParameterBaseName = "to";
+    localVarQueryParams.addAll(ApiClient.parameterToPairs("to", to));
+    localVarQueryParameterBaseName = "channel";
+    localVarQueryParams.addAll(ApiClient.parameterToPairs("channel", channel));
+    localVarQueryParameterBaseName = "account";
+    localVarQueryParams.addAll(ApiClient.parameterToPairs("account", account));
+    localVarQueryParameterBaseName = "top_posts";
+    localVarQueryParams.addAll(ApiClient.parameterToPairs("top_posts", topPosts));
+    localVarQueryParameterBaseName = "recent_posts";
+    localVarQueryParams.addAll(ApiClient.parameterToPairs("recent_posts", recentPosts));
+    localVarQueryParameterBaseName = "timezone";
+    localVarQueryParams.addAll(ApiClient.parameterToPairs("timezone", timezone));
+
+    if (!localVarQueryParams.isEmpty() || localVarQueryStringJoiner.length() != 0) {
+      StringJoiner queryJoiner = new StringJoiner("&");
+      localVarQueryParams.forEach(p -> queryJoiner.add(p.getName() + '=' + p.getValue()));
+      if (localVarQueryStringJoiner.length() != 0) {
+        queryJoiner.add(localVarQueryStringJoiner.toString());
+      }
+      localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath + '?' + queryJoiner.toString()));
+    } else {
+      localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+    }
+
+    if (xHermosoUser != null) {
+      localVarRequestBuilder.header("X-Hermoso-User", xHermosoUser.toString());
+    }
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    localVarRequestBuilder.method("GET", HttpRequest.BodyPublishers.noBody());
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+
+  public static final class APIGetAnalyticsDashboardRequest {
+    @javax.annotation.Nullable
+    private String period; // last_7_days (default), last_30_days, last_90_days, this_week or this_month. (optional)
+    @javax.annotation.Nullable
+    private Integer days; // Instead of period: the last N days, 1-365. (optional)
+    @javax.annotation.Nullable
+    private String from; // Instead of period: YYYY-MM-DD, with &#x60;to&#x60;. (optional)
+    @javax.annotation.Nullable
+    private String to; // YYYY-MM-DD, inclusive. (optional)
+    @javax.annotation.Nullable
+    private String channel; // One channel. (optional)
+    @javax.annotation.Nullable
+    private String account; // One account: handle, Page name or id. (optional)
+    @javax.annotation.Nullable
+    private Integer topPosts; // Top posts per channel, 0-20. Default 3. (optional)
+    @javax.annotation.Nullable
+    private Integer recentPosts; // Most recent posts of the window, 0-50. Default 5. (optional)
+    @javax.annotation.Nullable
+    private String timezone; // IANA zone for the days. Default: the account’s. (optional)
+    @javax.annotation.Nullable
+    private String xHermosoUser; // Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result. (optional)
+
+    private APIGetAnalyticsDashboardRequest(Builder builder) {
+      this.period = builder.period;
+      this.days = builder.days;
+      this.from = builder.from;
+      this.to = builder.to;
+      this.channel = builder.channel;
+      this.account = builder.account;
+      this.topPosts = builder.topPosts;
+      this.recentPosts = builder.recentPosts;
+      this.timezone = builder.timezone;
+      this.xHermosoUser = builder.xHermosoUser;
+    }
+    @javax.annotation.Nullable
+    public String period() {
+      return period;
+    }
+    @javax.annotation.Nullable
+    public Integer days() {
+      return days;
+    }
+    @javax.annotation.Nullable
+    public String from() {
+      return from;
+    }
+    @javax.annotation.Nullable
+    public String to() {
+      return to;
+    }
+    @javax.annotation.Nullable
+    public String channel() {
+      return channel;
+    }
+    @javax.annotation.Nullable
+    public String account() {
+      return account;
+    }
+    @javax.annotation.Nullable
+    public Integer topPosts() {
+      return topPosts;
+    }
+    @javax.annotation.Nullable
+    public Integer recentPosts() {
+      return recentPosts;
+    }
+    @javax.annotation.Nullable
+    public String timezone() {
+      return timezone;
+    }
+    @javax.annotation.Nullable
+    public String xHermosoUser() {
+      return xHermosoUser;
+    }
+    public static Builder newBuilder() {
+      return new Builder();
+    }
+
+    public static class Builder {
+      private String period;
+      private Integer days;
+      private String from;
+      private String to;
+      private String channel;
+      private String account;
+      private Integer topPosts;
+      private Integer recentPosts;
+      private String timezone;
+      private String xHermosoUser;
+
+      public Builder period(@javax.annotation.Nullable String period) {
+        this.period = period;
+        return this;
+      }
+      public Builder days(@javax.annotation.Nullable Integer days) {
+        this.days = days;
+        return this;
+      }
+      public Builder from(@javax.annotation.Nullable String from) {
+        this.from = from;
+        return this;
+      }
+      public Builder to(@javax.annotation.Nullable String to) {
+        this.to = to;
+        return this;
+      }
+      public Builder channel(@javax.annotation.Nullable String channel) {
+        this.channel = channel;
+        return this;
+      }
+      public Builder account(@javax.annotation.Nullable String account) {
+        this.account = account;
+        return this;
+      }
+      public Builder topPosts(@javax.annotation.Nullable Integer topPosts) {
+        this.topPosts = topPosts;
+        return this;
+      }
+      public Builder recentPosts(@javax.annotation.Nullable Integer recentPosts) {
+        this.recentPosts = recentPosts;
+        return this;
+      }
+      public Builder timezone(@javax.annotation.Nullable String timezone) {
+        this.timezone = timezone;
+        return this;
+      }
+      public Builder xHermosoUser(@javax.annotation.Nullable String xHermosoUser) {
+        this.xHermosoUser = xHermosoUser;
+        return this;
+      }
+      public APIGetAnalyticsDashboardRequest build() {
+        return new APIGetAnalyticsDashboardRequest(this);
+      }
+    }
+  }
+
+  /**
+   * Post readings recorded since a cursor
+   * A cursor feed of every post reading recorded since &#x60;cursor&#x60;, across all of the brand’s posts. Call FIRST with no cursor: no rows and the current cursor. Store it, then pass it back to receive only what was recorded after; &#x60;has_more&#x60; says another page follows. &#x60;from_start&#x3D;true&#x60; pages through every reading held instead. Free.
+   * @param apiRequest {@link APIGetAnalyticsDeltaRequest}
+   * @return AnalyticsDelta
+   * @throws ApiException if fails to make API call
+   */
+  public AnalyticsDelta getAnalyticsDelta(APIGetAnalyticsDeltaRequest apiRequest) throws ApiException {
+    return getAnalyticsDelta(apiRequest, null);
+  }
+
+  /**
+   * Post readings recorded since a cursor
+   * A cursor feed of every post reading recorded since &#x60;cursor&#x60;, across all of the brand’s posts. Call FIRST with no cursor: no rows and the current cursor. Store it, then pass it back to receive only what was recorded after; &#x60;has_more&#x60; says another page follows. &#x60;from_start&#x3D;true&#x60; pages through every reading held instead. Free.
+   * @param apiRequest {@link APIGetAnalyticsDeltaRequest}
+   * @param headers Optional headers to include in the request
+   * @return AnalyticsDelta
+   * @throws ApiException if fails to make API call
+   */
+  public AnalyticsDelta getAnalyticsDelta(APIGetAnalyticsDeltaRequest apiRequest, Map<String, String> headers) throws ApiException {
+    @javax.annotation.Nullable
+    String cursor = apiRequest.cursor();
+    @javax.annotation.Nullable
+    Integer limit = apiRequest.limit();
+    @javax.annotation.Nullable
+    String channel = apiRequest.channel();
+    @javax.annotation.Nullable
+    Boolean fromStart = apiRequest.fromStart();
+    @javax.annotation.Nullable
+    String xHermosoUser = apiRequest.xHermosoUser();
+    return getAnalyticsDelta(cursor, limit, channel, fromStart, xHermosoUser, headers);
+  }
+
+  /**
+   * Post readings recorded since a cursor
+   * A cursor feed of every post reading recorded since &#x60;cursor&#x60;, across all of the brand’s posts. Call FIRST with no cursor: no rows and the current cursor. Store it, then pass it back to receive only what was recorded after; &#x60;has_more&#x60; says another page follows. &#x60;from_start&#x3D;true&#x60; pages through every reading held instead. Free.
+   * @param apiRequest {@link APIGetAnalyticsDeltaRequest}
+   * @return ApiResponse&lt;AnalyticsDelta&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<AnalyticsDelta> getAnalyticsDeltaWithHttpInfo(APIGetAnalyticsDeltaRequest apiRequest) throws ApiException {
+    return getAnalyticsDeltaWithHttpInfo(apiRequest, null);
+  }
+
+  /**
+   * Post readings recorded since a cursor
+   * A cursor feed of every post reading recorded since &#x60;cursor&#x60;, across all of the brand’s posts. Call FIRST with no cursor: no rows and the current cursor. Store it, then pass it back to receive only what was recorded after; &#x60;has_more&#x60; says another page follows. &#x60;from_start&#x3D;true&#x60; pages through every reading held instead. Free.
+   * @param apiRequest {@link APIGetAnalyticsDeltaRequest}
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;AnalyticsDelta&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<AnalyticsDelta> getAnalyticsDeltaWithHttpInfo(APIGetAnalyticsDeltaRequest apiRequest, Map<String, String> headers) throws ApiException {
+    String cursor = apiRequest.cursor();
+    Integer limit = apiRequest.limit();
+    String channel = apiRequest.channel();
+    Boolean fromStart = apiRequest.fromStart();
+    String xHermosoUser = apiRequest.xHermosoUser();
+    return getAnalyticsDeltaWithHttpInfo(cursor, limit, channel, fromStart, xHermosoUser, headers);
+  }
+
+  /**
+   * Post readings recorded since a cursor
+   * A cursor feed of every post reading recorded since &#x60;cursor&#x60;, across all of the brand’s posts. Call FIRST with no cursor: no rows and the current cursor. Store it, then pass it back to receive only what was recorded after; &#x60;has_more&#x60; says another page follows. &#x60;from_start&#x3D;true&#x60; pages through every reading held instead. Free.
+   * @param cursor The cursor a previous call returned. (optional)
+   * @param limit 1-500. Default 100. (optional)
+   * @param channel One channel. (optional)
+   * @param fromStart Page through everything held instead of starting at now. (optional)
+   * @param xHermosoUser Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result. (optional)
+   * @return AnalyticsDelta
+   * @throws ApiException if fails to make API call
+   */
+  public AnalyticsDelta getAnalyticsDelta(@javax.annotation.Nullable String cursor, @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String channel, @javax.annotation.Nullable Boolean fromStart, @javax.annotation.Nullable String xHermosoUser) throws ApiException {
+    return getAnalyticsDelta(cursor, limit, channel, fromStart, xHermosoUser, null);
+  }
+
+  /**
+   * Post readings recorded since a cursor
+   * A cursor feed of every post reading recorded since &#x60;cursor&#x60;, across all of the brand’s posts. Call FIRST with no cursor: no rows and the current cursor. Store it, then pass it back to receive only what was recorded after; &#x60;has_more&#x60; says another page follows. &#x60;from_start&#x3D;true&#x60; pages through every reading held instead. Free.
+   * @param cursor The cursor a previous call returned. (optional)
+   * @param limit 1-500. Default 100. (optional)
+   * @param channel One channel. (optional)
+   * @param fromStart Page through everything held instead of starting at now. (optional)
+   * @param xHermosoUser Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result. (optional)
+   * @param headers Optional headers to include in the request
+   * @return AnalyticsDelta
+   * @throws ApiException if fails to make API call
+   */
+  public AnalyticsDelta getAnalyticsDelta(@javax.annotation.Nullable String cursor, @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String channel, @javax.annotation.Nullable Boolean fromStart, @javax.annotation.Nullable String xHermosoUser, Map<String, String> headers) throws ApiException {
+    ApiResponse<AnalyticsDelta> localVarResponse = getAnalyticsDeltaWithHttpInfo(cursor, limit, channel, fromStart, xHermosoUser, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Post readings recorded since a cursor
+   * A cursor feed of every post reading recorded since &#x60;cursor&#x60;, across all of the brand’s posts. Call FIRST with no cursor: no rows and the current cursor. Store it, then pass it back to receive only what was recorded after; &#x60;has_more&#x60; says another page follows. &#x60;from_start&#x3D;true&#x60; pages through every reading held instead. Free.
+   * @param cursor The cursor a previous call returned. (optional)
+   * @param limit 1-500. Default 100. (optional)
+   * @param channel One channel. (optional)
+   * @param fromStart Page through everything held instead of starting at now. (optional)
+   * @param xHermosoUser Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result. (optional)
+   * @return ApiResponse&lt;AnalyticsDelta&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<AnalyticsDelta> getAnalyticsDeltaWithHttpInfo(@javax.annotation.Nullable String cursor, @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String channel, @javax.annotation.Nullable Boolean fromStart, @javax.annotation.Nullable String xHermosoUser) throws ApiException {
+    return getAnalyticsDeltaWithHttpInfo(cursor, limit, channel, fromStart, xHermosoUser, null);
+  }
+
+  /**
+   * Post readings recorded since a cursor
+   * A cursor feed of every post reading recorded since &#x60;cursor&#x60;, across all of the brand’s posts. Call FIRST with no cursor: no rows and the current cursor. Store it, then pass it back to receive only what was recorded after; &#x60;has_more&#x60; says another page follows. &#x60;from_start&#x3D;true&#x60; pages through every reading held instead. Free.
+   * @param cursor The cursor a previous call returned. (optional)
+   * @param limit 1-500. Default 100. (optional)
+   * @param channel One channel. (optional)
+   * @param fromStart Page through everything held instead of starting at now. (optional)
+   * @param xHermosoUser Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result. (optional)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;AnalyticsDelta&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<AnalyticsDelta> getAnalyticsDeltaWithHttpInfo(@javax.annotation.Nullable String cursor, @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String channel, @javax.annotation.Nullable Boolean fromStart, @javax.annotation.Nullable String xHermosoUser, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = getAnalyticsDeltaRequestBuilder(cursor, limit, channel, fromStart, xHermosoUser, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("getAnalyticsDelta", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<AnalyticsDelta>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
+        }
+
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        AnalyticsDelta responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<AnalyticsDelta>() {});
+        
+
+        return new ApiResponse<AnalyticsDelta>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder getAnalyticsDeltaRequestBuilder(@javax.annotation.Nullable String cursor, @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String channel, @javax.annotation.Nullable Boolean fromStart, @javax.annotation.Nullable String xHermosoUser, Map<String, String> headers) throws ApiException {
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/v1/analytics/delta";
+
+    List<Pair> localVarQueryParams = new ArrayList<>();
+    StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    String localVarQueryParameterBaseName;
+    localVarQueryParameterBaseName = "cursor";
+    localVarQueryParams.addAll(ApiClient.parameterToPairs("cursor", cursor));
+    localVarQueryParameterBaseName = "limit";
+    localVarQueryParams.addAll(ApiClient.parameterToPairs("limit", limit));
+    localVarQueryParameterBaseName = "channel";
+    localVarQueryParams.addAll(ApiClient.parameterToPairs("channel", channel));
+    localVarQueryParameterBaseName = "from_start";
+    localVarQueryParams.addAll(ApiClient.parameterToPairs("from_start", fromStart));
+
+    if (!localVarQueryParams.isEmpty() || localVarQueryStringJoiner.length() != 0) {
+      StringJoiner queryJoiner = new StringJoiner("&");
+      localVarQueryParams.forEach(p -> queryJoiner.add(p.getName() + '=' + p.getValue()));
+      if (localVarQueryStringJoiner.length() != 0) {
+        queryJoiner.add(localVarQueryStringJoiner.toString());
+      }
+      localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath + '?' + queryJoiner.toString()));
+    } else {
+      localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+    }
+
+    if (xHermosoUser != null) {
+      localVarRequestBuilder.header("X-Hermoso-User", xHermosoUser.toString());
+    }
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    localVarRequestBuilder.method("GET", HttpRequest.BodyPublishers.noBody());
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+
+  public static final class APIGetAnalyticsDeltaRequest {
+    @javax.annotation.Nullable
+    private String cursor; // The cursor a previous call returned. (optional)
+    @javax.annotation.Nullable
+    private Integer limit; // 1-500. Default 100. (optional)
+    @javax.annotation.Nullable
+    private String channel; // One channel. (optional)
+    @javax.annotation.Nullable
+    private Boolean fromStart; // Page through everything held instead of starting at now. (optional)
+    @javax.annotation.Nullable
+    private String xHermosoUser; // Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result. (optional)
+
+    private APIGetAnalyticsDeltaRequest(Builder builder) {
+      this.cursor = builder.cursor;
+      this.limit = builder.limit;
+      this.channel = builder.channel;
+      this.fromStart = builder.fromStart;
+      this.xHermosoUser = builder.xHermosoUser;
+    }
+    @javax.annotation.Nullable
+    public String cursor() {
+      return cursor;
+    }
+    @javax.annotation.Nullable
+    public Integer limit() {
+      return limit;
+    }
+    @javax.annotation.Nullable
+    public String channel() {
+      return channel;
+    }
+    @javax.annotation.Nullable
+    public Boolean fromStart() {
+      return fromStart;
+    }
+    @javax.annotation.Nullable
+    public String xHermosoUser() {
+      return xHermosoUser;
+    }
+    public static Builder newBuilder() {
+      return new Builder();
+    }
+
+    public static class Builder {
+      private String cursor;
+      private Integer limit;
+      private String channel;
+      private Boolean fromStart;
+      private String xHermosoUser;
+
+      public Builder cursor(@javax.annotation.Nullable String cursor) {
+        this.cursor = cursor;
+        return this;
+      }
+      public Builder limit(@javax.annotation.Nullable Integer limit) {
+        this.limit = limit;
+        return this;
+      }
+      public Builder channel(@javax.annotation.Nullable String channel) {
+        this.channel = channel;
+        return this;
+      }
+      public Builder fromStart(@javax.annotation.Nullable Boolean fromStart) {
+        this.fromStart = fromStart;
+        return this;
+      }
+      public Builder xHermosoUser(@javax.annotation.Nullable String xHermosoUser) {
+        this.xHermosoUser = xHermosoUser;
+        return this;
+      }
+      public APIGetAnalyticsDeltaRequest build() {
+        return new APIGetAnalyticsDeltaRequest(this);
+      }
+    }
   }
 
   /**
@@ -1744,6 +2654,696 @@ public class AnalyticsApi {
       }
       public APIGetPostingFrequencyRequest build() {
         return new APIGetPostingFrequencyRequest(this);
+      }
+    }
+  }
+
+  /**
+   * Retrieve a tracking window
+   * One window with its latest numbers; a finished one carries &#x60;final_read_at&#x60; and &#x60;completion_reason&#x60;.
+   * @param apiRequest {@link APIGetTrackingWindowRequest}
+   * @return TrackingWindow
+   * @throws ApiException if fails to make API call
+   */
+  public TrackingWindow getTrackingWindow(APIGetTrackingWindowRequest apiRequest) throws ApiException {
+    return getTrackingWindow(apiRequest, null);
+  }
+
+  /**
+   * Retrieve a tracking window
+   * One window with its latest numbers; a finished one carries &#x60;final_read_at&#x60; and &#x60;completion_reason&#x60;.
+   * @param apiRequest {@link APIGetTrackingWindowRequest}
+   * @param headers Optional headers to include in the request
+   * @return TrackingWindow
+   * @throws ApiException if fails to make API call
+   */
+  public TrackingWindow getTrackingWindow(APIGetTrackingWindowRequest apiRequest, Map<String, String> headers) throws ApiException {
+    @javax.annotation.Nonnull
+    String windowId = apiRequest.windowId();
+    @javax.annotation.Nullable
+    String xHermosoUser = apiRequest.xHermosoUser();
+    return getTrackingWindow(windowId, xHermosoUser, headers);
+  }
+
+  /**
+   * Retrieve a tracking window
+   * One window with its latest numbers; a finished one carries &#x60;final_read_at&#x60; and &#x60;completion_reason&#x60;.
+   * @param apiRequest {@link APIGetTrackingWindowRequest}
+   * @return ApiResponse&lt;TrackingWindow&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<TrackingWindow> getTrackingWindowWithHttpInfo(APIGetTrackingWindowRequest apiRequest) throws ApiException {
+    return getTrackingWindowWithHttpInfo(apiRequest, null);
+  }
+
+  /**
+   * Retrieve a tracking window
+   * One window with its latest numbers; a finished one carries &#x60;final_read_at&#x60; and &#x60;completion_reason&#x60;.
+   * @param apiRequest {@link APIGetTrackingWindowRequest}
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;TrackingWindow&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<TrackingWindow> getTrackingWindowWithHttpInfo(APIGetTrackingWindowRequest apiRequest, Map<String, String> headers) throws ApiException {
+    String windowId = apiRequest.windowId();
+    String xHermosoUser = apiRequest.xHermosoUser();
+    return getTrackingWindowWithHttpInfo(windowId, xHermosoUser, headers);
+  }
+
+  /**
+   * Retrieve a tracking window
+   * One window with its latest numbers; a finished one carries &#x60;final_read_at&#x60; and &#x60;completion_reason&#x60;.
+   * @param windowId  (required)
+   * @param xHermosoUser Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result. (optional)
+   * @return TrackingWindow
+   * @throws ApiException if fails to make API call
+   */
+  public TrackingWindow getTrackingWindow(@javax.annotation.Nonnull String windowId, @javax.annotation.Nullable String xHermosoUser) throws ApiException {
+    return getTrackingWindow(windowId, xHermosoUser, null);
+  }
+
+  /**
+   * Retrieve a tracking window
+   * One window with its latest numbers; a finished one carries &#x60;final_read_at&#x60; and &#x60;completion_reason&#x60;.
+   * @param windowId  (required)
+   * @param xHermosoUser Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result. (optional)
+   * @param headers Optional headers to include in the request
+   * @return TrackingWindow
+   * @throws ApiException if fails to make API call
+   */
+  public TrackingWindow getTrackingWindow(@javax.annotation.Nonnull String windowId, @javax.annotation.Nullable String xHermosoUser, Map<String, String> headers) throws ApiException {
+    ApiResponse<TrackingWindow> localVarResponse = getTrackingWindowWithHttpInfo(windowId, xHermosoUser, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Retrieve a tracking window
+   * One window with its latest numbers; a finished one carries &#x60;final_read_at&#x60; and &#x60;completion_reason&#x60;.
+   * @param windowId  (required)
+   * @param xHermosoUser Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result. (optional)
+   * @return ApiResponse&lt;TrackingWindow&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<TrackingWindow> getTrackingWindowWithHttpInfo(@javax.annotation.Nonnull String windowId, @javax.annotation.Nullable String xHermosoUser) throws ApiException {
+    return getTrackingWindowWithHttpInfo(windowId, xHermosoUser, null);
+  }
+
+  /**
+   * Retrieve a tracking window
+   * One window with its latest numbers; a finished one carries &#x60;final_read_at&#x60; and &#x60;completion_reason&#x60;.
+   * @param windowId  (required)
+   * @param xHermosoUser Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result. (optional)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;TrackingWindow&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<TrackingWindow> getTrackingWindowWithHttpInfo(@javax.annotation.Nonnull String windowId, @javax.annotation.Nullable String xHermosoUser, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = getTrackingWindowRequestBuilder(windowId, xHermosoUser, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("getTrackingWindow", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<TrackingWindow>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
+        }
+
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        TrackingWindow responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<TrackingWindow>() {});
+        
+
+        return new ApiResponse<TrackingWindow>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder getTrackingWindowRequestBuilder(@javax.annotation.Nonnull String windowId, @javax.annotation.Nullable String xHermosoUser, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'windowId' is set
+    if (windowId == null) {
+      throw new ApiException(400, "Missing the required parameter 'windowId' when calling getTrackingWindow");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/v1/analytics/tracking/{window_id}"
+        .replace("{window_id}", ApiClient.urlEncode(windowId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    if (xHermosoUser != null) {
+      localVarRequestBuilder.header("X-Hermoso-User", xHermosoUser.toString());
+    }
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    localVarRequestBuilder.method("GET", HttpRequest.BodyPublishers.noBody());
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+
+  public static final class APIGetTrackingWindowRequest {
+    @javax.annotation.Nonnull
+    private String windowId; //  (required)
+    @javax.annotation.Nullable
+    private String xHermosoUser; // Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result. (optional)
+
+    private APIGetTrackingWindowRequest(Builder builder) {
+      this.windowId = builder.windowId;
+      this.xHermosoUser = builder.xHermosoUser;
+    }
+    @javax.annotation.Nonnull
+    public String windowId() {
+      return windowId;
+    }
+    @javax.annotation.Nullable
+    public String xHermosoUser() {
+      return xHermosoUser;
+    }
+    public static Builder newBuilder() {
+      return new Builder();
+    }
+
+    public static class Builder {
+      private String windowId;
+      private String xHermosoUser;
+
+      public Builder windowId(@javax.annotation.Nonnull String windowId) {
+        this.windowId = windowId;
+        return this;
+      }
+      public Builder xHermosoUser(@javax.annotation.Nullable String xHermosoUser) {
+        this.xHermosoUser = xHermosoUser;
+        return this;
+      }
+      public APIGetTrackingWindowRequest build() {
+        return new APIGetTrackingWindowRequest(this);
+      }
+    }
+  }
+
+  /**
+   * List tracking windows
+   * The brand’s tracking windows, newest first, each with its latest numbers. Free.
+   * @param apiRequest {@link APIListTrackingWindowsRequest}
+   * @return TrackingWindowList
+   * @throws ApiException if fails to make API call
+   */
+  public TrackingWindowList listTrackingWindows(APIListTrackingWindowsRequest apiRequest) throws ApiException {
+    return listTrackingWindows(apiRequest, null);
+  }
+
+  /**
+   * List tracking windows
+   * The brand’s tracking windows, newest first, each with its latest numbers. Free.
+   * @param apiRequest {@link APIListTrackingWindowsRequest}
+   * @param headers Optional headers to include in the request
+   * @return TrackingWindowList
+   * @throws ApiException if fails to make API call
+   */
+  public TrackingWindowList listTrackingWindows(APIListTrackingWindowsRequest apiRequest, Map<String, String> headers) throws ApiException {
+    @javax.annotation.Nullable
+    String status = apiRequest.status();
+    @javax.annotation.Nullable
+    Integer limit = apiRequest.limit();
+    @javax.annotation.Nullable
+    String xHermosoUser = apiRequest.xHermosoUser();
+    return listTrackingWindows(status, limit, xHermosoUser, headers);
+  }
+
+  /**
+   * List tracking windows
+   * The brand’s tracking windows, newest first, each with its latest numbers. Free.
+   * @param apiRequest {@link APIListTrackingWindowsRequest}
+   * @return ApiResponse&lt;TrackingWindowList&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<TrackingWindowList> listTrackingWindowsWithHttpInfo(APIListTrackingWindowsRequest apiRequest) throws ApiException {
+    return listTrackingWindowsWithHttpInfo(apiRequest, null);
+  }
+
+  /**
+   * List tracking windows
+   * The brand’s tracking windows, newest first, each with its latest numbers. Free.
+   * @param apiRequest {@link APIListTrackingWindowsRequest}
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;TrackingWindowList&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<TrackingWindowList> listTrackingWindowsWithHttpInfo(APIListTrackingWindowsRequest apiRequest, Map<String, String> headers) throws ApiException {
+    String status = apiRequest.status();
+    Integer limit = apiRequest.limit();
+    String xHermosoUser = apiRequest.xHermosoUser();
+    return listTrackingWindowsWithHttpInfo(status, limit, xHermosoUser, headers);
+  }
+
+  /**
+   * List tracking windows
+   * The brand’s tracking windows, newest first, each with its latest numbers. Free.
+   * @param status open, completed or cancelled. (optional)
+   * @param limit 1-200. Default 50. (optional)
+   * @param xHermosoUser Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result. (optional)
+   * @return TrackingWindowList
+   * @throws ApiException if fails to make API call
+   */
+  public TrackingWindowList listTrackingWindows(@javax.annotation.Nullable String status, @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String xHermosoUser) throws ApiException {
+    return listTrackingWindows(status, limit, xHermosoUser, null);
+  }
+
+  /**
+   * List tracking windows
+   * The brand’s tracking windows, newest first, each with its latest numbers. Free.
+   * @param status open, completed or cancelled. (optional)
+   * @param limit 1-200. Default 50. (optional)
+   * @param xHermosoUser Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result. (optional)
+   * @param headers Optional headers to include in the request
+   * @return TrackingWindowList
+   * @throws ApiException if fails to make API call
+   */
+  public TrackingWindowList listTrackingWindows(@javax.annotation.Nullable String status, @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String xHermosoUser, Map<String, String> headers) throws ApiException {
+    ApiResponse<TrackingWindowList> localVarResponse = listTrackingWindowsWithHttpInfo(status, limit, xHermosoUser, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * List tracking windows
+   * The brand’s tracking windows, newest first, each with its latest numbers. Free.
+   * @param status open, completed or cancelled. (optional)
+   * @param limit 1-200. Default 50. (optional)
+   * @param xHermosoUser Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result. (optional)
+   * @return ApiResponse&lt;TrackingWindowList&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<TrackingWindowList> listTrackingWindowsWithHttpInfo(@javax.annotation.Nullable String status, @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String xHermosoUser) throws ApiException {
+    return listTrackingWindowsWithHttpInfo(status, limit, xHermosoUser, null);
+  }
+
+  /**
+   * List tracking windows
+   * The brand’s tracking windows, newest first, each with its latest numbers. Free.
+   * @param status open, completed or cancelled. (optional)
+   * @param limit 1-200. Default 50. (optional)
+   * @param xHermosoUser Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result. (optional)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;TrackingWindowList&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<TrackingWindowList> listTrackingWindowsWithHttpInfo(@javax.annotation.Nullable String status, @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String xHermosoUser, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = listTrackingWindowsRequestBuilder(status, limit, xHermosoUser, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("listTrackingWindows", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<TrackingWindowList>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
+        }
+
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        TrackingWindowList responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<TrackingWindowList>() {});
+        
+
+        return new ApiResponse<TrackingWindowList>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder listTrackingWindowsRequestBuilder(@javax.annotation.Nullable String status, @javax.annotation.Nullable Integer limit, @javax.annotation.Nullable String xHermosoUser, Map<String, String> headers) throws ApiException {
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/v1/analytics/tracking";
+
+    List<Pair> localVarQueryParams = new ArrayList<>();
+    StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    String localVarQueryParameterBaseName;
+    localVarQueryParameterBaseName = "status";
+    localVarQueryParams.addAll(ApiClient.parameterToPairs("status", status));
+    localVarQueryParameterBaseName = "limit";
+    localVarQueryParams.addAll(ApiClient.parameterToPairs("limit", limit));
+
+    if (!localVarQueryParams.isEmpty() || localVarQueryStringJoiner.length() != 0) {
+      StringJoiner queryJoiner = new StringJoiner("&");
+      localVarQueryParams.forEach(p -> queryJoiner.add(p.getName() + '=' + p.getValue()));
+      if (localVarQueryStringJoiner.length() != 0) {
+        queryJoiner.add(localVarQueryStringJoiner.toString());
+      }
+      localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath + '?' + queryJoiner.toString()));
+    } else {
+      localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+    }
+
+    if (xHermosoUser != null) {
+      localVarRequestBuilder.header("X-Hermoso-User", xHermosoUser.toString());
+    }
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    localVarRequestBuilder.method("GET", HttpRequest.BodyPublishers.noBody());
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+
+  public static final class APIListTrackingWindowsRequest {
+    @javax.annotation.Nullable
+    private String status; // open, completed or cancelled. (optional)
+    @javax.annotation.Nullable
+    private Integer limit; // 1-200. Default 50. (optional)
+    @javax.annotation.Nullable
+    private String xHermosoUser; // Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result. (optional)
+
+    private APIListTrackingWindowsRequest(Builder builder) {
+      this.status = builder.status;
+      this.limit = builder.limit;
+      this.xHermosoUser = builder.xHermosoUser;
+    }
+    @javax.annotation.Nullable
+    public String status() {
+      return status;
+    }
+    @javax.annotation.Nullable
+    public Integer limit() {
+      return limit;
+    }
+    @javax.annotation.Nullable
+    public String xHermosoUser() {
+      return xHermosoUser;
+    }
+    public static Builder newBuilder() {
+      return new Builder();
+    }
+
+    public static class Builder {
+      private String status;
+      private Integer limit;
+      private String xHermosoUser;
+
+      public Builder status(@javax.annotation.Nullable String status) {
+        this.status = status;
+        return this;
+      }
+      public Builder limit(@javax.annotation.Nullable Integer limit) {
+        this.limit = limit;
+        return this;
+      }
+      public Builder xHermosoUser(@javax.annotation.Nullable String xHermosoUser) {
+        this.xHermosoUser = xHermosoUser;
+        return this;
+      }
+      public APIListTrackingWindowsRequest build() {
+        return new APIListTrackingWindowsRequest(this);
+      }
+    }
+  }
+
+  /**
+   * Open a tracking window
+   * Watch a post once a day for &#x60;tracking_days&#x60; (1-90, default 30), then a final reading and the &#x60;post.tracking_completed&#x60; event. &#x60;post_id&#x60;: a post the brand published, read through its own connection, free. &#x60;url&#x60;: any public TikTok, Instagram, YouTube, Facebook, X or Threads post, one data lookup per reading: without &#x60;confirm: true&#x60; nothing is opened and the answer is the quote (&#x60;needs_confirm&#x60;). A post already tracked returns its open window (&#x60;existing: true&#x60;).
+   * @param apiRequest {@link APIOpenTrackingWindowRequest}
+   * @return TrackingWindow
+   * @throws ApiException if fails to make API call
+   */
+  public TrackingWindow openTrackingWindow(APIOpenTrackingWindowRequest apiRequest) throws ApiException {
+    return openTrackingWindow(apiRequest, null);
+  }
+
+  /**
+   * Open a tracking window
+   * Watch a post once a day for &#x60;tracking_days&#x60; (1-90, default 30), then a final reading and the &#x60;post.tracking_completed&#x60; event. &#x60;post_id&#x60;: a post the brand published, read through its own connection, free. &#x60;url&#x60;: any public TikTok, Instagram, YouTube, Facebook, X or Threads post, one data lookup per reading: without &#x60;confirm: true&#x60; nothing is opened and the answer is the quote (&#x60;needs_confirm&#x60;). A post already tracked returns its open window (&#x60;existing: true&#x60;).
+   * @param apiRequest {@link APIOpenTrackingWindowRequest}
+   * @param headers Optional headers to include in the request
+   * @return TrackingWindow
+   * @throws ApiException if fails to make API call
+   */
+  public TrackingWindow openTrackingWindow(APIOpenTrackingWindowRequest apiRequest, Map<String, String> headers) throws ApiException {
+    @javax.annotation.Nonnull
+    TrackingWindowOpen trackingWindowOpen = apiRequest.trackingWindowOpen();
+    @javax.annotation.Nullable
+    String xHermosoUser = apiRequest.xHermosoUser();
+    return openTrackingWindow(trackingWindowOpen, xHermosoUser, headers);
+  }
+
+  /**
+   * Open a tracking window
+   * Watch a post once a day for &#x60;tracking_days&#x60; (1-90, default 30), then a final reading and the &#x60;post.tracking_completed&#x60; event. &#x60;post_id&#x60;: a post the brand published, read through its own connection, free. &#x60;url&#x60;: any public TikTok, Instagram, YouTube, Facebook, X or Threads post, one data lookup per reading: without &#x60;confirm: true&#x60; nothing is opened and the answer is the quote (&#x60;needs_confirm&#x60;). A post already tracked returns its open window (&#x60;existing: true&#x60;).
+   * @param apiRequest {@link APIOpenTrackingWindowRequest}
+   * @return ApiResponse&lt;TrackingWindow&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<TrackingWindow> openTrackingWindowWithHttpInfo(APIOpenTrackingWindowRequest apiRequest) throws ApiException {
+    return openTrackingWindowWithHttpInfo(apiRequest, null);
+  }
+
+  /**
+   * Open a tracking window
+   * Watch a post once a day for &#x60;tracking_days&#x60; (1-90, default 30), then a final reading and the &#x60;post.tracking_completed&#x60; event. &#x60;post_id&#x60;: a post the brand published, read through its own connection, free. &#x60;url&#x60;: any public TikTok, Instagram, YouTube, Facebook, X or Threads post, one data lookup per reading: without &#x60;confirm: true&#x60; nothing is opened and the answer is the quote (&#x60;needs_confirm&#x60;). A post already tracked returns its open window (&#x60;existing: true&#x60;).
+   * @param apiRequest {@link APIOpenTrackingWindowRequest}
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;TrackingWindow&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<TrackingWindow> openTrackingWindowWithHttpInfo(APIOpenTrackingWindowRequest apiRequest, Map<String, String> headers) throws ApiException {
+    TrackingWindowOpen trackingWindowOpen = apiRequest.trackingWindowOpen();
+    String xHermosoUser = apiRequest.xHermosoUser();
+    return openTrackingWindowWithHttpInfo(trackingWindowOpen, xHermosoUser, headers);
+  }
+
+  /**
+   * Open a tracking window
+   * Watch a post once a day for &#x60;tracking_days&#x60; (1-90, default 30), then a final reading and the &#x60;post.tracking_completed&#x60; event. &#x60;post_id&#x60;: a post the brand published, read through its own connection, free. &#x60;url&#x60;: any public TikTok, Instagram, YouTube, Facebook, X or Threads post, one data lookup per reading: without &#x60;confirm: true&#x60; nothing is opened and the answer is the quote (&#x60;needs_confirm&#x60;). A post already tracked returns its open window (&#x60;existing: true&#x60;).
+   * @param trackingWindowOpen  (required)
+   * @param xHermosoUser Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result. (optional)
+   * @return TrackingWindow
+   * @throws ApiException if fails to make API call
+   */
+  public TrackingWindow openTrackingWindow(@javax.annotation.Nonnull TrackingWindowOpen trackingWindowOpen, @javax.annotation.Nullable String xHermosoUser) throws ApiException {
+    return openTrackingWindow(trackingWindowOpen, xHermosoUser, null);
+  }
+
+  /**
+   * Open a tracking window
+   * Watch a post once a day for &#x60;tracking_days&#x60; (1-90, default 30), then a final reading and the &#x60;post.tracking_completed&#x60; event. &#x60;post_id&#x60;: a post the brand published, read through its own connection, free. &#x60;url&#x60;: any public TikTok, Instagram, YouTube, Facebook, X or Threads post, one data lookup per reading: without &#x60;confirm: true&#x60; nothing is opened and the answer is the quote (&#x60;needs_confirm&#x60;). A post already tracked returns its open window (&#x60;existing: true&#x60;).
+   * @param trackingWindowOpen  (required)
+   * @param xHermosoUser Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result. (optional)
+   * @param headers Optional headers to include in the request
+   * @return TrackingWindow
+   * @throws ApiException if fails to make API call
+   */
+  public TrackingWindow openTrackingWindow(@javax.annotation.Nonnull TrackingWindowOpen trackingWindowOpen, @javax.annotation.Nullable String xHermosoUser, Map<String, String> headers) throws ApiException {
+    ApiResponse<TrackingWindow> localVarResponse = openTrackingWindowWithHttpInfo(trackingWindowOpen, xHermosoUser, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Open a tracking window
+   * Watch a post once a day for &#x60;tracking_days&#x60; (1-90, default 30), then a final reading and the &#x60;post.tracking_completed&#x60; event. &#x60;post_id&#x60;: a post the brand published, read through its own connection, free. &#x60;url&#x60;: any public TikTok, Instagram, YouTube, Facebook, X or Threads post, one data lookup per reading: without &#x60;confirm: true&#x60; nothing is opened and the answer is the quote (&#x60;needs_confirm&#x60;). A post already tracked returns its open window (&#x60;existing: true&#x60;).
+   * @param trackingWindowOpen  (required)
+   * @param xHermosoUser Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result. (optional)
+   * @return ApiResponse&lt;TrackingWindow&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<TrackingWindow> openTrackingWindowWithHttpInfo(@javax.annotation.Nonnull TrackingWindowOpen trackingWindowOpen, @javax.annotation.Nullable String xHermosoUser) throws ApiException {
+    return openTrackingWindowWithHttpInfo(trackingWindowOpen, xHermosoUser, null);
+  }
+
+  /**
+   * Open a tracking window
+   * Watch a post once a day for &#x60;tracking_days&#x60; (1-90, default 30), then a final reading and the &#x60;post.tracking_completed&#x60; event. &#x60;post_id&#x60;: a post the brand published, read through its own connection, free. &#x60;url&#x60;: any public TikTok, Instagram, YouTube, Facebook, X or Threads post, one data lookup per reading: without &#x60;confirm: true&#x60; nothing is opened and the answer is the quote (&#x60;needs_confirm&#x60;). A post already tracked returns its open window (&#x60;existing: true&#x60;).
+   * @param trackingWindowOpen  (required)
+   * @param xHermosoUser Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result. (optional)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;TrackingWindow&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<TrackingWindow> openTrackingWindowWithHttpInfo(@javax.annotation.Nonnull TrackingWindowOpen trackingWindowOpen, @javax.annotation.Nullable String xHermosoUser, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = openTrackingWindowRequestBuilder(trackingWindowOpen, xHermosoUser, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("openTrackingWindow", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<TrackingWindow>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
+        }
+
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        TrackingWindow responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<TrackingWindow>() {});
+        
+
+        return new ApiResponse<TrackingWindow>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder openTrackingWindowRequestBuilder(@javax.annotation.Nonnull TrackingWindowOpen trackingWindowOpen, @javax.annotation.Nullable String xHermosoUser, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'trackingWindowOpen' is set
+    if (trackingWindowOpen == null) {
+      throw new ApiException(400, "Missing the required parameter 'trackingWindowOpen' when calling openTrackingWindow");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/v1/analytics/tracking";
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    if (xHermosoUser != null) {
+      localVarRequestBuilder.header("X-Hermoso-User", xHermosoUser.toString());
+    }
+    localVarRequestBuilder.header("Content-Type", "application/json");
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    try {
+      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(trackingWindowOpen);
+      localVarRequestBuilder.method("POST", HttpRequest.BodyPublishers.ofByteArray(localVarPostBody));
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+
+  public static final class APIOpenTrackingWindowRequest {
+    @javax.annotation.Nonnull
+    private TrackingWindowOpen trackingWindowOpen; //  (required)
+    @javax.annotation.Nullable
+    private String xHermosoUser; // Which profile to act on, when the account holds more than one: an &#x60;id&#x60; from &#x60;GET /v1/brands&#x60;. Defaults to the workspace the key is pinned to. Membership is re-authorised on every request, and an id this key cannot act on is a 404 &#x60;brand_not_found&#x60;, never an empty result. (optional)
+
+    private APIOpenTrackingWindowRequest(Builder builder) {
+      this.trackingWindowOpen = builder.trackingWindowOpen;
+      this.xHermosoUser = builder.xHermosoUser;
+    }
+    @javax.annotation.Nonnull
+    public TrackingWindowOpen trackingWindowOpen() {
+      return trackingWindowOpen;
+    }
+    @javax.annotation.Nullable
+    public String xHermosoUser() {
+      return xHermosoUser;
+    }
+    public static Builder newBuilder() {
+      return new Builder();
+    }
+
+    public static class Builder {
+      private TrackingWindowOpen trackingWindowOpen;
+      private String xHermosoUser;
+
+      public Builder trackingWindowOpen(@javax.annotation.Nonnull TrackingWindowOpen trackingWindowOpen) {
+        this.trackingWindowOpen = trackingWindowOpen;
+        return this;
+      }
+      public Builder xHermosoUser(@javax.annotation.Nullable String xHermosoUser) {
+        this.xHermosoUser = xHermosoUser;
+        return this;
+      }
+      public APIOpenTrackingWindowRequest build() {
+        return new APIOpenTrackingWindowRequest(this);
       }
     }
   }
